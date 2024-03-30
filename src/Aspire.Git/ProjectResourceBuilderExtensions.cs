@@ -12,17 +12,20 @@ public static class ProjectResourceBuilderExtensions
         string relativeProjectPath = ".")
     {
         string gitProjectName = GetProjectNameFromGitUrl(gitUrl);
-        string resolvedRepositoryPath = Path.Combine(Path.GetFullPath(repositoryPath), gitProjectName);
+        string projectName = name ?? gitProjectName;
 
-        if (!Directory.Exists(resolvedRepositoryPath))
+        string resolvedRepositoryPath = Path.Combine(Path.GetFullPath(repositoryPath), projectName);
+
+        bool hasRespository = Directory.Exists(resolvedRepositoryPath);
+        if (!hasRespository)
         {
             CloneGitRepository(gitUrl, resolvedRepositoryPath);
         }
 
-        string projectName = name ?? gitProjectName;
         string resolvedProjectPath = Path.Join(resolvedRepositoryPath, relativeProjectPath);
 
-        if (!File.Exists(resolvedProjectPath))
+        bool hasProject = File.Exists(resolvedProjectPath);
+        if (!hasProject)
         {
             string message = string.Format("Project folder {0} not found", resolvedProjectPath);
             throw new Exception(message);
