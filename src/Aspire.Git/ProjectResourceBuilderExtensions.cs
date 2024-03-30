@@ -7,9 +7,9 @@ public static class ProjectResourceBuilderExtensions
     public static IResourceBuilder<ProjectResource> AddGitProject(
         this IDistributedApplicationBuilder builder,
         string gitUrl,
-        string? name = null,
-        string repositoryPath = ".",
-        string relativeProjectPath = ".")
+        string repositoryPath,
+        string relativeProjectPath,
+        string? name = null)
     {
         string gitProjectName = GetProjectNameFromGitUrl(gitUrl);
         string projectName = name ?? gitProjectName;
@@ -31,17 +31,29 @@ public static class ProjectResourceBuilderExtensions
             throw new Exception(message);
         }
 
+        BuildDotNetProject(resolvedProjectPath);
+
         return builder.AddProject(projectName, resolvedProjectPath);
     }
 
+    private static void BuildDotNetProject(string resolvedProjectPath)
+    {
+        RunProcess("dotnet", $"build {resolvedProjectPath}");
+    }
+
     private static void CloneGitRepository(string gitUrl, string resolvedRepositoryPath)
+    {
+        RunProcess("git", $"clone {gitUrl} {resolvedRepositoryPath}");
+    }
+
+    private static void RunProcess(string fileName, string arguments)
     {
         Process process = new()
         {
             StartInfo = new()
             {
-                FileName = "git",
-                Arguments = $"clone {gitUrl} {resolvedRepositoryPath}",
+                FileName = fileName,
+                Arguments = arguments,
             }
         };
 
