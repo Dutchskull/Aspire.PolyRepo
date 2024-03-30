@@ -12,8 +12,11 @@ IResourceBuilder<ProjectResource> apiService = builder
 //    .WithReference(cache)
 //    .WithReference(apiService);
 
-builder.AddGitProject("", "", "")
-    .WithReference(cache)
-    .WithReference(apiService);
+builder.AddGitProject(
+    "https://github.com/Dutchskull/Aspire-Git.git",
+    repositoryPath: "../../",
+    relativeProjectPath: "src/Aspire.Git.Web/Aspire.Git.Web.csproj")
+        .WithReference(cache)
+        .WithReference(apiService);
 
 builder.Build().Run();

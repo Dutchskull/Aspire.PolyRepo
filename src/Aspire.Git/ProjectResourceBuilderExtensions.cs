@@ -8,31 +8,42 @@ public static class ProjectResourceBuilderExtensions
         this IDistributedApplicationBuilder builder,
         string gitUrl,
         string? name = null,
-        string clonePath = ".",
-        string? projectPath = null)
+        string repositoryPath = ".",
+        string relativeProjectPath = ".")
     {
-        Process process = new()
+        string gitProjectName = GetProjectNameFromGitUrl(gitUrl);
+        string resolvedRepositoryPath = Path.Combine(Path.GetFullPath(repositoryPath), gitProjectName);
+
+        if (!Directory.Exists(resolvedRepositoryPath))
         {
-            StartInfo = new()
-            {
-                FileName = "git",
-                Arguments = $"clone {gitUrl} {clonePath}",
-            }
-        };
+            CloneGitRepository(gitUrl, resolvedRepositoryPath);
+        }
 
-        process.Start();
-        process.WaitForExit();
+        string projectName = name ?? gitProjectName;
+        string resolvedProjectPath = Path.Join(resolvedRepositoryPath, relativeProjectPath);
 
-        string projectName = name ?? GetProjectNameFromGitUrl(gitUrl);
-        string resolvedProjectPath = projectPath ?? clonePath;
-
-        if (!Directory.Exists(resolvedProjectPath))
+        if (!File.Exists(resolvedProjectPath))
         {
             string message = string.Format("Project folder {0} not found", resolvedProjectPath);
             throw new Exception(message);
         }
 
         return builder.AddProject(projectName, resolvedProjectPath);
+    }
+
+    private static void CloneGitRepository(string gitUrl, string resolvedRepositoryPath)
+    {
+        Process process = new()
+        {
+            StartInfo = new()
+            {
+                FileName = "git",
+                Arguments = $"clone {gitUrl} {resolvedRepositoryPath}",
+            }
+        };
+
+        process.Start();
+        process.WaitForExit();
     }
 
     private static string GetProjectNameFromGitUrl(string gitUrl)
