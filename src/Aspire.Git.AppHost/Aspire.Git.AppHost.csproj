@@ -1,0 +1,21 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <IsAspireHost>true</IsAspireHost>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Aspire.Git.ApiService\Aspire.Git.ApiService.csproj" />
+    <ProjectReference Include="..\Aspire.Git.Web\Aspire.Git.Web.csproj" />
+    <ProjectReference Include="..\Aspire.Git\Aspire.Git.csproj" IsAspireProjectResource="false"/>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Aspire.Hosting" Version="8.0.0-preview.4.24156.9" />
+  </ItemGroup>
+
+</Project>
