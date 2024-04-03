@@ -11,17 +11,19 @@ internal class ProcessCommands
         RunProcess("git", $"clone {gitUrl} {resolvedRepositoryPath}");
 
     internal static void NpmInstall(string resolvedRepositoryPath) =>
-        RunProcess("npm", $"i --prefix {resolvedRepositoryPath}");
+        RunProcess("CMD.exe", $"/C cd {resolvedRepositoryPath} && npm i");
 
     internal static void RunProcess(string fileName, string arguments)
     {
+        ProcessStartInfo processStartInfo = new()
+        {
+            FileName = fileName,
+            Arguments = arguments,
+        };
+
         Process process = new()
         {
-            StartInfo = new()
-            {
-                FileName = fileName,
-                Arguments = arguments,
-            }
+            StartInfo = processStartInfo
         };
 
         process.Start();
