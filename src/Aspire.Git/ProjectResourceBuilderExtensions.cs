@@ -1,64 +1,35 @@
-﻿using System.Diagnostics;
-
-namespace Aspire.Git;
+﻿namespace Aspire.Git;
 
 public static class ProjectResourceBuilderExtensions
 {
-    public static IResourceBuilder<ProjectResource> AddGitProject(
+    public static IResourceBuilder<GitRepositoryResource> AddGitRepository(
         this IDistributedApplicationBuilder builder,
         string gitUrl,
-        string repositoryPath,
-        string relativeProjectPath,
-        string? name = null)
+        string? name = null,
+        string repositoryPath = ".",
+        string relativeProjectPath = ".")
     {
         string gitProjectName = GetProjectNameFromGitUrl(gitUrl);
+        string resolvedRepositoryPath = Path.Combine(Path.GetFullPath(repositoryPath), gitProjectName);
+
         string projectName = name ?? gitProjectName;
-
-        string resolvedRepositoryPath = Path.Combine(Path.GetFullPath(repositoryPath), projectName);
-
-        bool hasRespository = Directory.Exists(resolvedRepositoryPath);
-        if (!hasRespository)
-        {
-            CloneGitRepository(gitUrl, resolvedRepositoryPath);
-        }
 
         string resolvedProjectPath = Path.Join(resolvedRepositoryPath, relativeProjectPath);
 
-        bool hasProject = File.Exists(resolvedProjectPath);
-        if (!hasProject)
+        GitRepositoryResource gitRepositoryResource = new(projectName, resolvedRepositoryPath, resolvedProjectPath);
+
+        if (!Directory.Exists(gitRepositoryResource.RepositoryPath))
         {
-            string message = string.Format("Project folder {0} not found", resolvedProjectPath);
+            ProcessCommands.CloneGitRepository(gitUrl, gitRepositoryResource.RepositoryPath);
+        }
+
+        if (!File.Exists(gitRepositoryResource.ProjectPath))
+        {
+            string message = string.Format("Project folder {0} not found", gitRepositoryResource.ProjectPath);
             throw new Exception(message);
         }
 
-        BuildDotNetProject(resolvedProjectPath);
-
-        return builder.AddProject(projectName, resolvedProjectPath);
-    }
-
-    private static void BuildDotNetProject(string resolvedProjectPath)
-    {
-        RunProcess("dotnet", $"build {resolvedProjectPath}");
-    }
-
-    private static void CloneGitRepository(string gitUrl, string resolvedRepositoryPath)
-    {
-        RunProcess("git", $"clone {gitUrl} {resolvedRepositoryPath}");
-    }
-
-    private static void RunProcess(string fileName, string arguments)
-    {
-        Process process = new()
-        {
-            StartInfo = new()
-            {
-                FileName = fileName,
-                Arguments = arguments,
-            }
-        };
-
-        process.Start();
-        process.WaitForExit();
+        return builder.CreateResourceBuilder(gitRepositoryResource);
     }
 
     private static string GetProjectNameFromGitUrl(string gitUrl)
