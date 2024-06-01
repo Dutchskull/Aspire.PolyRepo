@@ -5,7 +5,7 @@ namespace Aspire.Git;
 
 public static class GitRepositoryResourceExtensions
 {
-    private static IProcessCommands _processCommands = new ProcessCommands();
+    private static readonly ProcessCommands _processCommands = new();
 
     public static IResourceBuilder<NodeAppResource> AddNodeApp(
         this IResourceBuilder<GitRepositoryResource> resource,

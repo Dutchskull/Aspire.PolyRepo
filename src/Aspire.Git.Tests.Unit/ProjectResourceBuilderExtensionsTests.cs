@@ -8,12 +8,12 @@ public class ProjectResourceBuilderExtensionsTests
 {
     private readonly IDistributedApplicationBuilder _builderMock;
     private readonly IFileSystem _fileSystemMock;
-    private readonly IProcessCommands _processCommandsMock;
+    private readonly ProcessCommands _processCommandsMock;
 
     public ProjectResourceBuilderExtensionsTests()
     {
         _builderMock = Substitute.For<IDistributedApplicationBuilder>();
-        _processCommandsMock = Substitute.For<IProcessCommands>();
+        _processCommandsMock = Substitute.For<ProcessCommands>();
         _fileSystemMock = Substitute.For<IFileSystem>();
     }
 
@@ -29,7 +29,7 @@ public class ProjectResourceBuilderExtensionsTests
             .Returns(Substitute.For<IResourceBuilder<GitRepositoryResource>>());
 
         _fileSystemMock.DirectoryExists(repositoryPath).Returns(false);
-        _fileSystemMock.FileExists(Arg.Any<string>()).Returns(true);
+        _fileSystemMock.FileOrDirectoryExists(Arg.Any<string>()).Returns(true);
 
         // Act
         var result = _builderMock
@@ -56,7 +56,7 @@ public class ProjectResourceBuilderExtensionsTests
             .Returns(Substitute.For<IResourceBuilder<GitRepositoryResource>>());
 
         _fileSystemMock.DirectoryExists(Arg.Any<string>()).Returns(true);
-        _fileSystemMock.FileExists(Arg.Any<string>()).Returns(true);
+        _fileSystemMock.FileOrDirectoryExists(Arg.Any<string>()).Returns(true);
 
         // Act
         var result = _builderMock.AddGitRepository(c => c.WithGitUrl(gitUrl).WithRepositoryPath(repositoryPath), _processCommandsMock, _fileSystemMock);
@@ -76,7 +76,7 @@ public class ProjectResourceBuilderExtensionsTests
             .Returns(Substitute.For<IResourceBuilder<GitRepositoryResource>>());
 
         _fileSystemMock.DirectoryExists(Arg.Any<string>()).Returns(true);
-        _fileSystemMock.FileExists(Arg.Any<string>()).Returns(false);
+        _fileSystemMock.FileOrDirectoryExists(Arg.Any<string>()).Returns(false);
 
         // Act & Assert
         var exception = Assert.Throws<Exception>(() => _builderMock.AddGitRepository(c => c.WithGitUrl(gitUrl).WithRepositoryPath(repositoryPath), _processCommandsMock, _fileSystemMock));
@@ -94,7 +94,7 @@ public class ProjectResourceBuilderExtensionsTests
             .Returns(Substitute.For<IResourceBuilder<GitRepositoryResource>>());
 
         _fileSystemMock.DirectoryExists(Arg.Any<string>()).Returns(true);
-        _fileSystemMock.FileExists(Arg.Any<string>()).Returns(true);
+        _fileSystemMock.FileOrDirectoryExists(Arg.Any<string>()).Returns(true);
 
         // Act
         var result = _builderMock.AddGitRepository(c => c.WithGitUrl(gitUrl).WithName(providedName), _processCommandsMock, _fileSystemMock);

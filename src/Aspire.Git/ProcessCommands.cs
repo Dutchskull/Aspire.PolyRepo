@@ -10,8 +10,14 @@ public class ProcessCommands : IProcessCommands
     public void CloneGitRepository(string gitUrl, string resolvedRepositoryPath) =>
         RunProcess("git", $"clone {gitUrl} {resolvedRepositoryPath}");
 
-    public void NpmInstall(string resolvedRepositoryPath) =>
-        RunProcess("npm", $"i --prefix {resolvedRepositoryPath}");
+    public void NpmInstall(string resolvedRepositoryPath)
+    {
+        string npmCommand = $"npm i";
+
+        string combinedCommand = $"cd /D {resolvedRepositoryPath} && {npmCommand}";
+
+        RunProcess("cmd.exe", $"/C {combinedCommand}");
+    }
 
     private static void RunProcess(string fileName, string arguments)
     {
