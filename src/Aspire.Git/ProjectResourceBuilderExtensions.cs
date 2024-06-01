@@ -1,62 +1,46 @@
-﻿using static System.Runtime.InteropServices.JavaScript.JSType;
+﻿using Aspire.Hosting;
+using Aspire.Hosting.ApplicationModel;
 
 namespace Aspire.Git;
 
 public static class ProjectResourceBuilderExtensions
 {
+    public static GitRepositoryConfigBuilder GitRepositoryConfigBuilder = new();
+
     public static IResourceBuilder<GitRepositoryResource> AddGitRepository(
         this IDistributedApplicationBuilder builder,
-        string gitUrl,
-        string? name = null,
-        string repositoryPath = ".",
-        string relativeProjectPath = ".")
+        Action<GitRepositoryConfigBuilder> configureGitRepository,
+        IProcessCommands? processCommands = null,
+        IFileSystem? fileSystem = null)
     {
-        string gitProjectName = GetProjectNameFromGitUrl(gitUrl);
-        string resolvedRepositoryPath = Path.GetFullPath(Path.Combine(Path.GetFullPath(repositoryPath), name ?? gitProjectName));
+        GitRepositoryConfig gitRepositoryConfig = BuildGitRepositoryConfig(configureGitRepository);
 
-        string projectName = name ?? gitProjectName;
+        GitRepositoryResource gitRepositoryResource = CreateGitRepositoryResource(gitRepositoryConfig);
 
-        string resolvedProjectPath = Path.GetFullPath(Path.Join(resolvedRepositoryPath, relativeProjectPath));
-
-        GitRepositoryResource gitRepositoryResource = new(projectName, resolvedRepositoryPath, resolvedProjectPath);
-
-        if (!Directory.Exists(gitRepositoryResource.RepositoryPath))
-        {
-            ProcessCommands.CloneGitRepository(gitUrl, gitRepositoryResource.RepositoryPath);
-        }
-
-        VerifyProjectLocation(resolvedProjectPath, gitRepositoryResource);
+        SetupGitRepository(gitRepositoryConfig, gitRepositoryResource, processCommands, fileSystem);
 
         return builder.CreateResourceBuilder(gitRepositoryResource);
     }
 
-    private static void VerifyProjectLocation(string resolvedProjectPath, GitRepositoryResource gitRepositoryResource)
+    private static GitRepositoryConfig BuildGitRepositoryConfig(Action<GitRepositoryConfigBuilder> configureGitRepository)
     {
-        if (IsFolder(resolvedProjectPath))
-        {
-            if (Directory.Exists(gitRepositoryResource.ProjectPath))
-            {
-                return;
-            }
+        GitRepositoryConfigBuilder = new();
 
-            string message = string.Format("Project folder {0} not found", gitRepositoryResource.ProjectPath);
-            throw new Exception(message);
-        }
-        else
-        {
-            if (File.Exists(gitRepositoryResource.ProjectPath))
-            {
-                return;
-            }
+        configureGitRepository.Invoke(GitRepositoryConfigBuilder);
 
-            string message = string.Format("Project file {0} not found", gitRepositoryResource.ProjectPath);
-            throw new Exception(message);
-        }
+        return GitRepositoryConfigBuilder.Build();
     }
 
-    private static bool IsFolder(string path)
+    private static GitRepositoryResource CreateGitRepositoryResource(GitRepositoryConfig gitRepositoryConfig)
     {
-        return Directory.Exists(path);
+        string gitProjectName = GetProjectNameFromGitUrl(gitRepositoryConfig.GitUrl);
+        string resolvedRepositoryPath = Path.Combine(Path.GetFullPath(gitRepositoryConfig.RepositoryPath), gitProjectName);
+
+        string projectName = gitRepositoryConfig.Name ?? gitProjectName;
+
+        string resolvedProjectPath = Path.Join(resolvedRepositoryPath, gitRepositoryConfig.RelativeProjectPath);
+
+        return new GitRepositoryResource(projectName, resolvedRepositoryPath, resolvedProjectPath);
     }
 
     private static string GetProjectNameFromGitUrl(string gitUrl)
@@ -68,4 +52,76 @@ public static class ProjectResourceBuilderExtensions
 
         return gitUrl.Split('/')[^1];
     }
+
+    private static void SetupGitRepository(GitRepositoryConfig gitRepositoryConfig, GitRepositoryResource gitRepositoryResource, IProcessCommands? processCommands, IFileSystem? fileSystem)
+    {
+        fileSystem ??= new FileSystem();
+        if (!fileSystem.DirectoryExists(gitRepositoryResource.RepositoryPath))
+        {
+            processCommands ??= new ProcessCommands();
+            processCommands.CloneGitRepository(gitRepositoryConfig.GitUrl, gitRepositoryResource.RepositoryPath);
+        }
+
+        if (!fileSystem.FileExists(gitRepositoryResource.ProjectPath))
+        {
+            string message = string.Format("Project folder {0} not found", gitRepositoryResource.ProjectPath);
+            throw new Exception(message);
+        }
+    }
+}
+
+public class GitRepositoryConfigBuilder
+{
+    private string _gitUrl;
+    private string? _name;
+    private string _relativeProjectPath = ".";
+    private string _repositoryPath = ".";
+
+    public GitRepositoryConfig Build()
+    {
+        if (string.IsNullOrEmpty(_gitUrl))
+        {
+            throw new InvalidOperationException("GitUrl must be provided");
+        }
+
+        return new GitRepositoryConfig
+        {
+            GitUrl = _gitUrl,
+            Name = _name,
+            RepositoryPath = _repositoryPath,
+            RelativeProjectPath = _relativeProjectPath
+        };
+    }
+
+    public GitRepositoryConfigBuilder WithGitUrl(string gitUrl)
+    {
+        _gitUrl = gitUrl;
+        return this;
+    }
+
+    public GitRepositoryConfigBuilder WithName(string? name)
+    {
+        _name = name;
+        return this;
+    }
+
+    public GitRepositoryConfigBuilder WithRelativeProjectPath(string relativeProjectPath)
+    {
+        _relativeProjectPath = relativeProjectPath;
+        return this;
+    }
+
+    public GitRepositoryConfigBuilder WithRepositoryPath(string repositoryPath)
+    {
+        _repositoryPath = repositoryPath;
+        return this;
+    }
+}
+
+public class GitRepositoryConfig
+{
+    public string GitUrl { get; init; }
+    public string? Name { get; init; }
+    public string RelativeProjectPath { get; init; }
+    public string RepositoryPath { get; init; }
 }
