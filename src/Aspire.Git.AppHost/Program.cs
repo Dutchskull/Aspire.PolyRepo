@@ -20,7 +20,8 @@ var dotnetGitRepo = builder
         .WithRepositoryPath("../../repos")
         .WithRelativeProjectPath("src/Aspire.Git.Web/Aspire.Git.Web.csproj"))
     .WithReference(cache)
-    .WithReference(apiService);
+    .WithReference(apiService)
+    .AddProject();
 
 var npmGitRepo = builder
     .AddGitRepository(c => c
@@ -29,7 +30,8 @@ var npmGitRepo = builder
         .WithRepositoryPath("../../repos")
         .WithRelativeProjectPath("src/Aspire.Git.React"))
     .WithReference(cache)
-    .WithReference(apiService);
+    .WithReference(apiService)
+    .AddNodeApp();
 
 var nodeGitRepo = builder
     .AddGitRepository(c => c
@@ -38,13 +40,8 @@ var nodeGitRepo = builder
         .WithRepositoryPath("../../repos")
         .WithRelativeProjectPath("src/Aspire.Git.Node"))
     .WithReference(cache)
-    .WithReference(apiService);
-
-dotnetGitRepo.AddProject();
-
-npmGitRepo.AddNodeApp();
-
-nodeGitRepo.AddNpmApp();
+    .WithReference(apiService)
+    .AddNpmApp();
 
 builder
     .Build()
