@@ -2,29 +2,6 @@
 
 namespace Aspire.Git;
 
-public interface IFileSystem
-{
-    bool DirectoryExists(string path);
-
-    bool FileExists(string path);
-}
-
-public interface IProcessCommands
-{
-    void BuildDotNetProject(string resolvedProjectPath);
-
-    void CloneGitRepository(string gitUrl, string resolvedRepositoryPath);
-
-    void NpmInstall(string resolvedRepositoryPath);
-}
-
-public class FileSystem : IFileSystem
-{
-    public bool DirectoryExists(string path) => Directory.Exists(path);
-
-    public bool FileExists(string path) => File.Exists(path);
-}
-
 public class ProcessCommands : IProcessCommands
 {
     public void BuildDotNetProject(string resolvedProjectPath) =>
@@ -39,11 +16,11 @@ public class ProcessCommands : IProcessCommands
     private static void RunProcess(string fileName, string arguments)
     {
         Process process = new()
-    {
-            StartInfo = new ProcessStartInfo
         {
-            FileName = fileName,
-            Arguments = arguments,
+            StartInfo = new ProcessStartInfo
+            {
+                FileName = fileName,
+                Arguments = arguments,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,

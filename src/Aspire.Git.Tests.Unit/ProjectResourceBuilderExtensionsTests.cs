@@ -23,6 +23,7 @@ public class ProjectResourceBuilderExtensionsTests
         // Arrange
         string gitUrl = "https://github.com/example/repo.git";
         string repositoryPath = Path.Combine(Path.GetTempPath(), "repo");
+        string expectedPath = Path.Combine(repositoryPath, "repo");
 
         _builderMock.CreateResourceBuilder(Arg.Any<GitRepositoryResource>())
             .Returns(Substitute.For<IResourceBuilder<GitRepositoryResource>>());
@@ -31,10 +32,15 @@ public class ProjectResourceBuilderExtensionsTests
         _fileSystemMock.FileExists(Arg.Any<string>()).Returns(true);
 
         // Act
-        var result = _builderMock.AddGitRepository(c => c.WithGitUrl(gitUrl).WithRepositoryPath(repositoryPath), _processCommandsMock, _fileSystemMock);
+        var result = _builderMock
+            .AddGitRepository(c => c
+                .WithGitUrl(gitUrl)
+                .WithRepositoryPath(repositoryPath),
+            _processCommandsMock,
+            _fileSystemMock);
 
         // Assert
-        _processCommandsMock.Received(1).CloneGitRepository(gitUrl, repositoryPath);
+        _processCommandsMock.Received(1).CloneGitRepository(gitUrl, expectedPath);
         _builderMock.Received(1).CreateResourceBuilder(Arg.Any<GitRepositoryResource>());
     }
 
