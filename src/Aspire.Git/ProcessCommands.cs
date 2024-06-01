@@ -39,11 +39,11 @@ public class ProcessCommands : IProcessCommands
     private static void RunProcess(string fileName, string arguments)
     {
         Process process = new()
-        {
+    {
             StartInfo = new ProcessStartInfo
-            {
-                FileName = fileName,
-                Arguments = arguments,
+        {
+            FileName = fileName,
+            Arguments = arguments,
                 RedirectStandardOutput = true,
                 RedirectStandardError = true,
                 UseShellExecute = false,
