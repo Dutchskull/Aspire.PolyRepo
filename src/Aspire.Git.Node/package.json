@@ -24,7 +24,7 @@
     "@opentelemetry/sdk-node": "^0.45.1",
     "express": "^4.19.2",
     "node-fetch": "^3.3.2",
-    "pug": "^3.0.2",
+    "pug": "^3.0.3",
     "redis": "^4.6.10"
   },
   "devDependencies": {
