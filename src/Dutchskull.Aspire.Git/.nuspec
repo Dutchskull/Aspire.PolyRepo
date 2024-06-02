@@ -1,21 +1,21 @@
 <?xml version="1.0"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
-    <metadata>
-        <id>Dutchskull.Aspire.Git</id>
-        <version>0.1.1</version>
-        <authors>Dutchskull</authors>
-        <description>A description of your package.</description>
-        <tags>aspire git example</tags>
-        <license type="expression">MIT</license>
-        <projectUrl>https://github.com/Dutchskull/Aspire-Git</projectUrl>
-        <repository type="git" url="https://github.com/Dutchskull/Aspire-Git" />
-        <iconUrl>
-            https://raw.githubusercontent.com/Dutchskull/Aspire-Git/master/src/Aspire.Git/icon.jpg
-        </iconUrl>
-        <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <readme>docs\README.md</readme>
-    </metadata>
-    <files>
-        <file src="..\..\README.md" target="docs\" />
-    </files>
+  <metadata>
+    <id>Dutchskull.Aspire.Git</id>
+    <version>0.1.1</version>
+    <authors>Dutchskull</authors>
+    <description>A description of your package.</description>
+    <tags>aspire git example</tags>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/Dutchskull/Aspire-Git</projectUrl>
+    <repository type="git" url="https://github.com/Dutchskull/Aspire-Git" />
+    <iconUrl>
+      https://raw.githubusercontent.com/Dutchskull/Aspire-Git/master/src/Aspire.Git/icon.jpg
+    </iconUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <readme>docs\README.md</readme>
+  </metadata>
+  <files>
+    <file src="..\..\README.md" target="docs\" />
+  </files>
 </package>
