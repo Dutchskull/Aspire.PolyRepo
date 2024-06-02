@@ -1,6 +1,6 @@
 ﻿using System.Diagnostics;
 
-namespace Aspire.Git;
+namespace Dutchskull.Aspire.Git;
 
 public class ProcessCommands : IProcessCommands
 {

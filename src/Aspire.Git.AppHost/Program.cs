@@ -1,4 +1,4 @@
-using Aspire.Git;
+using Dutchskull.Aspire.Git;
 using Microsoft.Extensions.Hosting;
 
 IDistributedApplicationBuilder builder = DistributedApplication
