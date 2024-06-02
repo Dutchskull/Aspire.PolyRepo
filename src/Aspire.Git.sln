@@ -8,7 +8,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aspire.Git.ServiceDefaults"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aspire.Git.ApiService", "Aspire.Git.ApiService\Aspire.Git.ApiService.csproj", "{3DEDD071-BD98-4463-B22D-95FFE802C479}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aspire.Git", "Aspire.Git\Aspire.Git.csproj", "{1B35DA82-485B-458D-94DF-313D046631DD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dutchskull.Aspire.Git", "Dutchskull.Aspire.Git\Dutchskull.Aspire.Git.csproj", "{1B35DA82-485B-458D-94DF-313D046631DD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aspire.Git.Tests.Unit", "Aspire.Git.Tests.Unit\Aspire.Git.Tests.Unit.csproj", "{5338B31F-004A-46C3-B047-B8B7399E254B}"
 EndProject

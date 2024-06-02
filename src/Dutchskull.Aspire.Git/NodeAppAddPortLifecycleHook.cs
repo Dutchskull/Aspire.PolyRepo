@@ -2,7 +2,7 @@
 using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Lifecycle;
 
-namespace Aspire.Git;
+namespace Dutchskull.Aspire.Git;
 
 internal class NodeAppAddPortLifecycleHook : IDistributedApplicationLifecycleHook
 {

@@ -1,7 +1,7 @@
 ﻿using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 
-namespace Aspire.Git;
+namespace Dutchskull.Aspire.Git;
 
 public class GitRepositoryResource(string name, string repositoryPath, string projectPath, string? branch = null) : Resource(name), IResourceWithEnvironment, IResourceWithArgs, IResourceWithServiceDiscovery
 {

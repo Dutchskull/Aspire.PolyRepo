@@ -24,7 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Aspire.Git\Aspire.Git.csproj" />
+    <ProjectReference Include="..\Dutchskull.Aspire.Git\Dutchskull.Aspire.Git.csproj" />
   </ItemGroup>
 
   <ItemGroup>
