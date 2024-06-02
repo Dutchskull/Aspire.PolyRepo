@@ -4,22 +4,18 @@ namespace Aspire.Git;
 
 public class ProcessCommands : IProcessCommands
 {
-    public void BuildDotNetProject(string resolvedProjectPath) =>
+    public int BuildDotNetProject(string resolvedProjectPath) =>
         RunProcess("dotnet", $"build {resolvedProjectPath}");
 
-    public void CloneGitRepository(string gitUrl, string resolvedRepositoryPath) =>
-        RunProcess("git", $"clone {gitUrl} {resolvedRepositoryPath}");
+    public int CloneGitRepository(string gitUrl, string resolvedRepositoryPath, string? branch = null) =>
+        string.IsNullOrEmpty(branch)
+            ? RunProcess("git", $"clone {gitUrl} {resolvedRepositoryPath}")
+            : RunProcess("git", $"clone --branch {branch} {gitUrl} {resolvedRepositoryPath}");
 
-    public void NpmInstall(string resolvedRepositoryPath)
-    {
-        string npmCommand = $"npm i";
+    public int NpmInstall(string resolvedRepositoryPath) =>
+        RunProcess("cmd.exe", $"/C cd {resolvedRepositoryPath} && npm i");
 
-        string combinedCommand = $"cd /D {resolvedRepositoryPath} && {npmCommand}";
-
-        RunProcess("cmd.exe", $"/C {combinedCommand}");
-    }
-
-    private static void RunProcess(string fileName, string arguments)
+    private static int RunProcess(string fileName, string arguments)
     {
         Process process = new()
         {
@@ -39,7 +35,7 @@ public class ProcessCommands : IProcessCommands
 
         if (process.ExitCode == 0)
         {
-            return;
+            return process.ExitCode;
         }
 
         throw new Exception($"Process {fileName} {arguments} failed with exit code {process.ExitCode}: {process.StandardError.ReadToEnd()}");

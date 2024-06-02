@@ -35,7 +35,7 @@ public class ProjectResourceBuilderExtensionsTests
         var result = _builderMock
             .AddGitRepository(c => c
                 .WithGitUrl(gitUrl)
-                .WithRepositoryPath(repositoryPath),
+                .WithCloneTargetPath(repositoryPath),
             _processCommandsMock,
             _fileSystemMock);
 
@@ -59,7 +59,7 @@ public class ProjectResourceBuilderExtensionsTests
         _fileSystemMock.FileOrDirectoryExists(Arg.Any<string>()).Returns(true);
 
         // Act
-        var result = _builderMock.AddGitRepository(c => c.WithGitUrl(gitUrl).WithRepositoryPath(repositoryPath), _processCommandsMock, _fileSystemMock);
+        var result = _builderMock.AddGitRepository(c => c.WithGitUrl(gitUrl).WithCloneTargetPath(repositoryPath), _processCommandsMock, _fileSystemMock);
 
         // Assert
         _builderMock.Received(1).CreateResourceBuilder(Arg.Is<GitRepositoryResource>(r => r.RepositoryPath == expectedResolvedPath));
@@ -79,7 +79,7 @@ public class ProjectResourceBuilderExtensionsTests
         _fileSystemMock.FileOrDirectoryExists(Arg.Any<string>()).Returns(false);
 
         // Act & Assert
-        var exception = Assert.Throws<Exception>(() => _builderMock.AddGitRepository(c => c.WithGitUrl(gitUrl).WithRepositoryPath(repositoryPath), _processCommandsMock, _fileSystemMock));
+        var exception = Assert.Throws<Exception>(() => _builderMock.AddGitRepository(c => c.WithGitUrl(gitUrl).WithCloneTargetPath(repositoryPath), _processCommandsMock, _fileSystemMock));
         Assert.Contains("Project folder", exception.Message);
     }
 

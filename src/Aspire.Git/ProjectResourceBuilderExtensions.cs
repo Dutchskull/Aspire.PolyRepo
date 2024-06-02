@@ -34,11 +34,11 @@ public static class ProjectResourceBuilderExtensions
     private static GitRepositoryResource CreateGitRepositoryResource(GitRepositoryConfig gitRepositoryConfig)
     {
         string gitProjectName = GetProjectNameFromGitUrl(gitRepositoryConfig.GitUrl);
-        string resolvedRepositoryPath = Path.Combine(Path.GetFullPath(gitRepositoryConfig.RepositoryPath), gitProjectName);
+        string resolvedRepositoryPath = Path.Combine(Path.GetFullPath(gitRepositoryConfig.CloneTargetPath), gitProjectName);
 
         string projectName = gitRepositoryConfig.Name ?? gitProjectName;
 
-        string resolvedProjectPath = Path.GetFullPath(Path.Join(resolvedRepositoryPath, gitRepositoryConfig.RelativeProjectPath));
+        string resolvedProjectPath = Path.GetFullPath(Path.Join(resolvedRepositoryPath, gitRepositoryConfig.ProjectPath));
 
         return new GitRepositoryResource(projectName, resolvedRepositoryPath, resolvedProjectPath);
     }
@@ -60,7 +60,7 @@ public static class ProjectResourceBuilderExtensions
         if (!fileSystem.DirectoryExists(gitRepositoryResource.RepositoryPath))
         {
             processCommands ??= new ProcessCommands();
-            processCommands.CloneGitRepository(gitRepositoryConfig.GitUrl, gitRepositoryResource.RepositoryPath);
+            processCommands.CloneGitRepository(gitRepositoryConfig.GitUrl, gitRepositoryResource.RepositoryPath, gitRepositoryConfig.Branch);
         }
 
         if (fileSystem.FileOrDirectoryExists(gitRepositoryResource.ProjectPath))

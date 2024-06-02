@@ -3,10 +3,10 @@
 public class GitRepositoryConfigBuilder
 {
     private string _branch = "develop";
+    private string _cloneTargetPath = ".";
     private string _gitUrl = string.Empty;
     private string? _name;
-    private string _relativeProjectPath = ".";
-    private string _repositoryPath = ".";
+    private string _projectPath = ".";
 
     public GitRepositoryConfig Build()
     {
@@ -19,10 +19,16 @@ public class GitRepositoryConfigBuilder
         {
             GitUrl = _gitUrl,
             Name = _name,
-            RepositoryPath = _repositoryPath,
-            RelativeProjectPath = _relativeProjectPath,
+            CloneTargetPath = _cloneTargetPath,
+            ProjectPath = _projectPath,
             Branch = _branch,
         };
+    }
+
+    public GitRepositoryConfigBuilder WithCloneTargetPath(string cloneTargetPath)
+    {
+        _cloneTargetPath = cloneTargetPath;
+        return this;
     }
 
     public GitRepositoryConfigBuilder WithDefaultBranch(string branch)
@@ -43,15 +49,14 @@ public class GitRepositoryConfigBuilder
         return this;
     }
 
-    public GitRepositoryConfigBuilder WithRelativeProjectPath(string relativeProjectPath)
+    /// <summary>
+    /// Adds path to the project
+    /// </summary>
+    /// <param name="projectPath">This path is relative to where the CloningPath provided.</param>
+    /// <returns></returns>
+    public GitRepositoryConfigBuilder WithProjectPath(string projectPath)
     {
-        _relativeProjectPath = relativeProjectPath;
-        return this;
-    }
-
-    public GitRepositoryConfigBuilder WithRepositoryPath(string repositoryPath)
-    {
-        _repositoryPath = repositoryPath;
+        _projectPath = projectPath;
         return this;
     }
 }

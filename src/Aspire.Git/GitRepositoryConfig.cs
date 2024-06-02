@@ -8,7 +8,7 @@ public class GitRepositoryConfig
 
     public string? Name { get; init; }
 
-    public required string RelativeProjectPath { get; init; }
+    public required string ProjectPath { get; init; }
 
-    public required string RepositoryPath { get; init; }
+    public required string CloneTargetPath { get; init; }
 }

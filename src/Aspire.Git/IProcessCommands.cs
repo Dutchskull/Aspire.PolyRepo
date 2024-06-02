@@ -2,9 +2,9 @@
 
 public interface IProcessCommands
 {
-    void BuildDotNetProject(string resolvedProjectPath);
+    int BuildDotNetProject(string resolvedProjectPath);
 
-    void CloneGitRepository(string gitUrl, string resolvedRepositoryPath);
+    int CloneGitRepository(string gitUrl, string resolvedRepositoryPath, string? branch = null);
 
-    void NpmInstall(string resolvedRepositoryPath);
+    int NpmInstall(string resolvedRepositoryPath);
 }

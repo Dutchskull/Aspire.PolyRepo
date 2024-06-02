@@ -16,8 +16,8 @@ var dotnetGitRepo = builder
     .AddGitRepository(c => c
         .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
         .WithName("dotnetProject")
-        .WithRepositoryPath("../../repos")
-        .WithRelativeProjectPath("src/Aspire.Git.Web/Aspire.Git.Web.csproj"))
+        .WithCloneTargetPath("../../repos")
+        .WithProjectPath("src/Aspire.Git.Web/Aspire.Git.Web.csproj"))
     .AddProject()
     .WithReference(cache)
     .WithReference(apiService);
@@ -26,8 +26,8 @@ var npmGitRepo = builder
     .AddGitRepository(c => c
         .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
         .WithName("npmProject")
-        .WithRepositoryPath("../../repos")
-        .WithRelativeProjectPath("src/Aspire.Git.React"))
+        .WithCloneTargetPath("../../repos")
+        .WithProjectPath("src/Aspire.Git.React"))
     .AddNpmApp()
     .WithReference(cache)
     .WithReference(apiService)
@@ -37,8 +37,8 @@ var nodeGitRepo = builder
     .AddGitRepository(c => c
         .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
         .WithName("nodeProject")
-        .WithRepositoryPath("../../repos")
-        .WithRelativeProjectPath("src/Aspire.Git.Node"))
+        .WithCloneTargetPath("../../repos")
+        .WithProjectPath("src/Aspire.Git.Node"))
     .AddNpmApp(scriptName: "watch")
     .WithReference(cache)
     .WithReference(apiService)
