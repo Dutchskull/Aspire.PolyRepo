@@ -27,7 +27,14 @@ jobs:
 
       - name: Pack
         run: dotnet pack --configuration Release --no-restore --output ./nupkg src/Aspire.Git/Aspire.Git.csproj
-
+        
+      - name: Rename package with Dutchskull prefix
+        run: |
+          for file in ./nupkg/*.nupkg; do
+            base_name=$(basename $file)
+            mv $file ./nupkg/Dutchskull.$base_name
+          done
+  
       - name: Publish to NuGet
         run: dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
         env:
