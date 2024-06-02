@@ -9,7 +9,7 @@ const app = express();
 const port = env.PORT ?? 8080;
 
 const cacheAddress = env['ConnectionStrings__cache'];
-const apiServer = env['services__weatherapi__1'];
+const apiServer = env['services__apiservice__http__0'];
 const passwordPrefix = ",password=";
 
 var cacheConfig = {

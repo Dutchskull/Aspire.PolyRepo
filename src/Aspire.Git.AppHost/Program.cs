@@ -1,4 +1,5 @@
 using Aspire.Git;
+using Microsoft.Extensions.Hosting;
 
 IDistributedApplicationBuilder builder = DistributedApplication
     .CreateBuilder(args);
@@ -7,11 +8,9 @@ IResourceBuilder<RedisResource> cache = builder
     .AddRedis("cache");
 
 IResourceBuilder<ProjectResource> apiService = builder
-    .AddProject<Projects.Aspire_Git_ApiService>("apiservice");
-
-IResourceBuilder<ProjectResource> webService = builder
-    .AddProject<Projects.Aspire_Git_Web>("webservice")
-    .WithReference(apiService);
+    .AddProject<Projects.Aspire_Git_ApiService>("apiservice")
+    .WithReference(cache)
+    .WithExternalHttpEndpoints();
 
 var dotnetGitRepo = builder
     .AddGitRepository(c => c
@@ -19,9 +18,9 @@ var dotnetGitRepo = builder
         .WithName("dotnetProject")
         .WithRepositoryPath("../../repos")
         .WithRelativeProjectPath("src/Aspire.Git.Web/Aspire.Git.Web.csproj"))
+    .AddProject()
     .WithReference(cache)
-    .WithReference(apiService)
-    .AddProject();
+    .WithReference(apiService);
 
 var npmGitRepo = builder
     .AddGitRepository(c => c
@@ -29,9 +28,10 @@ var npmGitRepo = builder
         .WithName("npmProject")
         .WithRepositoryPath("../../repos")
         .WithRelativeProjectPath("src/Aspire.Git.React"))
+    .AddNpmApp()
     .WithReference(cache)
     .WithReference(apiService)
-    .AddNodeApp();
+    .WithHttpEndpoint(3000);
 
 var nodeGitRepo = builder
     .AddGitRepository(c => c
@@ -39,9 +39,16 @@ var nodeGitRepo = builder
         .WithName("nodeProject")
         .WithRepositoryPath("../../repos")
         .WithRelativeProjectPath("src/Aspire.Git.Node"))
+    .AddNpmApp(scriptName: "watch")
     .WithReference(cache)
     .WithReference(apiService)
-    .AddNpmApp();
+    .WithHttpEndpoint(54622);
+
+if (builder.Environment.IsDevelopment() && builder.Configuration["DOTNET_LAUNCH_PROFILE"] == "https")
+{
+    npmGitRepo.WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");
+    nodeGitRepo.WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");
+}
 
 builder
     .Build()

@@ -10,7 +10,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Aspire.Git.ApiService\Aspire.Git.ApiService.csproj" />
-    <ProjectReference Include="..\Aspire.Git.Web\Aspire.Git.Web.csproj" />
     <ProjectReference Include="..\Aspire.Git\Aspire.Git.csproj" IsAspireProjectResource="false" />
   </ItemGroup>
 

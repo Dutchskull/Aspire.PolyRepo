@@ -1,5 +1,8 @@
 ﻿using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
+using Aspire.Hosting.Lifecycle;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Aspire.Git;
 
@@ -15,6 +18,8 @@ public static class GitRepositoryResourceExtensions
     {
         GitRepositoryResource gitRepositoryResource = resource.Resource;
 
+        resource.ApplicationBuilder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IDistributedApplicationLifecycleHook, NodeAppAddPortLifecycleHook>());
+
         _processCommands.NpmInstall(gitRepositoryResource.ProjectPath);
 
         return resource.ApplicationBuilder.AddNodeApp(name ?? gitRepositoryResource.Name, resource.Resource.ProjectPath, workingDirectory, args);
@@ -27,6 +32,8 @@ public static class GitRepositoryResourceExtensions
         string[]? args = null)
     {
         GitRepositoryResource gitRepositoryResource = resource.Resource;
+
+        resource.ApplicationBuilder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IDistributedApplicationLifecycleHook, NodeAppAddPortLifecycleHook>());
 
         _processCommands.NpmInstall(gitRepositoryResource.ProjectPath);
 
