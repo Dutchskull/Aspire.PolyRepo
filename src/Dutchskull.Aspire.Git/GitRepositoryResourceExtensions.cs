@@ -1,10 +1,11 @@
 ﻿using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using Aspire.Hosting.Lifecycle;
+using Dutchskull.Aspire.Git;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection.Extensions;
 
-namespace Aspire.Git;
+namespace Dutchskull.Aspire.Git;
 
 public static class GitRepositoryResourceExtensions
 {

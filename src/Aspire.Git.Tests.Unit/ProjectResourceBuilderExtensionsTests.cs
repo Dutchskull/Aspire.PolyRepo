@@ -1,5 +1,6 @@
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
+using Dutchskull.Aspire.Git;
 using NSubstitute;
 
 namespace Aspire.Git.Tests.Unit;
