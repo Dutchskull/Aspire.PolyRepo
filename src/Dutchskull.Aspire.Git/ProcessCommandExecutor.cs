@@ -1,8 +1,9 @@
 ﻿using System.Diagnostics;
+using Dutchskull.Aspire.Git.Interfaces;
 
 namespace Dutchskull.Aspire.Git;
 
-public class ProcessCommands : IProcessCommands
+public class ProcessCommandExecutor : IProcessCommandsExecutor
 {
     public int BuildDotNetProject(string resolvedProjectPath) =>
         RunProcess("dotnet", $"build {resolvedProjectPath}");

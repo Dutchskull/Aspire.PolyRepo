@@ -13,33 +13,31 @@ IResourceBuilder<ProjectResource> apiService = builder
     .WithExternalHttpEndpoints();
 
 var dotnetGitRepo = builder
-    .AddGitRepository(c => c
-        .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
-        .WithName("dotnetProject")
-        .WithCloneTargetPath("../../repos")
-        .WithProjectPath("src/Dutchskull.Aspire.Git.Web/Dutchskull.Aspire.Git.Web.csproj"))
-    .AddProject()
+    .AddProjectGitRepository(c => c
+            .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
+            .WithCloneTargetPath("../../repos")
+            .WithProjectPath("src/Dutchskull.Aspire.Git.Web/Dutchskull.Aspire.Git.Web.csproj"),
+        name: "dotnetProject")
     .WithReference(cache)
     .WithReference(apiService);
 
 var npmGitRepo = builder
-    .AddGitRepository(c => c
-        .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
-        .WithName("npmProject")
-        .WithCloneTargetPath("../../repos")
-        .WithProjectPath("src/Dutchskull.Aspire.Git.React"))
-    .AddNpmApp()
+    .AddNpmGitRepository(c => c
+            .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
+            .WithCloneTargetPath("../../repos")
+            .WithProjectPath("src/Dutchskull.Aspire.Git.React"),
+        name: "reactProject")
     .WithReference(cache)
     .WithReference(apiService)
     .WithHttpEndpoint(3000);
 
 var nodeGitRepo = builder
-    .AddGitRepository(c => c
-        .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
-        .WithName("nodeProject")
-        .WithCloneTargetPath("../../repos")
-        .WithProjectPath("src/Dutchskull.Aspire.Git.Node"))
-    .AddNpmApp(scriptName: "watch")
+    .AddNpmGitRepository(c => c
+            .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
+            .WithCloneTargetPath("../../repos")
+            .WithProjectPath("src/Dutchskull.Aspire.Git.Node"),
+        scriptName: "watch",
+        name: "nodeProject")
     .WithReference(cache)
     .WithReference(apiService)
     .WithHttpEndpoint(54622);

@@ -1,11 +1,15 @@
-﻿namespace Dutchskull.Aspire.Git;
+﻿using Dutchskull.Aspire.Git.Interfaces;
+
+namespace Dutchskull.Aspire.Git;
 
 public class GitRepositoryConfigBuilder
 {
-    private string _branch = "develop";
+    private string _branch = "main";
     private string _cloneTargetPath = ".";
+    private IFileSystem? _fileSystem;
     private string _gitUrl = string.Empty;
     private string? _name;
+    private IProcessCommandsExecutor? _processCommandsExecutor;
     private string _projectPath = ".";
 
     public GitRepositoryConfig Build()
@@ -22,6 +26,8 @@ public class GitRepositoryConfigBuilder
             CloneTargetPath = _cloneTargetPath,
             ProjectPath = _projectPath,
             Branch = _branch,
+            ProcessCommandsExecutor = _processCommandsExecutor ?? new ProcessCommandExecutor(),
+            FileSystem = _fileSystem ?? new FileSystem(),
         };
     }
 
@@ -37,6 +43,12 @@ public class GitRepositoryConfigBuilder
         return this;
     }
 
+    public GitRepositoryConfigBuilder WithFileSystem(IFileSystem? fileSystem)
+    {
+        _fileSystem = fileSystem;
+        return this;
+    }
+
     public GitRepositoryConfigBuilder WithGitUrl(string gitUrl)
     {
         _gitUrl = gitUrl;
@@ -46,6 +58,12 @@ public class GitRepositoryConfigBuilder
     public GitRepositoryConfigBuilder WithName(string? name)
     {
         _name = name;
+        return this;
+    }
+
+    public GitRepositoryConfigBuilder WithProcessCommandExecutor(IProcessCommandsExecutor? processCommandsExecutor)
+    {
+        _processCommandsExecutor = processCommandsExecutor;
         return this;
     }
 

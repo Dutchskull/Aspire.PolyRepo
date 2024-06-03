@@ -1,6 +1,6 @@
-﻿namespace Dutchskull.Aspire.Git;
+﻿namespace Dutchskull.Aspire.Git.Interfaces;
 
-public interface IProcessCommands
+public interface IProcessCommandsExecutor
 {
     int BuildDotNetProject(string resolvedProjectPath);
 

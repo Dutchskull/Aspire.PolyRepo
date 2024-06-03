@@ -1,69 +1,122 @@
 ﻿using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
+using Aspire.Hosting.Lifecycle;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 
 namespace Dutchskull.Aspire.Git;
 
 public static class ProjectResourceBuilderExtensions
 {
-    private static GitRepositoryConfigBuilder _gitRepositoryConfigBuilder = new();
-
-    public static IResourceBuilder<GitRepositoryResource> AddGitRepository(
+    public static IResourceBuilder<NodeAppResource> AddNodeGitRepository(
         this IDistributedApplicationBuilder builder,
         Action<GitRepositoryConfigBuilder> configureGitRepository,
-        IProcessCommands? processCommands = null,
-        IFileSystem? fileSystem = null)
+        string? name = null,
+        string? workingDirectory = null,
+        string[]? args = null)
     {
         GitRepositoryConfig gitRepositoryConfig = BuildGitRepositoryConfig(configureGitRepository);
 
         GitRepositoryResource gitRepositoryResource = CreateGitRepositoryResource(gitRepositoryConfig);
 
-        SetupGitRepository(gitRepositoryConfig, gitRepositoryResource, processCommands, fileSystem);
+        builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IDistributedApplicationLifecycleHook, NodeAppAddPortLifecycleHook>());
 
-        return builder.CreateResourceBuilder(gitRepositoryResource);
+        gitRepositoryConfig.ProcessCommandsExecutor.NpmInstall(gitRepositoryResource.ProjectPath);
+
+        return builder
+            .CreateResourceBuilder(gitRepositoryResource)
+            .ApplicationBuilder
+            .AddNodeApp(
+                name ?? gitRepositoryResource.Name,
+                gitRepositoryResource.ProjectPath,
+                workingDirectory,
+                args);
+    }
+
+    public static IResourceBuilder<NodeAppResource> AddNpmGitRepository(
+        this IDistributedApplicationBuilder builder,
+        Action<GitRepositoryConfigBuilder> configureGitRepository,
+        string? name = null,
+        string scriptName = "start",
+        string[]? args = null)
+    {
+        GitRepositoryConfig gitRepositoryConfig = BuildGitRepositoryConfig(configureGitRepository);
+
+        GitRepositoryResource gitRepositoryResource = CreateGitRepositoryResource(gitRepositoryConfig);
+
+        builder.Services.TryAddEnumerable(ServiceDescriptor.Singleton<IDistributedApplicationLifecycleHook, NodeAppAddPortLifecycleHook>());
+
+        gitRepositoryConfig.ProcessCommandsExecutor.NpmInstall(gitRepositoryResource.ProjectPath);
+
+        return builder
+            .CreateResourceBuilder(gitRepositoryResource)
+            .ApplicationBuilder
+            .AddNpmApp(
+                name ?? gitRepositoryResource.Name,
+                gitRepositoryResource.ProjectPath,
+                scriptName,
+                args);
+    }
+
+    public static IResourceBuilder<ProjectResource> AddProjectGitRepository(
+        this IDistributedApplicationBuilder builder,
+        Action<GitRepositoryConfigBuilder> configureGitRepository,
+        string? name = null)
+    {
+        GitRepositoryConfig gitRepositoryConfig = BuildGitRepositoryConfig(configureGitRepository);
+
+        GitRepositoryResource gitRepositoryResource = CreateGitRepositoryResource(gitRepositoryConfig);
+
+        gitRepositoryConfig.ProcessCommandsExecutor.BuildDotNetProject(gitRepositoryResource.ProjectPath);
+
+        return builder
+            .CreateResourceBuilder(gitRepositoryResource)
+            .ApplicationBuilder
+            .AddProject(
+                name ?? gitRepositoryResource.Name,
+                gitRepositoryResource.ProjectPath);
     }
 
     private static GitRepositoryConfig BuildGitRepositoryConfig(Action<GitRepositoryConfigBuilder> configureGitRepository)
     {
-        _gitRepositoryConfigBuilder = new();
+        GitRepositoryConfigBuilder _gitRepositoryConfigBuilder = new();
 
         configureGitRepository.Invoke(_gitRepositoryConfigBuilder);
 
         return _gitRepositoryConfigBuilder.Build();
     }
 
+    private static void CloneGitRepository(GitRepositoryConfig gitRepositoryConfig, GitRepositoryResource gitRepositoryResource)
+    {
+        if (gitRepositoryConfig.FileSystem.DirectoryExists(gitRepositoryResource.RepositoryPath))
+        {
+            return;
+        }
+
+        gitRepositoryConfig.ProcessCommandsExecutor.CloneGitRepository(gitRepositoryConfig.GitUrl, gitRepositoryResource.RepositoryPath, gitRepositoryConfig.Branch);
+    }
+
     private static GitRepositoryResource CreateGitRepositoryResource(GitRepositoryConfig gitRepositoryConfig)
     {
-        string gitProjectName = GetProjectNameFromGitUrl(gitRepositoryConfig.GitUrl);
+        string gitProjectName = GitUrlUtilities.GetProjectNameFromGitUrl(gitRepositoryConfig.GitUrl);
         string resolvedRepositoryPath = Path.Combine(Path.GetFullPath(gitRepositoryConfig.CloneTargetPath), gitProjectName);
 
         string projectName = gitRepositoryConfig.Name ?? gitProjectName;
 
         string resolvedProjectPath = Path.GetFullPath(Path.Join(resolvedRepositoryPath, gitRepositoryConfig.ProjectPath));
 
-        return new GitRepositoryResource(projectName, resolvedRepositoryPath, resolvedProjectPath);
+        GitRepositoryResource gitRepositoryResource = new(projectName, resolvedRepositoryPath, resolvedProjectPath);
+
+        SetupGitRepository(gitRepositoryConfig, gitRepositoryResource);
+
+        return gitRepositoryResource;
     }
 
-    private static string GetProjectNameFromGitUrl(string gitUrl)
+    private static void SetupGitRepository(GitRepositoryConfig gitRepositoryConfig, GitRepositoryResource gitRepositoryResource)
     {
-        if (gitUrl.EndsWith(".git"))
-        {
-            gitUrl = gitUrl[..^4];
-        }
+        CloneGitRepository(gitRepositoryConfig, gitRepositoryResource);
 
-        return gitUrl.Split('/')[^1];
-    }
-
-    private static void SetupGitRepository(GitRepositoryConfig gitRepositoryConfig, GitRepositoryResource gitRepositoryResource, IProcessCommands? processCommands, IFileSystem? fileSystem)
-    {
-        fileSystem ??= new FileSystem();
-
-        if (!fileSystem.DirectoryExists(gitRepositoryResource.RepositoryPath))
-        {
-            processCommands ??= new ProcessCommands();
-            processCommands.CloneGitRepository(gitRepositoryConfig.GitUrl, gitRepositoryResource.RepositoryPath, gitRepositoryConfig.Branch);
-        }
-
-        if (fileSystem.FileOrDirectoryExists(gitRepositoryResource.ProjectPath))
+        if (gitRepositoryConfig.FileSystem.FileOrDirectoryExists(gitRepositoryResource.ProjectPath))
         {
             return;
         }
