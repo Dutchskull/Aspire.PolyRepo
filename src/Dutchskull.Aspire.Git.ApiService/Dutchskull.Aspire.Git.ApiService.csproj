@@ -12,7 +12,7 @@
   </ItemGroup>
   
   <ItemGroup>
-    <ProjectReference Include="..\Aspire.Git.ServiceDefaults\Aspire.Git.ServiceDefaults.csproj" />
+    <ProjectReference Include="..\Dutchskull.Aspire.Git.ServiceDefaults\Dutchskull.Aspire.Git.ServiceDefaults.csproj" />
   </ItemGroup>
 
 </Project>

@@ -2,15 +2,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.0.0
 MinimumVisualStudioVersion = 17.8.0.0
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aspire.Git.AppHost", "Aspire.Git.AppHost\Aspire.Git.AppHost.csproj", "{ED328B7D-035C-4459-ABC3-D0435F386DA6}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dutchskull.Aspire.Git.AppHost", "Dutchskull.Aspire.Git.AppHost\Dutchskull.Aspire.Git.AppHost.csproj", "{ED328B7D-035C-4459-ABC3-D0435F386DA6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aspire.Git.ServiceDefaults", "Aspire.Git.ServiceDefaults\Aspire.Git.ServiceDefaults.csproj", "{5EF0B25C-AADC-4C59-83F5-45863E1AE76B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aspire.Git.ServiceDefaults", "Dutchskull.Aspire.Git.ServiceDefaults\Dutchskull.Aspire.Git.ServiceDefaults.csproj", "{5EF0B25C-AADC-4C59-83F5-45863E1AE76B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aspire.Git.ApiService", "Aspire.Git.ApiService\Aspire.Git.ApiService.csproj", "{3DEDD071-BD98-4463-B22D-95FFE802C479}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aspire.Git.ApiService", "Dutchskull.Aspire.Git.ApiService\Dutchskull.Aspire.Git.ApiService.csproj", "{3DEDD071-BD98-4463-B22D-95FFE802C479}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dutchskull.Aspire.Git", "Dutchskull.Aspire.Git\Dutchskull.Aspire.Git.csproj", "{1B35DA82-485B-458D-94DF-313D046631DD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aspire.Git.Tests.Unit", "Aspire.Git.Tests.Unit\Aspire.Git.Tests.Unit.csproj", "{5338B31F-004A-46C3-B047-B8B7399E254B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dutchskull.Aspire.Git.Tests.Unit", "Dutchskull.Aspire.Git.Tests.Unit\Dutchskull.Aspire.Git.Tests.Unit.csproj", "{5338B31F-004A-46C3-B047-B8B7399E254B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{EE96758C-C741-4F70-BB61-8B7545645635}"
 EndProject

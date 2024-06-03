@@ -8,7 +8,7 @@ IResourceBuilder<RedisResource> cache = builder
     .AddRedis("cache");
 
 IResourceBuilder<ProjectResource> apiService = builder
-    .AddProject<Projects.Aspire_Git_ApiService>("apiservice")
+    .AddProject<Projects.Dutchskull_Aspire_Git_ApiService>("apiservice")
     .WithReference(cache)
     .WithExternalHttpEndpoints();
 
@@ -17,7 +17,7 @@ var dotnetGitRepo = builder
         .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
         .WithName("dotnetProject")
         .WithCloneTargetPath("../../repos")
-        .WithProjectPath("src/Aspire.Git.Web/Aspire.Git.Web.csproj"))
+        .WithProjectPath("src/Dutchskull.Aspire.Git.Web/Dutchskull.Aspire.Git.Web.csproj"))
     .AddProject()
     .WithReference(cache)
     .WithReference(apiService);
@@ -27,7 +27,7 @@ var npmGitRepo = builder
         .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
         .WithName("npmProject")
         .WithCloneTargetPath("../../repos")
-        .WithProjectPath("src/Aspire.Git.React"))
+        .WithProjectPath("src/Dutchskull.Aspire.Git.React"))
     .AddNpmApp()
     .WithReference(cache)
     .WithReference(apiService)
@@ -38,7 +38,7 @@ var nodeGitRepo = builder
         .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
         .WithName("nodeProject")
         .WithCloneTargetPath("../../repos")
-        .WithProjectPath("src/Aspire.Git.Node"))
+        .WithProjectPath("src/Dutchskull.Aspire.Git.Node"))
     .AddNpmApp(scriptName: "watch")
     .WithReference(cache)
     .WithReference(apiService)
