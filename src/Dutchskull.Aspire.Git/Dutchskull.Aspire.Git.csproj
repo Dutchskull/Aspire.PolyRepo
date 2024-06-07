@@ -11,4 +11,10 @@
     <PackageReference Include="Aspire.Hosting.NodeJs" Version="8.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>Dutchskull.Aspire.Git.Tests.Unit</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+
 </Project>

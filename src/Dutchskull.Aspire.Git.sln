@@ -4,9 +4,9 @@ VisualStudioVersion = 17.8.0.0
 MinimumVisualStudioVersion = 17.8.0.0
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dutchskull.Aspire.Git.AppHost", "Dutchskull.Aspire.Git.AppHost\Dutchskull.Aspire.Git.AppHost.csproj", "{ED328B7D-035C-4459-ABC3-D0435F386DA6}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aspire.Git.ServiceDefaults", "Dutchskull.Aspire.Git.ServiceDefaults\Dutchskull.Aspire.Git.ServiceDefaults.csproj", "{5EF0B25C-AADC-4C59-83F5-45863E1AE76B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dutchskull.Aspire.Git.ServiceDefaults", "Dutchskull.Aspire.Git.ServiceDefaults\Dutchskull.Aspire.Git.ServiceDefaults.csproj", "{5EF0B25C-AADC-4C59-83F5-45863E1AE76B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aspire.Git.ApiService", "Dutchskull.Aspire.Git.ApiService\Dutchskull.Aspire.Git.ApiService.csproj", "{3DEDD071-BD98-4463-B22D-95FFE802C479}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dutchskull.Aspire.Git.ApiService", "Dutchskull.Aspire.Git.ApiService\Dutchskull.Aspire.Git.ApiService.csproj", "{3DEDD071-BD98-4463-B22D-95FFE802C479}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dutchskull.Aspire.Git", "Dutchskull.Aspire.Git\Dutchskull.Aspire.Git.csproj", "{1B35DA82-485B-458D-94DF-313D046631DD}"
 EndProject
@@ -16,6 +16,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "sample", "sample", "{EE9675
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{590CD7CC-738C-4302-8E24-022C3526CB1D}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		..\README.md = ..\README.md
 	EndProjectSection
 EndProject

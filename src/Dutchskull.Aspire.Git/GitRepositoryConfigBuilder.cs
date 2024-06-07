@@ -9,22 +9,26 @@ public class GitRepositoryConfigBuilder
     private IFileSystem? _fileSystem;
     private string _gitUrl = string.Empty;
     private string? _name;
-    private IProcessCommandsExecutor? _processCommandsExecutor;
+    private IProcessCommandExecutor? _processCommandsExecutor;
     private string _projectPath = ".";
 
-    public GitRepositoryConfig Build()
+    public GitRepositoryConfig BuildConfig()
     {
         if (string.IsNullOrEmpty(_gitUrl))
         {
             throw new InvalidOperationException("GitUrl must be provided");
         }
 
+        string gitProjectName = GitUrlUtilities.GetProjectNameFromGitUrl(_gitUrl);
+        string resolvedRepositoryPath = Path.Combine(Path.GetFullPath(_cloneTargetPath), gitProjectName);
+        string resolvedProjectPath = Path.GetFullPath(Path.Join(resolvedRepositoryPath, _projectPath));
+
         return new GitRepositoryConfig
         {
             GitUrl = _gitUrl,
-            Name = _name,
-            CloneTargetPath = _cloneTargetPath,
-            ProjectPath = _projectPath,
+            Name = _name ?? gitProjectName,
+            CloneTargetPath = resolvedRepositoryPath,
+            ProjectPath = resolvedProjectPath,
             Branch = _branch,
             ProcessCommandsExecutor = _processCommandsExecutor ?? new ProcessCommandExecutor(),
             FileSystem = _fileSystem ?? new FileSystem(),
@@ -61,7 +65,7 @@ public class GitRepositoryConfigBuilder
         return this;
     }
 
-    public GitRepositoryConfigBuilder WithProcessCommandExecutor(IProcessCommandsExecutor? processCommandsExecutor)
+    public GitRepositoryConfigBuilder WithProcessCommandExecutor(IProcessCommandExecutor? processCommandsExecutor)
     {
         _processCommandsExecutor = processCommandsExecutor;
         return this;

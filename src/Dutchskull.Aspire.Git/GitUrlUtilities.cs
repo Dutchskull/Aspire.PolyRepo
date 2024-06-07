@@ -1,6 +1,8 @@
-﻿namespace Dutchskull.Aspire.Git;
+﻿using System.Text.RegularExpressions;
 
-internal static class GitUrlUtilities
+namespace Dutchskull.Aspire.Git;
+
+internal static partial class GitUrlUtilities
 {
     internal static string GetProjectNameFromGitUrl(string gitUrl)
     {
@@ -11,4 +13,10 @@ internal static class GitUrlUtilities
 
         return gitUrl.Split('/')[^1];
     }
+
+    internal static bool IsValidGitUrl(string url) =>
+        !string.IsNullOrEmpty(url) && GitUrlRegex().IsMatch(url);
+
+    [GeneratedRegex(@"^(?:git|https?|git@[\w\.]+):\/\/[\w\.@\:\/\-~]+\.git(?:\/)?$")]
+    private static partial Regex GitUrlRegex();
 }

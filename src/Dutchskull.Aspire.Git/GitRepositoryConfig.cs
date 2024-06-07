@@ -2,7 +2,7 @@
 
 namespace Dutchskull.Aspire.Git;
 
-public class GitRepositoryConfig
+public record GitRepositoryConfig
 {
     public required string Branch { get; init; }
 
@@ -12,9 +12,9 @@ public class GitRepositoryConfig
 
     public string GitUrl { get; init; } = string.Empty;
 
-    public string? Name { get; init; }
+    public string Name { get; init; } = string.Empty;
 
-    public required IProcessCommandsExecutor ProcessCommandsExecutor { get; init; }
+    public required IProcessCommandExecutor ProcessCommandsExecutor { get; init; }
 
     public required string ProjectPath { get; init; }
 }

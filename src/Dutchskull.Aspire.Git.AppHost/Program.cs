@@ -14,19 +14,19 @@ IResourceBuilder<ProjectResource> apiService = builder
 
 var dotnetGitRepo = builder
     .AddProjectGitRepository(c => c
-            .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
-            .WithCloneTargetPath("../../repos")
-            .WithProjectPath("src/Dutchskull.Aspire.Git.Web/Dutchskull.Aspire.Git.Web.csproj"),
-        name: "dotnetProject")
+        .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
+        .WithCloneTargetPath("../../repos")
+        .WithProjectPath("src/Dutchskull.Aspire.Git.Web/Dutchskull.Aspire.Git.Web.csproj")
+        .WithName("dotnetProject"))
     .WithReference(cache)
     .WithReference(apiService);
 
 var npmGitRepo = builder
     .AddNpmGitRepository(c => c
-            .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
-            .WithCloneTargetPath("../../repos")
-            .WithProjectPath("src/Dutchskull.Aspire.Git.React"),
-        name: "reactProject")
+        .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
+        .WithCloneTargetPath("../../repos")
+        .WithProjectPath("src/Dutchskull.Aspire.Git.React")
+        .WithName("reactProject"))
     .WithReference(cache)
     .WithReference(apiService)
     .WithHttpEndpoint(3000);
@@ -35,14 +35,15 @@ var nodeGitRepo = builder
     .AddNpmGitRepository(c => c
             .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
             .WithCloneTargetPath("../../repos")
-            .WithProjectPath("src/Dutchskull.Aspire.Git.Node"),
-        scriptName: "watch",
-        name: "nodeProject")
+            .WithProjectPath("src/Dutchskull.Aspire.Git.Node")
+            .WithName("nodeProject"),
+        scriptName: "watch")
     .WithReference(cache)
     .WithReference(apiService)
     .WithHttpEndpoint(54622);
 
-if (builder.Environment.IsDevelopment() && builder.Configuration["DOTNET_LAUNCH_PROFILE"] == "https")
+if (builder.Environment.IsDevelopment() &&
+    builder.Configuration["DOTNET_LAUNCH_PROFILE"] == "https")
 {
     npmGitRepo.WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");
     nodeGitRepo.WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");

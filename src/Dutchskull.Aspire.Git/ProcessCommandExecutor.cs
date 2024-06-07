@@ -3,7 +3,7 @@ using Dutchskull.Aspire.Git.Interfaces;
 
 namespace Dutchskull.Aspire.Git;
 
-public class ProcessCommandExecutor : IProcessCommandsExecutor
+public class ProcessCommandExecutor : IProcessCommandExecutor
 {
     public int BuildDotNetProject(string resolvedProjectPath) =>
         RunProcess("dotnet", $"build {resolvedProjectPath}");
