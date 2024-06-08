@@ -11,10 +11,10 @@
         <repository type="git" url="https://github.com/Dutchskull/Aspire-Git" />
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <readme>docs\README.md</readme>
-        <icon>images\icon.png</icon>
+        <icon>images\icon.jpg</icon>
     </metadata>
     <files>
         <file src="..\..\README.md" target="docs\" />
-        <file src=".\icon.jpg" target="images\" />
+        <file src="icon.jpg" target="images\" />
     </files>
 </package>
