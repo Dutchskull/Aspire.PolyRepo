@@ -26,7 +26,7 @@ jobs:
         run: dotnet build --configuration Release --no-restore src/Dutchskull.Aspire.Git/Dutchskull.Aspire.Git.csproj
 
       - name: Pack
-        run: dotnet pack --configuration Release --no-restore --output ./nupkg src/Dutchskull.Aspire.Git/Dutchskull.Aspire.Git.csproj -p:NuspecFile=.nuspec
+        run: dotnet pack --configuration Release --no-restore --output ./nupkg src/Dutchskull.Aspire.Git/Dutchskull.Aspire.Git.csproj -p:NuspecFile=nuget/.nuspec
 
       - name: Publish to NuGet
         run: dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
