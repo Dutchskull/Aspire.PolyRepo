@@ -20,7 +20,7 @@ This will be updated when more features are thought off.
 To install the Aspire.Git package, use the .NET CLI. Run the following command in your terminal:
 
 ```sh
-dotnet add package Dutchskull.Aspire.Git --version 0.1.0
+dotnet add package Dutchskull.Aspire.Git
 ```
 
 ## Usage

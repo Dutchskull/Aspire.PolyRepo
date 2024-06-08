@@ -14,7 +14,7 @@
         <icon>images\icon.jpg</icon>
     </metadata>
     <files>
-        <file src="..\..\README.md" target="docs\" />
+        <file src="..\..\..\README.md" target="docs\" />
         <file src="icon.jpg" target="images\" />
     </files>
 </package>
