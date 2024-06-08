@@ -1,8 +1,10 @@
 ﻿using System.Diagnostics;
+using System.Text;
+using Dutchskull.Aspire.Git.Interfaces;
 
 namespace Dutchskull.Aspire.Git;
 
-public class ProcessCommands : IProcessCommands
+public class ProcessCommandExecutor : IProcessCommandExecutor
 {
     public int BuildDotNetProject(string resolvedProjectPath) =>
         RunProcess("dotnet", $"build {resolvedProjectPath}");
@@ -30,14 +32,40 @@ public class ProcessCommands : IProcessCommands
             }
         };
 
+        StringBuilder output = new();
+        StringBuilder error = new();
+
+        process.OutputDataReceived += LogData(output, "OUTPUT");
+
+        process.ErrorDataReceived += LogData(error, "ERROR");
+
         process.Start();
+        process.BeginOutputReadLine();
+        process.BeginErrorReadLine();
         process.WaitForExit();
 
         if (process.ExitCode == 0)
         {
+            Console.WriteLine($"Process {fileName} {arguments} finished successfully.");
             return process.ExitCode;
         }
 
-        throw new Exception($"Process {fileName} {arguments} failed with exit code {process.ExitCode}: {process.StandardError.ReadToEnd()}");
+        string errorMessage = $"Process {fileName} {arguments} failed with exit code {process.ExitCode}: {error}";
+        Console.WriteLine(errorMessage);
+        throw new Exception(errorMessage);
+    }
+
+    private static DataReceivedEventHandler LogData(StringBuilder output,string type)
+    {
+        return (sender, e) =>
+        {
+            if (string.IsNullOrEmpty(e.Data))
+            {
+                return;
+            }
+
+            output.AppendLine(e.Data);
+            Console.WriteLine($"[{type}]: {e.Data}");
+        };
     }
 }

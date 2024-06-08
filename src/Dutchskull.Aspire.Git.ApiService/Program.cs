@@ -1,3 +1,5 @@
+using Dutchskull.Aspire.Git.ServiceDefaults;
+
 var builder = WebApplication.CreateBuilder(args);
 
 builder.AddServiceDefaults();

@@ -1,5 +1,6 @@
-using Aspire.Git.Web;
-using Aspire.Git.Web.Components;
+using Dutchskull.Aspire.Git.Web.Components;
+using Dutchskull.Aspire.Git.Web;
+using Dutchskull.Aspire.Git.ServiceDefaults;
 
 var builder = WebApplication.CreateBuilder(args);
 

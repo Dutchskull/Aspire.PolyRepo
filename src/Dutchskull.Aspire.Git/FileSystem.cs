@@ -1,4 +1,6 @@
-﻿namespace Dutchskull.Aspire.Git;
+﻿using Dutchskull.Aspire.Git.Interfaces;
+
+namespace Dutchskull.Aspire.Git;
 
 public class FileSystem : IFileSystem
 {

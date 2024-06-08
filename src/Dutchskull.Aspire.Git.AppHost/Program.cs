@@ -8,43 +8,45 @@ IResourceBuilder<RedisResource> cache = builder
     .AddRedis("cache");
 
 IResourceBuilder<ProjectResource> apiService = builder
-    .AddProject<Projects.Aspire_Git_ApiService>("apiservice")
+    .AddProject<Projects.Dutchskull_Aspire_Git_ApiService>("apiservice")
     .WithReference(cache)
     .WithExternalHttpEndpoints();
 
 var dotnetGitRepo = builder
-    .AddGitRepository(c => c
+    .AddProjectGitRepository(c => c
+        .WithDefaultBranch("feature/refactor")
         .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
-        .WithName("dotnetProject")
         .WithCloneTargetPath("../../repos")
-        .WithProjectPath("src/Aspire.Git.Web/Aspire.Git.Web.csproj"))
-    .AddProject()
+        .WithProjectPath("src/Dutchskull.Aspire.Git.Web/Dutchskull.Aspire.Git.Web.csproj")
+        .WithName("dotnetProject"))
     .WithReference(cache)
     .WithReference(apiService);
 
 var npmGitRepo = builder
-    .AddGitRepository(c => c
+    .AddNpmGitRepository(c => c
+        .WithDefaultBranch("feature/refactor")
         .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
-        .WithName("npmProject")
         .WithCloneTargetPath("../../repos")
-        .WithProjectPath("src/Aspire.Git.React"))
-    .AddNpmApp()
+        .WithProjectPath("src/Dutchskull.Aspire.Git.React")
+        .WithName("reactProject"))
     .WithReference(cache)
     .WithReference(apiService)
     .WithHttpEndpoint(3000);
 
 var nodeGitRepo = builder
-    .AddGitRepository(c => c
-        .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
-        .WithName("nodeProject")
-        .WithCloneTargetPath("../../repos")
-        .WithProjectPath("src/Aspire.Git.Node"))
-    .AddNpmApp(scriptName: "watch")
+    .AddNpmGitRepository(c => c
+            .WithDefaultBranch("feature/refactor")
+            .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
+            .WithCloneTargetPath("../../repos")
+            .WithProjectPath("src/Dutchskull.Aspire.Git.Node")
+            .WithName("nodeProject"),
+        scriptName: "watch")
     .WithReference(cache)
     .WithReference(apiService)
     .WithHttpEndpoint(54622);
 
-if (builder.Environment.IsDevelopment() && builder.Configuration["DOTNET_LAUNCH_PROFILE"] == "https")
+if (builder.Environment.IsDevelopment() &&
+    builder.Configuration["DOTNET_LAUNCH_PROFILE"] == "https")
 {
     npmGitRepo.WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");
     nodeGitRepo.WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");
