@@ -1,4 +1,4 @@
-namespace Aspire.Git.Web;
+namespace Dutchskull.Aspire.Git.Web;
 
 public class WeatherApiClient(HttpClient httpClient)
 {

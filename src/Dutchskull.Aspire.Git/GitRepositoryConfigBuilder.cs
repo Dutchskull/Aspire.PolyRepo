@@ -1,27 +1,37 @@
-﻿namespace Dutchskull.Aspire.Git;
+﻿using Dutchskull.Aspire.Git.Interfaces;
+
+namespace Dutchskull.Aspire.Git;
 
 public class GitRepositoryConfigBuilder
 {
-    private string _branch = "develop";
+    private string _branch = "main";
     private string _cloneTargetPath = ".";
+    private IFileSystem? _fileSystem;
     private string _gitUrl = string.Empty;
     private string? _name;
+    private IProcessCommandExecutor? _processCommandsExecutor;
     private string _projectPath = ".";
 
-    public GitRepositoryConfig Build()
+    public GitRepositoryConfig BuildConfig()
     {
         if (string.IsNullOrEmpty(_gitUrl))
         {
             throw new InvalidOperationException("GitUrl must be provided");
         }
 
+        string gitProjectName = GitUrlUtilities.GetProjectNameFromGitUrl(_gitUrl);
+        string resolvedRepositoryPath = Path.Combine(Path.GetFullPath(_cloneTargetPath), gitProjectName);
+        string resolvedProjectPath = Path.GetFullPath(Path.Join(resolvedRepositoryPath, _projectPath));
+
         return new GitRepositoryConfig
         {
             GitUrl = _gitUrl,
-            Name = _name,
-            CloneTargetPath = _cloneTargetPath,
-            ProjectPath = _projectPath,
+            Name = _name ?? gitProjectName,
+            CloneTargetPath = resolvedRepositoryPath,
+            ProjectPath = resolvedProjectPath,
             Branch = _branch,
+            ProcessCommandsExecutor = _processCommandsExecutor ?? new ProcessCommandExecutor(),
+            FileSystem = _fileSystem ?? new FileSystem(),
         };
     }
 
@@ -37,6 +47,12 @@ public class GitRepositoryConfigBuilder
         return this;
     }
 
+    public GitRepositoryConfigBuilder WithFileSystem(IFileSystem? fileSystem)
+    {
+        _fileSystem = fileSystem;
+        return this;
+    }
+
     public GitRepositoryConfigBuilder WithGitUrl(string gitUrl)
     {
         _gitUrl = gitUrl;
@@ -46,6 +62,12 @@ public class GitRepositoryConfigBuilder
     public GitRepositoryConfigBuilder WithName(string? name)
     {
         _name = name;
+        return this;
+    }
+
+    public GitRepositoryConfigBuilder WithProcessCommandExecutor(IProcessCommandExecutor? processCommandsExecutor)
+    {
+        _processCommandsExecutor = processCommandsExecutor;
         return this;
     }
 
