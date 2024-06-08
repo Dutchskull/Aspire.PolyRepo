@@ -4,15 +4,8 @@ namespace Dutchskull.Aspire.Git;
 
 internal static partial class GitUrlUtilities
 {
-    internal static string GetProjectNameFromGitUrl(string gitUrl)
-    {
-        if (gitUrl.EndsWith(".git"))
-        {
-            gitUrl = gitUrl[..^4];
-        }
-
-        return gitUrl.Split('/')[^1];
-    }
+    internal static string GetProjectNameFromGitUrl(string gitUrl) => 
+        gitUrl.RemovePostfix(".git").Split('/')[^1];
 
     internal static bool IsValidGitUrl(string url) =>
         !string.IsNullOrEmpty(url) && GitUrlRegex().IsMatch(url);

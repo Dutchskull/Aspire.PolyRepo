@@ -8,6 +8,13 @@ Aspire.Git is a .NET Aspire package designed to simplify the process of cloning 
 - Configure repository URL, name, target path, default branch, and project path.
 - Easy integration with .NET Aspire App Host.
 
+## Roadmap
+
+This will be updated when more features are thought off.
+
+- Keep git branch updated on each startup
+- Using [libgit2sharp](https://github.com/libgit2/libgit2sharp) for the git management
+
 ## Installation
 
 To install the Aspire.Git package, use the .NET CLI. Run the following command in your terminal:
