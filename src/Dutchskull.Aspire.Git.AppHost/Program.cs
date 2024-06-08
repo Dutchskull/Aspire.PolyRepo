@@ -14,6 +14,7 @@ IResourceBuilder<ProjectResource> apiService = builder
 
 var dotnetGitRepo = builder
     .AddProjectGitRepository(c => c
+        .WithDefaultBranch("feature/refactor")
         .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
         .WithCloneTargetPath("../../repos")
         .WithProjectPath("src/Dutchskull.Aspire.Git.Web/Dutchskull.Aspire.Git.Web.csproj")
@@ -23,6 +24,7 @@ var dotnetGitRepo = builder
 
 var npmGitRepo = builder
     .AddNpmGitRepository(c => c
+        .WithDefaultBranch("feature/refactor")
         .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
         .WithCloneTargetPath("../../repos")
         .WithProjectPath("src/Dutchskull.Aspire.Git.React")
@@ -33,6 +35,7 @@ var npmGitRepo = builder
 
 var nodeGitRepo = builder
     .AddNpmGitRepository(c => c
+            .WithDefaultBranch("feature/refactor")
             .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
             .WithCloneTargetPath("../../repos")
             .WithProjectPath("src/Dutchskull.Aspire.Git.Node")
