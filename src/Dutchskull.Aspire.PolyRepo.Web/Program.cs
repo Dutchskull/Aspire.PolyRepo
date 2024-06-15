@@ -1,6 +1,6 @@
-using Dutchskull.Aspire.Git.Web.Components;
-using Dutchskull.Aspire.Git.ServiceDefaults;
+using Dutchskull.Aspire.PolyRepo.ServiceDefaults;
 using Dutchskull.Aspire.PolyRepo.Web;
+using Dutchskull.Aspire.PolyRepo.Web.Components;
 
 var builder = WebApplication.CreateBuilder(args);
 

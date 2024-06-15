@@ -26,46 +26,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dutchskull.Aspire.PolyRepo.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dutchskull.Aspire.PolyRepo.Web", "Dutchskull.Aspire.PolyRepo.Web\Dutchskull.Aspire.PolyRepo.Web.csproj", "{1C9764BD-08D5-482A-A57D-0BAAA19F656F}"
 EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Dutchskull.Aspire.PolyRepo.Node", "Dutchskull.Aspire.PolyRepo.Node\", "{6532196A-71D5-44C6-B9D7-431F5D918DA6}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_49733"
-		Debug.AspNetCompiler.PhysicalPath = "Dutchskull.Aspire.PolyRepo.Node\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_49733\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_49733"
-		Release.AspNetCompiler.PhysicalPath = "Dutchskull.Aspire.PolyRepo.Node\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_49733\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "49733"
-	EndProjectSection
-EndProject
-Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Dutchskull.Aspire.PolyRepo.React", "Dutchskull.Aspire.PolyRepo.React\", "{90A0A66C-A92D-44B9-8977-9CC2FF0D5ED3}"
-	ProjectSection(WebsiteProperties) = preProject
-		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.8"
-		Debug.AspNetCompiler.VirtualPath = "/localhost_49734"
-		Debug.AspNetCompiler.PhysicalPath = "Dutchskull.Aspire.PolyRepo.React\"
-		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_49734\"
-		Debug.AspNetCompiler.Updateable = "true"
-		Debug.AspNetCompiler.ForceOverwrite = "true"
-		Debug.AspNetCompiler.FixedNames = "false"
-		Debug.AspNetCompiler.Debug = "True"
-		Release.AspNetCompiler.VirtualPath = "/localhost_49734"
-		Release.AspNetCompiler.PhysicalPath = "Dutchskull.Aspire.PolyRepo.React\"
-		Release.AspNetCompiler.TargetPath = "PrecompiledWeb\localhost_49734\"
-		Release.AspNetCompiler.Updateable = "true"
-		Release.AspNetCompiler.ForceOverwrite = "true"
-		Release.AspNetCompiler.FixedNames = "false"
-		Release.AspNetCompiler.Debug = "False"
-		VWDPort = "49734"
-	EndProjectSection
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -100,14 +60,6 @@ Global
 		{1C9764BD-08D5-482A-A57D-0BAAA19F656F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C9764BD-08D5-482A-A57D-0BAAA19F656F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C9764BD-08D5-482A-A57D-0BAAA19F656F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{6532196A-71D5-44C6-B9D7-431F5D918DA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{6532196A-71D5-44C6-B9D7-431F5D918DA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{6532196A-71D5-44C6-B9D7-431F5D918DA6}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{6532196A-71D5-44C6-B9D7-431F5D918DA6}.Release|Any CPU.Build.0 = Debug|Any CPU
-		{90A0A66C-A92D-44B9-8977-9CC2FF0D5ED3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{90A0A66C-A92D-44B9-8977-9CC2FF0D5ED3}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{90A0A66C-A92D-44B9-8977-9CC2FF0D5ED3}.Release|Any CPU.ActiveCfg = Debug|Any CPU
-		{90A0A66C-A92D-44B9-8977-9CC2FF0D5ED3}.Release|Any CPU.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -119,8 +71,6 @@ Global
 		{5338B31F-004A-46C3-B047-B8B7399E254B} = {21DA0F88-D439-4398-AB99-0856EAC759D7}
 		{1D02851E-02D9-4098-9BF0-EC9C9AE9A929} = {21DA0F88-D439-4398-AB99-0856EAC759D7}
 		{1C9764BD-08D5-482A-A57D-0BAAA19F656F} = {EE96758C-C741-4F70-BB61-8B7545645635}
-		{6532196A-71D5-44C6-B9D7-431F5D918DA6} = {EE96758C-C741-4F70-BB61-8B7545645635}
-		{90A0A66C-A92D-44B9-8977-9CC2FF0D5ED3} = {EE96758C-C741-4F70-BB61-8B7545645635}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {D4EC2BD7-FF54-453A-B84B-2A73076F64E9}

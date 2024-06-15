@@ -2,25 +2,24 @@
 
 internal static class RepositoryConfigExtensions
 {
-    internal static RepositoryConfig InitializeRepository(this Action<RepositoryConfigBuilder> configureGitRepository, string repositoryUrl)
+    internal static RepositoryConfig InitializeRepository(
+        this Action<RepositoryConfigBuilder> configureGitRepository,
+        string repositoryUrl)
     {
-        RepositoryConfigBuilder _gitRepositoryConfigBuilder = new();
+        RepositoryConfigBuilder gitRepositoryConfigBuilder = new();
 
-        _gitRepositoryConfigBuilder.WithGitUrl(repositoryUrl);
+        gitRepositoryConfigBuilder.WithGitUrl(repositoryUrl);
 
-        configureGitRepository.Invoke(_gitRepositoryConfigBuilder);
+        configureGitRepository.Invoke(gitRepositoryConfigBuilder);
 
-        return _gitRepositoryConfigBuilder
+        return gitRepositoryConfigBuilder
             .Build()
             .SetupRepository();
     }
 
     internal static RepositoryConfig CloneRepository(this RepositoryConfig repositoryConfig)
     {
-        if (repositoryConfig.FileSystem.DirectoryExists(repositoryConfig.RepositoryPath))
-        {
-            return repositoryConfig;
-        }
+        if (repositoryConfig.FileSystem.DirectoryExists(repositoryConfig.RepositoryPath)) return repositoryConfig;
 
         repositoryConfig.ProcessCommandsExecutor
             .CloneGitRepository(
@@ -31,6 +30,8 @@ internal static class RepositoryConfigExtensions
         return repositoryConfig;
     }
 
-    internal static RepositoryConfig SetupRepository(this RepositoryConfig gitRepositoryConfig) => 
-        CloneRepository(gitRepositoryConfig);
+    internal static RepositoryConfig SetupRepository(this RepositoryConfig gitRepositoryConfig)
+    {
+        return CloneRepository(gitRepositoryConfig);
+    }
 }

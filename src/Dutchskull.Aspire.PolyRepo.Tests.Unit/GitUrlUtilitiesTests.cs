@@ -1,14 +1,12 @@
-﻿using Dutchskull.Aspire.PolyRepo;
-using FluentAssertions;
-using NSubstitute;
-using System;
-using System.Text.RegularExpressions;
-using Xunit;
+﻿using FluentAssertions;
 
 namespace Dutchskull.Aspire.PolyRepo.Tests.Unit;
 
 public class GitUrlUtilitiesTests
 {
+    private const string GitUrl = "https://github.com/example/repo.git";
+    private const string ExpectedProjectName = "repo";
+
     [Theory]
     [InlineData("https://github.com/example/repo.git", true)]
     [InlineData("https://github.com/example/repo", false)]
@@ -20,10 +18,10 @@ public class GitUrlUtilitiesTests
     [InlineData("invalid-url", false)]
     [InlineData("", false)]
     [InlineData(null, false)]
-    public void IsValidGitUrl_ShouldReturnExpectedResult(string url, bool expectedResult)
+    public void IsValidGitUrl_ShouldReturnExpectedResult(string? url, bool expectedResult)
     {
         // Act
-        bool isValid = GitUrlUtilities.IsValidGitUrl(url);
+        bool isValid = GitUrlUtilities.IsValidGitUrl(url!);
 
         // Assert
         isValid.Should().Be(expectedResult);
@@ -32,42 +30,30 @@ public class GitUrlUtilitiesTests
     [Fact]
     public void GetProjectNameFromGitUrl_ShouldReturnProjectName()
     {
-        // Arrange
-        string gitUrl = "https://github.com/example/repo.git";
-        string expectedProjectName = "repo";
-
         // Act
-        string projectName = GitUrlUtilities.GetProjectNameFromGitUrl(gitUrl);
+        string projectName = GitUrlUtilities.GetProjectNameFromGitUrl(GitUrl);
 
         // Assert
-        projectName.Should().Be(expectedProjectName);
+        projectName.Should().Be(ExpectedProjectName);
     }
 
     [Fact]
     public void GetProjectNameFromGitUrl_ShouldReturnProjectName_WhenUrlEndsWithGitExtension()
     {
-        // Arrange
-        string gitUrl = "https://github.com/example/repo.git";
-        string expectedProjectName = "repo";
-
         // Act
-        string projectName = GitUrlUtilities.GetProjectNameFromGitUrl(gitUrl);
+        string projectName = GitUrlUtilities.GetProjectNameFromGitUrl(GitUrl);
 
         // Assert
-        projectName.Should().Be(expectedProjectName);
+        projectName.Should().Be(ExpectedProjectName);
     }
 
     [Fact]
     public void GetProjectNameFromGitUrl_ShouldReturnLastSegment_WhenUrlDoesNotEndWithGitExtension()
     {
-        // Arrange
-        string gitUrl = "https://github.com/example/repo";
-        string expectedProjectName = "repo";
-
         // Act
-        string projectName = GitUrlUtilities.GetProjectNameFromGitUrl(gitUrl);
+        string projectName = GitUrlUtilities.GetProjectNameFromGitUrl(GitUrl);
 
         // Assert
-        projectName.Should().Be(expectedProjectName);
+        projectName.Should().Be(ExpectedProjectName);
     }
 }
