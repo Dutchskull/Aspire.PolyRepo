@@ -1,0 +1,78 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.8.0.0
+MinimumVisualStudioVersion = 17.8.0.0
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dutchskull.Aspire.PolyRepo.AppHost", "Dutchskull.Aspire.PolyRepo.AppHost\Dutchskull.Aspire.PolyRepo.AppHost.csproj", "{ED328B7D-035C-4459-ABC3-D0435F386DA6}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dutchskull.Aspire.PolyRepo.ServiceDefaults", "Dutchskull.Aspire.PolyRepo.ServiceDefaults\Dutchskull.Aspire.PolyRepo.ServiceDefaults.csproj", "{5EF0B25C-AADC-4C59-83F5-45863E1AE76B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dutchskull.Aspire.PolyRepo.ApiService", "Dutchskull.Aspire.PolyRepo.ApiService\Dutchskull.Aspire.PolyRepo.ApiService.csproj", "{3DEDD071-BD98-4463-B22D-95FFE802C479}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dutchskull.Aspire.PolyRepo", "Dutchskull.Aspire.PolyRepo\Dutchskull.Aspire.PolyRepo.csproj", "{1B35DA82-485B-458D-94DF-313D046631DD}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dutchskull.Aspire.PolyRepo.Tests.Unit", "Dutchskull.Aspire.PolyRepo.Tests.Unit\Dutchskull.Aspire.PolyRepo.Tests.Unit.csproj", "{5338B31F-004A-46C3-B047-B8B7399E254B}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Sample", "Sample", "{EE96758C-C741-4F70-BB61-8B7545645635}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{590CD7CC-738C-4302-8E24-022C3526CB1D}"
+	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
+		..\README.md = ..\README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{21DA0F88-D439-4398-AB99-0856EAC759D7}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dutchskull.Aspire.PolyRepo.Tests.E2E", "Dutchskull.Aspire.PolyRepo.Tests.E2E\Dutchskull.Aspire.PolyRepo.Tests.E2E.csproj", "{1D02851E-02D9-4098-9BF0-EC9C9AE9A929}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Dutchskull.Aspire.PolyRepo.Web", "Dutchskull.Aspire.PolyRepo.Web\Dutchskull.Aspire.PolyRepo.Web.csproj", "{1C9764BD-08D5-482A-A57D-0BAAA19F656F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{ED328B7D-035C-4459-ABC3-D0435F386DA6}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED328B7D-035C-4459-ABC3-D0435F386DA6}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED328B7D-035C-4459-ABC3-D0435F386DA6}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED328B7D-035C-4459-ABC3-D0435F386DA6}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5EF0B25C-AADC-4C59-83F5-45863E1AE76B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5EF0B25C-AADC-4C59-83F5-45863E1AE76B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5EF0B25C-AADC-4C59-83F5-45863E1AE76B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5EF0B25C-AADC-4C59-83F5-45863E1AE76B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3DEDD071-BD98-4463-B22D-95FFE802C479}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3DEDD071-BD98-4463-B22D-95FFE802C479}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3DEDD071-BD98-4463-B22D-95FFE802C479}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3DEDD071-BD98-4463-B22D-95FFE802C479}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B35DA82-485B-458D-94DF-313D046631DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B35DA82-485B-458D-94DF-313D046631DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B35DA82-485B-458D-94DF-313D046631DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B35DA82-485B-458D-94DF-313D046631DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5338B31F-004A-46C3-B047-B8B7399E254B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5338B31F-004A-46C3-B047-B8B7399E254B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5338B31F-004A-46C3-B047-B8B7399E254B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5338B31F-004A-46C3-B047-B8B7399E254B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1D02851E-02D9-4098-9BF0-EC9C9AE9A929}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1D02851E-02D9-4098-9BF0-EC9C9AE9A929}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1D02851E-02D9-4098-9BF0-EC9C9AE9A929}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1D02851E-02D9-4098-9BF0-EC9C9AE9A929}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1C9764BD-08D5-482A-A57D-0BAAA19F656F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C9764BD-08D5-482A-A57D-0BAAA19F656F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C9764BD-08D5-482A-A57D-0BAAA19F656F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C9764BD-08D5-482A-A57D-0BAAA19F656F}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{ED328B7D-035C-4459-ABC3-D0435F386DA6} = {EE96758C-C741-4F70-BB61-8B7545645635}
+		{5EF0B25C-AADC-4C59-83F5-45863E1AE76B} = {EE96758C-C741-4F70-BB61-8B7545645635}
+		{3DEDD071-BD98-4463-B22D-95FFE802C479} = {EE96758C-C741-4F70-BB61-8B7545645635}
+		{5338B31F-004A-46C3-B047-B8B7399E254B} = {21DA0F88-D439-4398-AB99-0856EAC759D7}
+		{1D02851E-02D9-4098-9BF0-EC9C9AE9A929} = {21DA0F88-D439-4398-AB99-0856EAC759D7}
+		{1C9764BD-08D5-482A-A57D-0BAAA19F656F} = {EE96758C-C741-4F70-BB61-8B7545645635}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {D4EC2BD7-FF54-453A-B84B-2A73076F64E9}
+	EndGlobalSection
+EndGlobal
