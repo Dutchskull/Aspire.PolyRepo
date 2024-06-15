@@ -20,13 +20,13 @@ jobs:
           dotnet-version: '8.0.x'
 
       - name: Restore dependencies
-        run: dotnet restore src/Dutchskull.Aspire.Git/Dutchskull.Aspire.Git.csproj
+        run: dotnet restore src/Dutchskull.Aspire.PolyRepo/Dutchskull.Aspire.PolyRepo.csproj
 
       - name: Build
-        run: dotnet build --configuration Release --no-restore src/Dutchskull.Aspire.Git/Dutchskull.Aspire.Git.csproj
+        run: dotnet build --configuration Release --no-restore src/Dutchskull.Aspire.PolyRepo/Dutchskull.Aspire.PolyRepo.csproj
 
       - name: Pack
-        run: dotnet pack --configuration Release --no-restore --output ./nupkg src/Dutchskull.Aspire.Git/Dutchskull.Aspire.Git.csproj -p:NuspecFile=nuget/.nuspec
+        run: dotnet pack --configuration Release --no-restore --output ./nupkg src/Dutchskull.Aspire.PolyRepo/Dutchskull.Aspire.PolyRepo.csproj -p:NuspecFile=nuget/.nuspec
 
       - name: Publish to NuGet
         run: dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
