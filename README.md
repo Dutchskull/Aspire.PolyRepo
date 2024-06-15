@@ -14,13 +14,14 @@ This will be updated when more features are thought off.
 
 - Keep git branch updated on each startup
 - Using [libgit2sharp](https://github.com/libgit2/libgit2sharp) for the git management
-
+- Target path global/relative
+- 
 ## Installation
 
 To install the Aspire.Git package, use the .NET CLI. Run the following command in your terminal:
 
 ```sh
-dotnet add package Dutchskull.Aspire.Git
+dotnet add package Dutchskull.Aspire.PolyRepo
 ```
 
 ## Usage
@@ -61,7 +62,7 @@ var dotnetGitRepo = builder
     .AddProjectGitRepository(c => c
             .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
             .WithCloneTargetPath("../../repos")
-            .WithProjectPath("src/Dutchskull.Aspire.Git.Web/Dutchskull.Aspire.Git.Web.csproj"),
+            .WithProjectPath("src/Dutchskull.Aspire.PolyRepo.Web/Dutchskull.Aspire.PolyRepo.Web.csproj"),
         name: "dotnetProject")
     .WithReference(cache)
     .WithReference(apiService);
