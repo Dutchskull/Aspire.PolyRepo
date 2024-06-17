@@ -9,33 +9,35 @@ using Projects;
 IDistributedApplicationBuilder builder = DistributedApplication
     .CreateBuilder(args);
 
-var cache = builder
+IResourceBuilder<RedisResource> cache = builder
     .AddRedis("cache");
 
-var apiService = builder
+IResourceBuilder<ProjectResource> apiService = builder
     .AddProject<Dutchskull_Aspire_PolyRepo_ApiService>("apiservice")
     .WithReference(cache)
     .WithExternalHttpEndpoints();
 
-var repository = builder.AddRepository(
+IResourceBuilder<RepositoryResource> repository = builder.AddRepository(
     "repository",
     "https://github.com/Dutchskull/Aspire-Git.git",
-    c => c.WithDefaultBranch("develop")
+    c => c
+        .WithDefaultBranch("develop")
+        .KeepUpToDate()
         .WithTargetPath("../../repos"));
 
-var dotnetProject = builder
+IResourceBuilder<ProjectResource> dotnetProject = builder
     .AddProjectFromRepository("dotnetProject", repository,
         "src/Dutchskull.Aspire.PolyRepo.Web/Dutchskull.Aspire.PolyRepo.Web.csproj")
     .WithReference(cache)
     .WithReference(apiService);
 
-var reactProject = builder
+IResourceBuilder<NodeAppResource> reactProject = builder
     .AddNpmAppFromRepository("reactProject", repository, "src/Dutchskull.Aspire.PolyRepo.React")
     .WithReference(cache)
     .WithReference(apiService)
     .WithHttpEndpoint(3000);
 
-var nodeProject = builder
+IResourceBuilder<NodeAppResource> nodeProject = builder
     .AddNodeAppFromRepository("nodeProject", repository, "src/Dutchskull.Aspire.PolyRepo.Node")
     .WithReference(cache)
     .WithReference(apiService)

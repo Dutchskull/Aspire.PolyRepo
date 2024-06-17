@@ -19,19 +19,28 @@ internal static class RepositoryConfigExtensions
 
     internal static RepositoryConfig CloneRepository(this RepositoryConfig repositoryConfig)
     {
-        if (repositoryConfig.FileSystem.DirectoryExists(repositoryConfig.RepositoryPath)) return repositoryConfig;
+        bool repositoryExists = repositoryConfig.FileSystem.DirectoryExists(repositoryConfig.RepositoryPath);
 
-        repositoryConfig.ProcessCommandsExecutor
-            .CloneGitRepository(
-                repositoryConfig.GitUrl,
-                repositoryConfig.RepositoryPath,
-                repositoryConfig.Branch);
+        if (!repositoryExists)
+        {
+            repositoryConfig.ProcessCommandsExecutor
+                .CloneGitRepository(
+                    repositoryConfig.GitUrl,
+                    repositoryConfig.RepositoryPath,
+                    repositoryConfig.Branch);
+
+            return repositoryConfig;
+        }
+
+        if (repositoryConfig.KeepUpToDate)
+        {
+            repositoryConfig.ProcessCommandsExecutor
+                .PullAndResetRepository(repositoryConfig.RepositoryPath);
+        }
 
         return repositoryConfig;
     }
 
-    internal static RepositoryConfig SetupRepository(this RepositoryConfig gitRepositoryConfig)
-    {
-        return CloneRepository(gitRepositoryConfig);
-    }
+    private static RepositoryConfig SetupRepository(this RepositoryConfig gitRepositoryConfig) =>
+        CloneRepository(gitRepositoryConfig);
 }

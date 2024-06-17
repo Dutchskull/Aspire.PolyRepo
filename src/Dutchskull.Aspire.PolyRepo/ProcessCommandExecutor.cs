@@ -7,19 +7,34 @@ namespace Dutchskull.Aspire.PolyRepo;
 
 public class ProcessCommandExecutor : IProcessCommandExecutor
 {
-    public int BuildDotNetProject(string resolvedProjectPath)
-    {
-        return RunProcess("dotnet", $"build {resolvedProjectPath}");
-    }
+    public int BuildDotNetProject(string resolvedProjectPath) => RunProcess("dotnet", $"build {resolvedProjectPath}");
 
     public void CloneGitRepository(string gitUrl, string resolvedRepositoryPath, string? branch = null)
     {
         Repository.Clone(gitUrl, resolvedRepositoryPath, new CloneOptions { BranchName = branch });
     }
 
-    public int NpmInstall(string resolvedRepositoryPath)
+    public int NpmInstall(string resolvedRepositoryPath) =>
+        RunProcess("cmd.exe", $"/C cd {resolvedRepositoryPath} && npm i");
+
+    public void PullAndResetRepository(string repositoryConfigRepositoryPath)
     {
-        return RunProcess("cmd.exe", $"/C cd {resolvedRepositoryPath} && npm i");
+        using Repository repository = new(repositoryConfigRepositoryPath);
+
+        string? branchName = repository.Head.TrackedBranch.FriendlyName;
+        Remote? remote = repository.Network.Remotes.FirstOrDefault();
+
+        ArgumentNullException.ThrowIfNull(remote);
+        ArgumentNullException.ThrowIfNull(branchName);
+
+        FetchOptions fetchOptions = new();
+        IEnumerable<string> references = remote.FetchRefSpecs.Select(x => x.Specification);
+        Commands.Fetch(repository, remote.Name, references, fetchOptions, null);
+
+        Branch? remoteBranch = repository.Branches[branchName];
+        Commit? latestCommit = remoteBranch.Tip;
+
+        repository.Reset(ResetMode.Hard, latestCommit);
     }
 
     private static int RunProcess(string fileName, string arguments)
@@ -52,11 +67,13 @@ public class ProcessCommandExecutor : IProcessCommandExecutor
         if (process.ExitCode == 0)
         {
             Console.WriteLine($"Process {fileName} {arguments} finished successfully.");
+
             return process.ExitCode;
         }
 
         string errorMessage = $"Process {fileName} {arguments} failed with exit code {process.ExitCode}: {error}";
         Console.WriteLine(errorMessage);
+
         throw new Exception(errorMessage);
     }
 
@@ -64,7 +81,10 @@ public class ProcessCommandExecutor : IProcessCommandExecutor
     {
         return (sender, e) =>
         {
-            if (string.IsNullOrEmpty(e.Data)) return;
+            if (string.IsNullOrEmpty(e.Data))
+            {
+                return;
+            }
 
             output.AppendLine(e.Data);
             Console.WriteLine($"[{type}]: {e.Data}");
