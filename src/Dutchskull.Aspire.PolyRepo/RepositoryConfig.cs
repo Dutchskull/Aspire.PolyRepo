@@ -4,7 +4,7 @@ namespace Dutchskull.Aspire.PolyRepo;
 
 public record RepositoryConfig
 {
-    public required string Branch { get; init; }
+    public required string? Branch { get; init; }
 
     public required string RepositoryPath { get; init; }
 

@@ -18,7 +18,7 @@ public class GitRepositoryConfigBuilderTests
 
         // Assert
         config.GitUrl.Should().Be(gitUrl);
-        config.Branch.Should().Be("main");
+        config.Branch.Should().Be(null);
         config.RepositoryPath.Should().Be(Path.Combine(Path.GetFullPath("."), "repo"));
         config.ProcessCommandsExecutor.Should().BeOfType<ProcessCommandExecutor>();
         config.FileSystem.Should().BeOfType<FileSystem>();
