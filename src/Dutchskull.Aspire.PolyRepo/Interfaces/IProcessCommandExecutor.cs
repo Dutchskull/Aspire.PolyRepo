@@ -7,4 +7,6 @@ public interface IProcessCommandExecutor
     void CloneGitRepository(string gitUrl, string resolvedRepositoryPath, string? branch = null);
 
     int NpmInstall(string resolvedRepositoryPath);
+
+    void PullAndResetRepository(string repositoryConfigRepositoryPath);
 }
