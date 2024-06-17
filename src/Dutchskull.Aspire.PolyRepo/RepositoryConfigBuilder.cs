@@ -4,7 +4,7 @@ namespace Dutchskull.Aspire.PolyRepo;
 
 public class RepositoryConfigBuilder
 {
-    private string _branch = "main";
+    private string? _branch;
     private string _targetPath = ".";
     private IFileSystem? _fileSystem;
     private string _gitUrl = string.Empty;

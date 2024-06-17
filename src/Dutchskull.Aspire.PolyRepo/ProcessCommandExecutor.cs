@@ -1,21 +1,26 @@
 ﻿using System.Diagnostics;
 using System.Text;
 using Dutchskull.Aspire.PolyRepo.Interfaces;
+using LibGit2Sharp;
 
 namespace Dutchskull.Aspire.PolyRepo;
 
 public class ProcessCommandExecutor : IProcessCommandExecutor
 {
-    public int BuildDotNetProject(string resolvedProjectPath) =>
-        RunProcess("dotnet", $"build {resolvedProjectPath}");
+    public int BuildDotNetProject(string resolvedProjectPath)
+    {
+        return RunProcess("dotnet", $"build {resolvedProjectPath}");
+    }
 
-    public int CloneGitRepository(string gitUrl, string resolvedRepositoryPath, string? branch = null) =>
-        string.IsNullOrEmpty(branch)
-            ? RunProcess("git", $"clone {gitUrl} {resolvedRepositoryPath}")
-            : RunProcess("git", $"clone --branch {branch} {gitUrl} {resolvedRepositoryPath}");
+    public void CloneGitRepository(string gitUrl, string resolvedRepositoryPath, string? branch = null)
+    {
+        Repository.Clone(gitUrl, resolvedRepositoryPath, new CloneOptions { BranchName = branch });
+    }
 
-    public int NpmInstall(string resolvedRepositoryPath) =>
-        RunProcess("cmd.exe", $"/C cd {resolvedRepositoryPath} && npm i");
+    public int NpmInstall(string resolvedRepositoryPath)
+    {
+        return RunProcess("cmd.exe", $"/C cd {resolvedRepositoryPath} && npm i");
+    }
 
     private static int RunProcess(string fileName, string arguments)
     {
@@ -55,14 +60,11 @@ public class ProcessCommandExecutor : IProcessCommandExecutor
         throw new Exception(errorMessage);
     }
 
-    private static DataReceivedEventHandler LogData(StringBuilder output,string type)
+    private static DataReceivedEventHandler LogData(StringBuilder output, string type)
     {
         return (sender, e) =>
         {
-            if (string.IsNullOrEmpty(e.Data))
-            {
-                return;
-            }
+            if (string.IsNullOrEmpty(e.Data)) return;
 
             output.AppendLine(e.Data);
             Console.WriteLine($"[{type}]: {e.Data}");
