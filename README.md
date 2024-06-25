@@ -1,9 +1,5 @@
 # Aspire.PolyRepo
 
-> [!WARNING]  
-> This package is still being developed and can change. If you are trying this package please share your experience and
-> how it could improve.
-
 Aspire.PolyRepo is a .NET Aspire package designed to simplify the process of cloning and managing Git repositories
 within your .NET Aspire applications. This package allows you to configure and use Git repositories seamlessly,
 integrating them into your cloud-native development workflow.
