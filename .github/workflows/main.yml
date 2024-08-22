@@ -18,16 +18,13 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
-      - name: Install GitVersion
-        run: |
-          dotnet tool install --global GitVersion.Tool
-          export PATH="$PATH:/home/pi/.dotnet/tools"
+
+      - name: GitTools
+        uses: GitTools/actions@v3.0.0
         
-      - name: Run GitVersion
-        id: gitversion
-        run: |
-          dotnet-gitversion /output json /showvariable SemVer > version.json
-          echo "VERSION=$(cat version.json | jq -r .SemVer)" >> $GITHUB_ENV
+      - name: Determine Version
+        id: version_step
+        uses: gittools/actions/gitversion/execute@v3.0.0
           
       - name: Restore dependencies
         run: dotnet restore src/Dutchskull.Aspire.PolyRepo/Dutchskull.Aspire.PolyRepo.csproj
@@ -36,7 +33,7 @@ jobs:
         run: dotnet build src/Dutchskull.Aspire.PolyRepo/Dutchskull.Aspire.PolyRepo.csproj --configuration Release --no-restore
 
       - name: Pack
-        run: dotnet pack src/Dutchskull.Aspire.PolyRepo/Dutchskull.Aspire.PolyRepo.csproj --configuration Release --no-restore --output ./nupkg /p:Version=${{ env.VERSION }}
+        run: dotnet pack src/Dutchskull.Aspire.PolyRepo/Dutchskull.Aspire.PolyRepo.csproj --configuration Release --no-restore --output ./nupkg /p:Version=${{ env.fullSemVer  }}
 
       - name: Publish to NuGet
         run: dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
