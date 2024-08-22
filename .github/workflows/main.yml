@@ -1,14 +1,11 @@
 name: Publish NuGet Package
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
 
     steps:
       - name: Checkout code
@@ -18,15 +15,23 @@ jobs:
         uses: actions/setup-dotnet@v3
         with:
           dotnet-version: '8.0.x'
-
+      - name: Install GitVersion
+        run: dotnet tool install --global GitVersion.Tool
+        
+      - name: Run GitVersion
+        id: gitversion
+        run: |
+          dotnet gitversion /output json /showvariable SemVer > version.json
+          echo "VERSION=$(cat version.json | jq -r .SemVer)" >> $GITHUB_ENV
+          
       - name: Restore dependencies
         run: dotnet restore src/Dutchskull.Aspire.PolyRepo/Dutchskull.Aspire.PolyRepo.csproj
 
       - name: Build
-        run: dotnet build --configuration Release --no-restore src/Dutchskull.Aspire.PolyRepo/Dutchskull.Aspire.PolyRepo.csproj
+        run: dotnet build src/Dutchskull.Aspire.PolyRepo/Dutchskull.Aspire.PolyRepo.csproj --configuration Release --no-restore
 
       - name: Pack
-        run: dotnet pack --configuration Release --no-restore --output ./nupkg src/Dutchskull.Aspire.PolyRepo/Dutchskull.Aspire.PolyRepo.csproj -p:NuspecFile=nuget/.nuspec
+        run: dotnet pack src/Dutchskull.Aspire.PolyRepo/Dutchskull.Aspire.PolyRepo.csproj --configuration Release --no-restore --output ./nupkg /p:Version=${{ env.VERSION }}
 
       - name: Publish to NuGet
         run: dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
