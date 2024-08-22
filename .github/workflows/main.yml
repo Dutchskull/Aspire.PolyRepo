@@ -24,7 +24,7 @@ jobs:
       - name: Run GitVersion
         id: gitversion
         run: |
-          dotnet gitversion /output json /showvariable SemVer > version.json
+          dotnet-gitversion /output json /showvariable SemVer > version.json
           echo "VERSION=$(cat version.json | jq -r .SemVer)" >> $GITHUB_ENV
           
       - name: Restore dependencies
