@@ -19,7 +19,7 @@ jobs:
         with:
           dotnet-version: '8.0.x'
       - name: Install GitVersion
-        run: 
+        run: |
           dotnet tool install --global GitVersion.Tool
           export PATH="$PATH:/home/pi/.dotnet/tools"
         
