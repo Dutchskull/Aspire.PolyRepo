@@ -9,9 +9,18 @@ public class ProcessCommandExecutor : IProcessCommandExecutor
 {
     public int BuildDotNetProject(string resolvedProjectPath) => RunProcess("dotnet", $"build {resolvedProjectPath}");
 
-    public void CloneGitRepository(string gitUrl, string resolvedRepositoryPath, string? branch = null)
+    public void CloneGitRepository(GitConfig gitConfig, string resolvedRepositoryPath, string? branch = null)
     {
-        Repository.Clone(gitUrl, resolvedRepositoryPath, new CloneOptions { BranchName = branch });
+        CloneOptions cloneOptions = new()
+        {
+            BranchName = branch
+        };
+        cloneOptions.FetchOptions.CredentialsProvider = (_url, _user, _cred) => new UsernamePasswordCredentials
+        {
+            Username = gitConfig.Username,
+            Password = gitConfig.Password
+        };
+        Repository.Clone(gitConfig.Url, resolvedRepositoryPath, cloneOptions);
     }
 
     public int NpmInstall(string resolvedRepositoryPath) =>

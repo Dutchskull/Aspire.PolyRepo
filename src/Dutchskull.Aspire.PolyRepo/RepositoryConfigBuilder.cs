@@ -10,6 +10,7 @@ public class RepositoryConfigBuilder
     private bool _keepUpToDate;
     private IProcessCommandExecutor? _processCommandsExecutor;
     private string _targetPath = ".";
+    private GitConfig? _gitConfig;
 
     public RepositoryConfig Build()
     {
@@ -23,7 +24,7 @@ public class RepositoryConfigBuilder
 
         return new RepositoryConfig
         {
-            GitUrl = _gitUrl,
+            GitConfig = _gitConfig ?? new GitConfigBuilder().SetUrl(_gitUrl).Build(),
             RepositoryPath = resolvedRepositoryPath,
             Branch = _branch,
             KeepUpToDate = _keepUpToDate,
@@ -46,7 +47,6 @@ public class RepositoryConfigBuilder
         return this;
     }
 
-
     public RepositoryConfigBuilder KeepUpToDate()
     {
         _keepUpToDate = true;
@@ -54,10 +54,15 @@ public class RepositoryConfigBuilder
         return this;
     }
 
-
     internal RepositoryConfigBuilder WithFileSystem(IFileSystem? fileSystem)
     {
         _fileSystem = fileSystem;
+
+        return this;
+    }
+
+    internal RepositoryConfigBuilder WithGitConfig(GitConfig gitConfig) {
+        _gitConfig = gitConfig;
 
         return this;
     }

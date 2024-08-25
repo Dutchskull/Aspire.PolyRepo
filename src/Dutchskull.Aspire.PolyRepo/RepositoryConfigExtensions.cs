@@ -25,7 +25,7 @@ internal static class RepositoryConfigExtensions
         {
             repositoryConfig.ProcessCommandsExecutor
                 .CloneGitRepository(
-                    repositoryConfig.GitUrl,
+                    repositoryConfig.GitConfig,
                     repositoryConfig.RepositoryPath,
                     repositoryConfig.Branch);
 

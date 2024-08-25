@@ -17,41 +17,55 @@ IResourceBuilder<ProjectResource> apiService = builder
     .WithReference(cache)
     .WithExternalHttpEndpoints();
 
-IResourceBuilder<RepositoryResource> repository = builder.AddRepository(
+//IResourceBuilder<RepositoryResource> repository = builder.AddRepository(
+//    "repository",
+//    "https://github.com/Dutchskull/Aspire-Git.git",
+//    c => c
+//        .WithDefaultBranch("develop")
+//        .KeepUpToDate()
+//        .WithTargetPath("../../repos"));
+
+//IResourceBuilder<ProjectResource> dotnetProject = builder
+//    .AddProjectFromRepository("dotnetProject", repository,
+//        "src/Dutchskull.Aspire.PolyRepo.Web/Dutchskull.Aspire.PolyRepo.Web.csproj")
+//    .WithReference(cache)
+//    .WithReference(apiService);
+
+
+//IResourceBuilder<NodeAppResource> reactProject = builder
+//    .AddNpmAppFromRepository("reactProject", repository, "src/Dutchskull.Aspire.PolyRepo.React")
+//    .WithReference(cache)
+//    .WithReference(apiService)
+//    .WithHttpEndpoint(3000);
+
+//IResourceBuilder<NodeAppResource> nodeProject = builder
+//    .AddNodeAppFromRepository("nodeProject", repository, "src/Dutchskull.Aspire.PolyRepo.Node")
+//    .WithReference(cache)
+//    .WithReference(apiService)
+//    .WithHttpEndpoint(54622);
+
+IResourceBuilder<RepositoryResource> gitlabRepository = builder.AddRepository(
     "repository",
-    "https://github.com/Dutchskull/Aspire-Git.git",
+    "https://gitlab-int.nlr.nl/c4isrnet/ssm2/server",
     c => c
-        .WithDefaultBranch("develop")
+        .WithDefaultBranch("development")
         .KeepUpToDate()
         .WithTargetPath("../../repos"));
 
-IResourceBuilder<ProjectResource> dotnetProject = builder
-    .AddProjectFromRepository("dotnetProject", repository,
-        "src/Dutchskull.Aspire.PolyRepo.Web/Dutchskull.Aspire.PolyRepo.Web.csproj")
-    .WithReference(cache)
-    .WithReference(apiService);
-
-IResourceBuilder<NodeAppResource> reactProject = builder
-    .AddNpmAppFromRepository("reactProject", repository, "src/Dutchskull.Aspire.PolyRepo.React")
-    .WithReference(cache)
-    .WithReference(apiService)
-    .WithHttpEndpoint(3000);
-
-IResourceBuilder<NodeAppResource> nodeProject = builder
-    .AddNodeAppFromRepository("nodeProject", repository, "src/Dutchskull.Aspire.PolyRepo.Node")
-    .WithReference(cache)
-    .WithReference(apiService)
-    .WithHttpEndpoint(54622);
+IResourceBuilder<ProjectResource> dotnetProject2 = builder
+    .AddProjectFromRepository("dotnetProject", gitlabRepository,
+        "SmartSynchroMatrix/SmartSynchroMatrix.csproj")
+    .WithReference(cache);
 
 builder.Services.TryAddEnumerable(ServiceDescriptor
     .Singleton<IDistributedApplicationLifecycleHook, NodeAppAddPortLifecycleHook>());
 
-if (builder.Environment.IsDevelopment() &&
-    builder.Configuration["DOTNET_LAUNCH_PROFILE"] == "https")
-{
-    reactProject.WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");
-    nodeProject.WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");
-}
+//if (builder.Environment.IsDevelopment() &&
+//    builder.Configuration["DOTNET_LAUNCH_PROFILE"] == "https")
+//{
+//    reactProject.WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");
+//    nodeProject.WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");
+//}
 
 builder
     .Build()
