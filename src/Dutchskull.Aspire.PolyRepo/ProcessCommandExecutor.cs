@@ -26,7 +26,7 @@ public class ProcessCommandExecutor : IProcessCommandExecutor
     public int NpmInstall(string resolvedRepositoryPath) =>
         RunProcess("cmd.exe", $"/C cd {resolvedRepositoryPath} && npm i");
 
-    public void PullAndResetRepository(string repositoryConfigRepositoryPath)
+    public void PullAndResetRepository(GitConfig gitConfig, string repositoryConfigRepositoryPath)
     {
         using Repository repository = new(repositoryConfigRepositoryPath);
 
@@ -37,6 +37,12 @@ public class ProcessCommandExecutor : IProcessCommandExecutor
         ArgumentNullException.ThrowIfNull(branchName);
 
         FetchOptions fetchOptions = new();
+
+        fetchOptions.CredentialsProvider = (_url, _user, _cred) => new UsernamePasswordCredentials
+        {
+            Username = gitConfig.Username,
+            Password = gitConfig.Password
+        };
         IEnumerable<string> references = remote.FetchRefSpecs.Select(x => x.Specification);
         Commands.Fetch(repository, remote.Name, references, fetchOptions, null);
 

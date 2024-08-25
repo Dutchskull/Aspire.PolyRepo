@@ -8,5 +8,5 @@ public interface IProcessCommandExecutor
 
     int NpmInstall(string resolvedRepositoryPath);
 
-    void PullAndResetRepository(string repositoryConfigRepositoryPath);
+    void PullAndResetRepository(GitConfig gitConfig, string repositoryConfigRepositoryPath);
 }
