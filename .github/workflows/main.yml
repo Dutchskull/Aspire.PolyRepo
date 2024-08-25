@@ -28,6 +28,9 @@ jobs:
 
       - name: Determine Version
         uses: gittools/actions/gitversion/execute@v2.0.1
+        with:
+            overrideConfig: |
+                next-version=0.3.3
 
       - name: Restore dependencies
         run: dotnet restore src/Dutchskull.Aspire.PolyRepo/Dutchskull.Aspire.PolyRepo.csproj
