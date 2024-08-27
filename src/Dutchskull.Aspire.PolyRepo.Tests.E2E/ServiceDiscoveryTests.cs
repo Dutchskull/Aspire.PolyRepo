@@ -1,4 +1,3 @@
-using System.Net;
 using FluentAssertions;
 using Projects;
 
@@ -7,20 +6,29 @@ namespace Dutchskull.Aspire.PolyRepo.Tests.E2E;
 public class ServiceDiscoveryTests : IAsyncLifetime
 {
     private DistributedApplication _distributedApplication = default!;
+    private ResourceNotificationService _resourceNotificationService;
 
     public async Task DisposeAsync()
     {
-        Directory.Delete("../../repos", true);
         await _distributedApplication.StopAsync();
         await _distributedApplication.DisposeAsync();
     }
 
     public async Task InitializeAsync()
     {
-        IDistributedApplicationTestingBuilder appHost =
-            await DistributedApplicationTestingBuilder.CreateAsync<Dutchskull_Aspire_PolyRepo_AppHost>();
+        IDistributedApplicationTestingBuilder appHost = await DistributedApplicationTestingBuilder
+            .CreateAsync<Dutchskull_Aspire_PolyRepo_AppHost>();
+
+        appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
+        {
+            clientBuilder.AddStandardResilienceHandler();
+        });
 
         _distributedApplication = await appHost.BuildAsync();
+
+        _resourceNotificationService = _distributedApplication.Services
+            .GetRequiredService<ResourceNotificationService>();
+
         await _distributedApplication.StartAsync();
     }
 
@@ -33,7 +41,13 @@ public class ServiceDiscoveryTests : IAsyncLifetime
     {
         // Act
         HttpClient httpClient = _distributedApplication.CreateHttpClient(project);
-        // httpClient.Timeout = TimeSpan.FromSeconds(30);
+
+        await _resourceNotificationService.WaitForResourceAsync(
+                project,
+                KnownResourceStates.Running
+            )
+            .WaitAsync(TimeSpan.FromSeconds(30));
+
         HttpResponseMessage response = await httpClient.GetAsync(path);
 
         // Assert

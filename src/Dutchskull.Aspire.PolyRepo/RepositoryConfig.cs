@@ -4,6 +4,10 @@ namespace Dutchskull.Aspire.PolyRepo;
 
 public record RepositoryConfig
 {
+    internal RepositoryConfig()
+    {
+    }
+
     public required string? Branch { get; init; }
 
     public required string RepositoryPath { get; init; }
@@ -15,4 +19,6 @@ public record RepositoryConfig
     public required IProcessCommandExecutor ProcessCommandsExecutor { get; init; }
 
     public required bool KeepUpToDate { get; init; }
+
+    public required string RepositoryUrl { get; init; }
 }

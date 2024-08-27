@@ -6,11 +6,11 @@ public class RepositoryConfigBuilder
 {
     private string? _branch;
     private IFileSystem? _fileSystem;
+    private Action<GitConfigBuilder>? _gitConfigBuilder;
     private string _gitUrl = string.Empty;
     private bool _keepUpToDate;
     private IProcessCommandExecutor? _processCommandsExecutor;
     private string _targetPath = ".";
-    private GitConfig? _gitConfig;
 
     public RepositoryConfig Build()
     {
@@ -22,9 +22,14 @@ public class RepositoryConfigBuilder
         string gitProjectName = GitUrlUtilities.GetProjectNameFromGitUrl(_gitUrl);
         string resolvedRepositoryPath = Path.Combine(Path.GetFullPath(_targetPath), gitProjectName);
 
+        GitConfigBuilder gitConfigBuilder = new();
+        gitConfigBuilder.WithUrl(_gitUrl);
+        _gitConfigBuilder?.Invoke(gitConfigBuilder);
+
         return new RepositoryConfig
         {
-            GitConfig = _gitConfig ?? new GitConfigBuilder().SetUrl(_gitUrl).Build(),
+            GitConfig = gitConfigBuilder.Build(),
+            RepositoryUrl = _gitUrl,
             RepositoryPath = resolvedRepositoryPath,
             Branch = _branch,
             KeepUpToDate = _keepUpToDate,
@@ -54,15 +59,16 @@ public class RepositoryConfigBuilder
         return this;
     }
 
-    internal RepositoryConfigBuilder WithFileSystem(IFileSystem? fileSystem)
+    public RepositoryConfigBuilder WithGitConfig(Action<GitConfigBuilder> gitConfigBuilder)
     {
-        _fileSystem = fileSystem;
+        _gitConfigBuilder = gitConfigBuilder;
 
         return this;
     }
 
-    internal RepositoryConfigBuilder WithGitConfig(GitConfig gitConfig) {
-        _gitConfig = gitConfig;
+    internal RepositoryConfigBuilder WithFileSystem(IFileSystem? fileSystem)
+    {
+        _fileSystem = fileSystem;
 
         return this;
     }

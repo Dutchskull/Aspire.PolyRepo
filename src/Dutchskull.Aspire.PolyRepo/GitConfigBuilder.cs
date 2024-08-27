@@ -2,35 +2,27 @@
 
 public class GitConfigBuilder
 {
+    private string? _password;
     private string? _url;
     private string? _username;
-    private string? _password;
 
-    public GitConfigBuilder SetUrl(string url)
+    internal GitConfigBuilder WithUrl(string url)
     {
         _url = url;
+
         return this;
     }
 
-    public GitConfigBuilder SetUsername(string username)
+    public GitConfigBuilder WithAuthentication(string username, string password)
     {
         _username = username;
-        return this;
-    }
-
-    public GitConfigBuilder SetPassword(string password)
-    {
         _password = password;
+
         return this;
     }
 
     public GitConfig Build()
     {
-        if (string.IsNullOrEmpty(_url))
-        {
-            throw new InvalidOperationException("Url must be set");
-        }
-
         if (string.IsNullOrEmpty(_username))
         {
             _username = string.Empty;

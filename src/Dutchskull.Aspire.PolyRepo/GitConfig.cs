@@ -2,6 +2,10 @@
 
 public record GitConfig
 {
+    internal GitConfig()
+    {
+    }
+
     public required string Url { get; init; }
 
     public required string Username { get; init; }

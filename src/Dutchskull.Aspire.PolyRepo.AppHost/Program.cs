@@ -17,12 +17,16 @@ IResourceBuilder<ProjectResource> apiService = builder
     .WithReference(cache)
     .WithExternalHttpEndpoints();
 
+GitConfig gitConfig = new GitConfigBuilder()
+    .Build();
+
 IResourceBuilder<RepositoryResource> repository = builder.AddRepository(
     "repository",
     "https://github.com/Dutchskull/Aspire-Git.git",
     c => c
         .WithDefaultBranch("develop")
         .KeepUpToDate()
+        .WithGitConfig(builder => builder.WithAuthentication("", ""))
         .WithTargetPath("../../repos"));
 
 IResourceBuilder<ProjectResource> dotnetProject = builder

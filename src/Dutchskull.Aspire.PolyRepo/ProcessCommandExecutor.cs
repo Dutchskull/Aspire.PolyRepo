@@ -13,13 +13,17 @@ public class ProcessCommandExecutor : IProcessCommandExecutor
     {
         CloneOptions cloneOptions = new()
         {
-            BranchName = branch
+            BranchName = branch,
+            FetchOptions =
+            {
+                CredentialsProvider = (_url, _user, _cred) => new UsernamePasswordCredentials
+                {
+                    Username = gitConfig.Username,
+                    Password = gitConfig.Password
+                }
+            }
         };
-        cloneOptions.FetchOptions.CredentialsProvider = (_url, _user, _cred) => new UsernamePasswordCredentials
-        {
-            Username = gitConfig.Username,
-            Password = gitConfig.Password
-        };
+
         Repository.Clone(gitConfig.Url, resolvedRepositoryPath, cloneOptions);
     }
 
@@ -36,13 +40,15 @@ public class ProcessCommandExecutor : IProcessCommandExecutor
         ArgumentNullException.ThrowIfNull(remote);
         ArgumentNullException.ThrowIfNull(branchName);
 
-        FetchOptions fetchOptions = new();
-
-        fetchOptions.CredentialsProvider = (_url, _user, _cred) => new UsernamePasswordCredentials
+        FetchOptions fetchOptions = new()
         {
-            Username = gitConfig.Username,
-            Password = gitConfig.Password
+            CredentialsProvider = (_url, _user, _cred) => new UsernamePasswordCredentials
+            {
+                Username = gitConfig.Username,
+                Password = gitConfig.Password
+            }
         };
+
         IEnumerable<string> references = remote.FetchRefSpecs.Select(x => x.Specification);
         Commands.Fetch(repository, remote.Name, references, fetchOptions, null);
 
