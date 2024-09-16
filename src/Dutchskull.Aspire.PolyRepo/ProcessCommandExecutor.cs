@@ -14,8 +14,18 @@ public class ProcessCommandExecutor : IProcessCommandExecutor
         Repository.Clone(gitUrl, resolvedRepositoryPath, new CloneOptions { BranchName = branch });
     }
 
-    public int NpmInstall(string resolvedRepositoryPath) =>
-        RunProcess("cmd.exe", $"/C cd {resolvedRepositoryPath} && npm i");
+    public int NpmInstall(string resolvedRepositoryPath, string? installerArguments = null,
+        PackageManager packageManager = PackageManager.Npm) =>
+        packageManager switch
+        {
+            PackageManager.Npm => RunProcess("cmd.exe",
+                $"/C cd {resolvedRepositoryPath} && npm i {installerArguments}"),
+            PackageManager.Pnpm => RunProcess("cmd.exe",
+                $"/C cd {resolvedRepositoryPath} && pnpm i {installerArguments}"),
+            PackageManager.Yarn => RunProcess("cmd.exe",
+                $"/C cd {resolvedRepositoryPath} && yarn install {installerArguments}"),
+            _ => RunProcess("cmd.exe", $"/C cd {resolvedRepositoryPath} && npm i {installerArguments}"),
+        };
 
     public void PullAndResetRepository(string repositoryConfigRepositoryPath)
     {
