@@ -36,10 +36,13 @@ public static class ProjectResourceBuilderExtensions
         IResourceBuilder<RepositoryResource> repository,
         string relativeProjectPath,
         string scriptName = "start",
-        string[]? args = null)
+        string[]? args = null,
+        PackageManager packageManager = PackageManager.Npm,
+        string? packageManagerArguments = null)
     {
         string projectPath = repository.Resource.Resolve(relativeProjectPath);
-        repository.Resource.RepositoryConfig?.ProcessCommandsExecutor.NpmInstall(projectPath);
+        repository.Resource.RepositoryConfig?.ProcessCommandsExecutor.NpmInstall(projectPath, packageManagerArguments,
+            packageManager);
 
         return builder.AddNpmApp(name, projectPath, scriptName, args);
     }
@@ -50,11 +53,13 @@ public static class ProjectResourceBuilderExtensions
         IResourceBuilder<RepositoryResource> repository,
         string relativeProjectPath,
         string? workingDirectory = null,
-        string[]? args = null)
+        string[]? args = null,
+        PackageManager packageManager = PackageManager.Npm,
+        string? packageManagerArguments = null)
     {
         string projectPath = repository.Resource.Resolve(relativeProjectPath);
-        repository.Resource.RepositoryConfig?.ProcessCommandsExecutor.NpmInstall(projectPath);
-
+        repository.Resource.RepositoryConfig?.ProcessCommandsExecutor.NpmInstall(projectPath, packageManagerArguments,
+            packageManager);
         return builder.AddNodeApp(name, projectPath, workingDirectory, args);
     }
 }
