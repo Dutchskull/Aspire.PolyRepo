@@ -23,7 +23,7 @@ public class ProcessCommandExecutor : IProcessCommandExecutor
             PackageManager.Pnpm => RunProcess("cmd.exe",
                 $"/C cd {resolvedRepositoryPath} && pnpm i {installerArguments}"),
             PackageManager.Yarn => RunProcess("cmd.exe",
-                $"/C cd {resolvedRepositoryPath} && yarn {installerArguments}"),
+                $"/C cd {resolvedRepositoryPath} && yarn install {installerArguments}"),
             _ => RunProcess("cmd.exe", $"/C cd {resolvedRepositoryPath} && npm i {installerArguments}"),
         };
 
