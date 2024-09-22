@@ -8,5 +8,10 @@ updates:
   - package-ecosystem: "nuget" # See documentation for possible values
     directory: "/src" # Location of package manifests
     target-branch: "develop"
+    groups:
+      allDependencies:
+        patterns:
+        - "*"     
     schedule:
       interval: "weekly"
+
