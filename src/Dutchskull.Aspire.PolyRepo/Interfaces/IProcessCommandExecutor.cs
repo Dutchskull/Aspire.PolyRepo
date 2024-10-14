@@ -4,9 +4,9 @@ public interface IProcessCommandExecutor
 {
     int BuildDotNetProject(string resolvedProjectPath);
 
-    void CloneGitRepository(string gitUrl, string resolvedRepositoryPath, string? branch = null);
+    void CloneGitRepository(GitConfig gitConfig, string resolvedRepositoryPath, string? branch = null);
 
     int NpmInstall(string resolvedRepositoryPath);
 
-    void PullAndResetRepository(string repositoryConfigRepositoryPath);
+    void PullAndResetRepository(GitConfig gitConfig, string repositoryConfigRepositoryPath);
 }

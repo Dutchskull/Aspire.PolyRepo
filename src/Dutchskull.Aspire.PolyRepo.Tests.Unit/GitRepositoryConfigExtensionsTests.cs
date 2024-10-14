@@ -36,7 +36,7 @@ public class GitRepositoryConfigExtensionsTests
         // Assert
         gitRepositoryConfig.ProcessCommandsExecutor
             .Received(callAmount)
-            .CloneGitRepository(gitRepositoryConfig.GitUrl, gitRepositoryConfig.RepositoryPath,
+            .CloneGitRepository(gitRepositoryConfig.GitConfig, gitRepositoryConfig.RepositoryPath,
                 gitRepositoryConfig.Branch);
     }
 
@@ -50,17 +50,17 @@ public class GitRepositoryConfigExtensionsTests
         fileSystem.FileOrDirectoryExists(Arg.Is(expectedPath)).Returns(true);
         IProcessCommandExecutor processCommandsExecutor = Substitute.For<IProcessCommandExecutor>();
 
-        var configureGitRepository = new Action<RepositoryConfigBuilder>(builder => builder
+        Action<RepositoryConfigBuilder> configureGitRepository = builder => builder
             .WithTargetPath(CloneTargetPath)
             .WithDefaultBranch(Branch)
             .WithFileSystem(fileSystem)
-            .WithProcessCommandExecutor(processCommandsExecutor));
+            .WithProcessCommandExecutor(processCommandsExecutor);
 
         // Act
         RepositoryConfig config = configureGitRepository.InitializeRepository(GitUrl);
 
         // Assert
-        config.GitUrl.Should().Be(GitUrl);
+        config.RepositoryUrl.Should().Be(GitUrl);
         config.Branch.Should().Be(Branch);
         config.RepositoryPath.Should().Be(Path.Combine(Path.GetFullPath(CloneTargetPath), "repo"));
         config.ProcessCommandsExecutor.Should().Be(processCommandsExecutor);

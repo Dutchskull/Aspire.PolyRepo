@@ -25,7 +25,7 @@ internal static class RepositoryConfigExtensions
         {
             repositoryConfig.ProcessCommandsExecutor
                 .CloneGitRepository(
-                    repositoryConfig.GitUrl,
+                    repositoryConfig.GitConfig,
                     repositoryConfig.RepositoryPath,
                     repositoryConfig.Branch);
 
@@ -35,7 +35,7 @@ internal static class RepositoryConfigExtensions
         if (repositoryConfig.KeepUpToDate)
         {
             repositoryConfig.ProcessCommandsExecutor
-                .PullAndResetRepository(repositoryConfig.RepositoryPath);
+                .PullAndResetRepository(repositoryConfig.GitConfig, repositoryConfig.RepositoryPath);
         }
 
         return repositoryConfig;
