@@ -17,9 +17,6 @@ IResourceBuilder<ProjectResource> apiService = builder
     .WithReference(cache)
     .WithExternalHttpEndpoints();
 
-GitConfig gitConfig = new GitConfigBuilder()
-    .Build();
-
 IResourceBuilder<RepositoryResource> repository = builder.AddRepository(
     "repository",
     "https://github.com/Dutchskull/Aspire-Git.git",
@@ -34,7 +31,6 @@ IResourceBuilder<ProjectResource> dotnetProject = builder
         "src/Dutchskull.Aspire.PolyRepo.Web/Dutchskull.Aspire.PolyRepo.Web.csproj")
     .WithReference(cache)
     .WithReference(apiService);
-
 
 IResourceBuilder<NodeAppResource> reactProject = builder
     .AddNpmAppFromRepository("reactProject", repository, "src/Dutchskull.Aspire.PolyRepo.React")
