@@ -21,18 +21,18 @@
         <PackageIcon>docs\logo.jpg</PackageIcon>
     </PropertyGroup>
 
-	<ItemGroup>
-		<Content Include="../../logo.jpg">
-			<Pack>true</Pack>
-			<PackagePath>docs/</PackagePath>
-			<Link>docs/logo.jpg</Link>
-		</Content>
-		<None Include="../../README.md">
-			<Pack>true</Pack>
-			<PackagePath>docs/</PackagePath>
-			<Link>docs/README.md</Link>
-		</None>
-	</ItemGroup>
+    <ItemGroup>
+        <Content Include="../../logo.jpg">
+            <Pack>true</Pack>
+            <PackagePath>docs/</PackagePath>
+            <Link>docs/logo.jpg</Link>
+        </Content>
+        <None Include="../../README.md">
+            <Pack>true</Pack>
+            <PackagePath>docs/</PackagePath>
+            <Link>docs/README.md</Link>
+        </None>
+    </ItemGroup>
 
 	<ItemGroup>
         <PackageReference Include="Aspire.Hosting" Version="8.2.2" />

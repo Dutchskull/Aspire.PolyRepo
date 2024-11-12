@@ -2,7 +2,7 @@ using Dutchskull.Aspire.PolyRepo.ServiceDefaults;
 using Dutchskull.Aspire.PolyRepo.Web;
 using Dutchskull.Aspire.PolyRepo.Web.Components;
 
-var builder = WebApplication.CreateBuilder(args);
+WebApplicationBuilder builder = WebApplication.CreateBuilder(args);
 
 // Add service defaults & Aspire components.
 builder.AddServiceDefaults();
@@ -14,7 +14,7 @@ builder.Services.AddRazorComponents()
 
 builder.Services.AddHttpClient<WeatherApiClient>(client => client.BaseAddress = new("http://apiservice"));
 
-var app = builder.Build();
+WebApplication app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {

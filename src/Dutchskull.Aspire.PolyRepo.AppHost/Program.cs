@@ -23,6 +23,7 @@ IResourceBuilder<RepositoryResource> repository = builder.AddRepository(
     c => c
         .WithDefaultBranch("develop")
         .KeepUpToDate()
+        .WithGitConfig(builder => builder.WithAuthentication("", ""))
         .WithTargetPath("../../repos"));
 
 IResourceBuilder<ProjectResource> dotnetProject = builder
