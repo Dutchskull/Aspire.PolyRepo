@@ -35,8 +35,8 @@
     </ItemGroup>
 
 	<ItemGroup>
-        <PackageReference Include="Aspire.Hosting" Version="8.2.2" />
-        <PackageReference Include="Aspire.Hosting.NodeJs" Version="8.2.2" />
+        <PackageReference Include="Aspire.Hosting" Version="9.0.0" />
+        <PackageReference Include="Aspire.Hosting.NodeJs" Version="9.0.0" />
         <PackageReference Include="LibGit2Sharp" Version="0.30.0" />
     </ItemGroup>
 
