@@ -20,7 +20,9 @@ public class ProcessCommandExecutor : IProcessCommandExecutor
                 {
                     Username = gitConfig.Username,
                     Password = gitConfig.Password
-                }
+                    
+                },
+                CustomHeaders = gitConfig.CustomHeaders
             }
         };
 
@@ -46,7 +48,8 @@ public class ProcessCommandExecutor : IProcessCommandExecutor
             {
                 Username = gitConfig.Username,
                 Password = gitConfig.Password
-            }
+            },
+            CustomHeaders = gitConfig.CustomHeaders
         };
 
         IEnumerable<string> references = remote.FetchRefSpecs.Select(x => x.Specification);
