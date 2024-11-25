@@ -5,6 +5,7 @@ public class GitConfigBuilder
     private string? _password;
     private string? _url;
     private string? _username;
+    private string[]? _customHeaders;
 
     internal GitConfigBuilder WithUrl(string url)
     {
@@ -21,6 +22,12 @@ public class GitConfigBuilder
         return this;
     }
 
+    public GitConfigBuilder WithCustomHeaders(params string[] headers)
+    {
+        _customHeaders = headers;
+        return this;
+    }
+
     public GitConfig Build()
     {
         if (string.IsNullOrEmpty(_username))
@@ -33,11 +40,14 @@ public class GitConfigBuilder
             _password = string.Empty;
         }
 
+        _customHeaders ??= [];
+
         return new GitConfig
         {
             Url = _url,
             Username = _username,
-            Password = _password
+            Password = _password,
+            CustomHeaders = _customHeaders
         };
     }
 }
