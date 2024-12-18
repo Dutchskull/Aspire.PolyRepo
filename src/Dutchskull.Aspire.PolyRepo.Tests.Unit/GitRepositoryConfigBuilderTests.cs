@@ -17,7 +17,7 @@ public class GitRepositoryConfigBuilderTests
         RepositoryConfig config = builder.Build();
 
         // Assert
-        config.GitUrl.Should().Be(gitUrl);
+        config.GitConfig.Url.Should().Be(gitUrl);
         config.Branch.Should().Be(null);
         config.RepositoryPath.Should().Be(Path.Combine(Path.GetFullPath("."), "repo"));
         config.ProcessCommandsExecutor.Should().BeOfType<ProcessCommandExecutor>();
@@ -58,7 +58,7 @@ public class GitRepositoryConfigBuilderTests
         RepositoryConfig config = builder.Build();
 
         // Assert
-        config.GitUrl.Should().Be(gitUrl);
+        config.GitConfig.Url.Should().Be(gitUrl);
         config.Branch.Should().Be(branch);
         config.RepositoryPath.Should().Be(Path.Combine(Path.GetFullPath(cloneTargetPath), "repo"));
         config.ProcessCommandsExecutor.Should().Be(processCommandsExecutor);
@@ -122,7 +122,8 @@ public class GitRepositoryConfigBuilderTests
         new RepositoryConfigBuilder()
             .WithGitUrl(gitUrl)
             .Build()
-            .GitUrl
+            .GitConfig
+            .Url
             .Should()
             .Be(gitUrl);
     }

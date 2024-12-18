@@ -9,15 +9,30 @@ public class ProcessCommandExecutor : IProcessCommandExecutor
 {
     public int BuildDotNetProject(string resolvedProjectPath) => RunProcess("dotnet", $"build {resolvedProjectPath}");
 
-    public void CloneGitRepository(string gitUrl, string resolvedRepositoryPath, string? branch = null)
+    public void CloneGitRepository(GitConfig gitConfig, string resolvedRepositoryPath, string? branch = null)
     {
-        Repository.Clone(gitUrl, resolvedRepositoryPath, new CloneOptions { BranchName = branch });
+        CloneOptions cloneOptions = new()
+        {
+            BranchName = branch,
+            FetchOptions =
+            {
+                CredentialsProvider = (_url, _user, _cred) => new UsernamePasswordCredentials
+                {
+                    Username = gitConfig.Username,
+                    Password = gitConfig.Password
+                    
+                },
+                CustomHeaders = gitConfig.CustomHeaders
+            }
+        };
+
+        Repository.Clone(gitConfig.Url, resolvedRepositoryPath, cloneOptions);
     }
 
     public int NpmInstall(string resolvedRepositoryPath) =>
         RunProcess("cmd.exe", $"/C cd {resolvedRepositoryPath} && npm i");
 
-    public void PullAndResetRepository(string repositoryConfigRepositoryPath)
+    public void PullAndResetRepository(GitConfig gitConfig, string repositoryConfigRepositoryPath)
     {
         using Repository repository = new(repositoryConfigRepositoryPath);
 
@@ -27,7 +42,16 @@ public class ProcessCommandExecutor : IProcessCommandExecutor
         ArgumentNullException.ThrowIfNull(remote);
         ArgumentNullException.ThrowIfNull(branchName);
 
-        FetchOptions fetchOptions = new();
+        FetchOptions fetchOptions = new()
+        {
+            CredentialsProvider = (_url, _user, _cred) => new UsernamePasswordCredentials
+            {
+                Username = gitConfig.Username,
+                Password = gitConfig.Password
+            },
+            CustomHeaders = gitConfig.CustomHeaders
+        };
+
         IEnumerable<string> references = remote.FetchRefSpecs.Select(x => x.Specification);
         Commands.Fetch(repository, remote.Name, references, fetchOptions, null);
 
