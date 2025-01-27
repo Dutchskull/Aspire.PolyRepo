@@ -30,25 +30,27 @@ var repository = builder.AddRepository(
     "https://github.com/Dutchskull/Aspire-Git.git",
     c => c.WithDefaultBranch("feature/rename_and_new_api")
         .WithTargetPath("../../repos"));
+```
 
 var dotnetProject = builder
-    .AddProjectFromRepository("dotnetProject", repository,
-        "src/Dutchskull.Aspire.PolyRepo.Web/Dutchskull.Aspire.PolyRepo.Web.csproj")
-    .WithReference(cache)
-    .WithReference(apiService);
+.AddProjectFromRepository("dotnetProject", repository,
+"src/Dutchskull.Aspire.PolyRepo.Web/Dutchskull.Aspire.PolyRepo.Web.csproj")
+.WithReference(cache)
+.WithReference(apiService);
 
 var reactProject = builder
-    .AddNpmAppFromRepository("reactProject", repository, "src/Dutchskull.Aspire.PolyRepo.React")
-    .WithReference(cache)
-    .WithReference(apiService)
-    .WithHttpEndpoint(3000);
+.AddNpmAppFromRepository("reactProject", repository, "src/Dutchskull.Aspire.PolyRepo.React")
+.WithReference(cache)
+.WithReference(apiService)
+.WithHttpEndpoint(3000);
 
 var nodeProject = builder
-    .AddNodeAppFromRepository("nodeProject", repository, "src/Dutchskull.Aspire.PolyRepo.Node")
-    .WithReference(cache)
-    .WithReference(apiService)
-    .WithHttpEndpoint(54622);
-```
+.AddNodeAppFromRepository("nodeProject", repository, "src/Dutchskull.Aspire.PolyRepo.Node")
+.WithReference(cache)
+.WithReference(apiService)
+.WithHttpEndpoint(54622);
+
+````
 
 Navigate to your App Host project directory in the terminal.
 
@@ -56,7 +58,7 @@ Run the application using the .NET CLI or Visual Studio 2022.
 
 ```sh
 dotnet run
-```
+````
 
 ## Example
 
