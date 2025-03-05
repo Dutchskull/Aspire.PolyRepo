@@ -9,12 +9,12 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Aspire.Hosting.Testing" Version="9.0.0"/>
+        <PackageReference Include="Aspire.Hosting.Testing" Version="9.1.0"/>
         <PackageReference Include="coverlet.collector" Version="6.0.4">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="FluentAssertions" Version="[8.0.1]"/>
+        <PackageReference Include="FluentAssertions" Version="[7.2.0]"/>
         <PackageReference Include="FluentAssertions.Analyzers" Version="0.34.1">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
