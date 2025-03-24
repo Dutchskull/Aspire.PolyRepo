@@ -11,10 +11,11 @@ updates:
     groups:
       allDependencies:
         patterns:
-          - "*"     
+          - "*"
     schedule:
       interval: "weekly"
     ignore:
       - dependency-name: "FluentAssertions"
-        versions: [">=8.0.0"]
-
+        versions: [ ">=8.0.0" ]
+      - dependency-name: "Aspire*"
+        versions: [ ">=9.0.0" ]
