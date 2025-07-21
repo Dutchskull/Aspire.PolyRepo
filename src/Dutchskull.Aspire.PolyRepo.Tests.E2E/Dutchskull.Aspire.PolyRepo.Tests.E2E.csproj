@@ -9,31 +9,31 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <PackageReference Include="Aspire.Hosting.Testing" Version="9.3.0"/>
+        <PackageReference Include="Aspire.Hosting.Testing" Version="9.3.0" />
         <PackageReference Include="coverlet.collector" Version="6.0.4">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="FluentAssertions" Version="[7.2.0]"/>
+        <PackageReference Include="FluentAssertions" Version="[7.2.0]" />
         <PackageReference Include="FluentAssertions.Analyzers" Version="0.34.1">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
-        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1"/>
-        <PackageReference Include="xunit" Version="2.9.3"/>
-        <PackageReference Include="xunit.runner.visualstudio" Version="3.1.2">
+        <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
+        <PackageReference Include="xunit" Version="2.9.3" />
+        <PackageReference Include="xunit.runner.visualstudio" Version="3.1.3">
             <PrivateAssets>all</PrivateAssets>
             <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
     </ItemGroup>
 
     <ItemGroup>
-        <ProjectReference Include="..\Dutchskull.Aspire.PolyRepo.AppHost\Dutchskull.Aspire.PolyRepo.AppHost.csproj"/>
+        <ProjectReference Include="..\Dutchskull.Aspire.PolyRepo.AppHost\Dutchskull.Aspire.PolyRepo.AppHost.csproj" />
     </ItemGroup>
 
     <ItemGroup>
-        <Using Include="Aspire.Hosting.Testing"/>
-        <Using Include="Xunit"/>
+        <Using Include="Aspire.Hosting.Testing" />
+        <Using Include="Xunit" />
     </ItemGroup>
 
 </Project>
