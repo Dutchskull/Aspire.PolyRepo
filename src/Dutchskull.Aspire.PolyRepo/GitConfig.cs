@@ -13,4 +13,6 @@ public record GitConfig
     public required string Password { get; init; }
 
     public string[] CustomHeaders { get; init; } = [];
+
+    public string? Tag { get; init; }
 }
