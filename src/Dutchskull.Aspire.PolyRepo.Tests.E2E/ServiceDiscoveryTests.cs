@@ -1,4 +1,6 @@
 using System.Net;
+using Aspire.Hosting;
+using Aspire.Hosting.ApplicationModel;
 using FluentAssertions;
 using Microsoft.Extensions.DependencyInjection;
 using Projects;
@@ -10,12 +12,6 @@ public class ServiceDiscoveryTests : IAsyncLifetime
 {
     private DistributedApplication _distributedApplication = default!;
     private ResourceNotificationService? _resourceNotificationService;
-    private ITestOutputHelper _output;
-
-    public ServiceDiscoveryTests(ITestOutputHelper output)
-    {
-        _output = output;
-    }
 
     [Theory]
     [InlineData("reactProject", "/", HttpStatusCode.NotModified)]
@@ -36,8 +32,7 @@ public class ServiceDiscoveryTests : IAsyncLifetime
         HttpResponseMessage response = await httpClient.GetAsync(path);
 
         // Assert
-        _output.WriteLine(response.StatusCode.ToString());
-        //response.StatusCode.Should().Be(code);
+        response.StatusCode.Should().Be(code);
     }
 
     public async Task DisposeAsync()

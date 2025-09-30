@@ -1,17 +1,17 @@
-<Project Sdk="Microsoft.NET.Sdk.Web">
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
-    <PropertyGroup>
-        <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
-        <Nullable>enable</Nullable>
-    </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net9.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\Dutchskull.Aspire.PolyRepo.ServiceDefaults\Dutchskull.Aspire.PolyRepo.ServiceDefaults.csproj"/>
-    </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Dutchskull.Aspire.PolyRepo.ServiceDefaults\Dutchskull.Aspire.PolyRepo.ServiceDefaults.csproj" />
+	</ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Aspire.StackExchange.Redis.OutputCaching" Version="9.3.0"/>
-    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Aspire.StackExchange.Redis.OutputCaching" Version="9.5.0" />
+	</ItemGroup>
 
 </Project>
