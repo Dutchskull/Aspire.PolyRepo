@@ -22,10 +22,11 @@ public static class ProjectResourceBuilderExtensions
         this IDistributedApplicationBuilder builder,
         string name,
         IResourceBuilder<RepositoryResource> repository,
-        string relativeProjectPath)
+        string relativeProjectPath,
+        string[]? buildArgs = null)
     {
         string projectPath = repository.Resource.Resolve(relativeProjectPath);
-        repository.Resource.RepositoryConfig?.ProcessCommandsExecutor.BuildDotNetProject(projectPath);
+        repository.Resource.RepositoryConfig?.ProcessCommandsExecutor.BuildDotNetProject(projectPath, buildArgs);
 
         return builder.AddProject(name, projectPath);
     }

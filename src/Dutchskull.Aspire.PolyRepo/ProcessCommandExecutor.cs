@@ -7,7 +7,17 @@ namespace Dutchskull.Aspire.PolyRepo;
 
 public class ProcessCommandExecutor : IProcessCommandExecutor
 {
-    public int BuildDotNetProject(string resolvedProjectPath) => RunProcess("dotnet", $"build {resolvedProjectPath}");
+    public int BuildDotNetProject(string resolvedProjectPath, string[]? args = null)
+    {
+        string arguments = $"build {resolvedProjectPath}";
+
+        if (args != null && args.Length > 0)
+        {
+            arguments = $"{arguments} {string.Join(" ", args)}";
+        }
+
+        return RunProcess("dotnet", arguments);
+    }
 
     public void CloneGitRepository(GitConfig gitConfig, string resolvedRepositoryPath, string? branch = null)
     {
@@ -20,7 +30,7 @@ public class ProcessCommandExecutor : IProcessCommandExecutor
                 {
                     Username = gitConfig.Username,
                     Password = gitConfig.Password
-                    
+
                 },
                 CustomHeaders = gitConfig.CustomHeaders
             }
