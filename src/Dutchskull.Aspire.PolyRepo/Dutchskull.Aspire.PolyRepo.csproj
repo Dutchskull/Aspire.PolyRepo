@@ -1,0 +1,49 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFrameworks>net9.0</TargetFrameworks>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+
+		<PackageId>Dutchskull.Aspire.PolyRepo</PackageId>
+		<Version>0.3.3</Version>
+		<Authors>Dutchskull</Authors>
+		<Description>A description of your package.</Description>
+		<PackageTags>aspire git example</PackageTags>
+		<PackageLicenseExpression>MIT</PackageLicenseExpression>
+		<RepositoryType>git</RepositoryType>
+		<RepositoryUrl>https://github.com/Dutchskull/Aspire-Git</RepositoryUrl>
+		<ProjectUrl>https://github.com/Dutchskull/Aspire-Git</ProjectUrl>
+
+		<PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+
+		<PackageReadmeFile>docs\README.md</PackageReadmeFile>
+		<PackageIcon>docs\logo.jpg</PackageIcon>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<Content Include="../../logo.jpg">
+			<Pack>true</Pack>
+			<PackagePath>docs/</PackagePath>
+			<Link>docs/logo.jpg</Link>
+		</Content>
+		<None Include="../../README.md">
+			<Pack>true</Pack>
+			<PackagePath>docs/</PackagePath>
+			<Link>docs/README.md</Link>
+		</None>
+	</ItemGroup>
+
+	<ItemGroup>
+		<PackageReference Include="Aspire.Hosting" Version="9.5.0" />
+		<PackageReference Include="Aspire.Hosting.NodeJs" Version="9.5.0" />
+		<PackageReference Include="LibGit2Sharp" Version="0.31.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+			<_Parameter1>Dutchskull.Aspire.PolyRepo.Tests.Unit</_Parameter1>
+		</AssemblyAttribute>
+	</ItemGroup>
+
+</Project>

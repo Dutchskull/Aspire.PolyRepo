@@ -1,0 +1,21 @@
+# To get started with Dependabot version updates, you'll need to specify which
+# package ecosystems to update and where the package manifests are located.
+# Please see the documentation for all configuration options:
+# https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+
+version: 2
+updates:
+  - package-ecosystem: "nuget"
+    directory: "/src"
+    target-branch: "develop"
+    groups:
+      allDependencies:
+        patterns:
+          - "*"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "FluentAssertions"
+        versions: [ ">=8.0.0" ]
+      - dependency-name: "Aspire*"
+        versions: [ ">=9.0.0" ]

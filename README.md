@@ -1,6 +1,8 @@
-# Aspire.Git
+# Aspire.PolyRepo
 
-Aspire.Git is a .NET Aspire package designed to simplify the process of cloning and managing Git repositories within your .NET Aspire applications. This package allows you to configure and use Git repositories seamlessly, integrating them into your cloud-native development workflow.
+Aspire.PolyRepo is a .NET Aspire package designed to simplify the process of cloning and managing Git repositories
+within your .NET Aspire applications. This package allows you to configure and use Git repositories seamlessly,
+integrating them into your cloud-native development workflow.
 
 ## Features
 
@@ -8,38 +10,44 @@ Aspire.Git is a .NET Aspire package designed to simplify the process of cloning 
 - Configure repository URL, name, target path, default branch, and project path.
 - Easy integration with .NET Aspire App Host.
 
-## Roadmap
-
-This will be updated when more features are thought off.
-
-- Keep git branch updated on each startup
-- Using [libgit2sharp](https://github.com/libgit2/libgit2sharp) for the git management
-
 ## Installation
 
-To install the Aspire.Git package, use the .NET CLI. Run the following command in your terminal:
+To install the Aspire.PolyRepo package, use the .NET CLI. Run the following command in your terminal:
 
 ```sh
-dotnet add package Dutchskull.Aspire.Git --version 0.1.0
+dotnet add package Dutchskull.Aspire.PolyRepo
 ```
 
 ## Usage
 
-To use Aspire.Git in your .NET Aspire application, follow these steps:
+To use Aspire.PolyRepo in your .NET Aspire application, follow these steps:
 
 Add the configuration to your App Host project.
 
 ```csharp
-builder.AddProjectGitRepository(c => c
-    .WithGitUrl("<your-git-url>")
-    .WithName("<repository-name>")
-    .WithCloneTargetPath("<clone-target-path>")
-    .WithDefaultBranch("<default-branch>")
-    .WithProjectPath("<project-path>"));
+var repository = builder.AddRepository(
+    "repository",
+    "https://github.com/Dutchskull/Aspire-Git.git",
+    c => c.WithDefaultBranch("feature/rename_and_new_api")
+        .WithTargetPath("../../repos"));
 
-builder.AddNpmGitRepository(c => ...);
+var dotnetProject = builder
+    .AddProjectFromRepository("dotnetProject", repository,
+        "src/Dutchskull.Aspire.PolyRepo.Web/Dutchskull.Aspire.PolyRepo.Web.csproj")
+    .WithReference(cache)
+    .WithReference(apiService);
 
-builder.AddNodeGitRepository(c => ...);
+var reactProject = builder
+    .AddNpmAppFromRepository("reactProject", repository, "src/Dutchskull.Aspire.PolyRepo.React")
+    .WithReference(cache)
+    .WithReference(apiService)
+    .WithHttpEndpoint(3000);
+
+var nodeProject = builder
+    .AddNodeAppFromRepository("nodeProject", repository, "src/Dutchskull.Aspire.PolyRepo.Node")
+    .WithReference(cache)
+    .WithReference(apiService)
+    .WithHttpEndpoint(54622);
 ```
 
 Navigate to your App Host project directory in the terminal.
@@ -57,22 +65,40 @@ Here is an example configuration for adding a Git repository to your .NET Aspire
 ```csharp
 var builder = DistributedApplication.CreateBuilder(args);
 
-var dotnetGitRepo = builder
-    .AddProjectGitRepository(c => c
-            .WithGitUrl("https://github.com/Dutchskull/Aspire-Git.git")
-            .WithCloneTargetPath("../../repos")
-            .WithProjectPath("src/Dutchskull.Aspire.Git.Web/Dutchskull.Aspire.Git.Web.csproj"),
-        name: "dotnetProject")
+var repository = builder.AddRepository(
+    "repository",
+    "https://github.com/Dutchskull/Aspire-Git.git",
+    c => c.WithDefaultBranch("feature/rename_and_new_api")
+        .WithTargetPath("../../repos"));
+
+var dotnetProject = builder
+    .AddProjectFromRepository("dotnetProject", repository,
+        "src/Dutchskull.Aspire.PolyRepo.Web/Dutchskull.Aspire.PolyRepo.Web.csproj")
     .WithReference(cache)
     .WithReference(apiService);
+
+var reactProject = builder
+    .AddNpmAppFromRepository("reactProject", repository, "src/Dutchskull.Aspire.PolyRepo.React")
+    .WithReference(cache)
+    .WithReference(apiService)
+    .WithHttpEndpoint(3000);
+
+var nodeProject = builder
+    .AddNodeAppFromRepository("nodeProject", repository, "src/Dutchskull.Aspire.PolyRepo.Node")
+    .WithReference(cache)
+    .WithReference(apiService)
+    .WithHttpEndpoint(54622);
 
 builder.Build().Run();
 ```
 
-This configuration clones the specified Git repository into your application, making it available for further development and deployment.
+This configuration clones the specified Git repository into your application, making it available for further
+development and deployment.
 
-Contributing
-Contributions are welcome! If you have any suggestions, bug reports, or feature requests, please open an issue or submit a pull request on GitHub.
+## Contributing
+
+Contributions are welcome! If you have any suggestions, bug reports, or feature requests, please open an issue or submit
+a pull request on GitHub.
 
 ## License
 
