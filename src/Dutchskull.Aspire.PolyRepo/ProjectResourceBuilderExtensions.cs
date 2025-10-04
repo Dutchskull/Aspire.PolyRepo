@@ -58,4 +58,17 @@ public static class ProjectResourceBuilderExtensions
 
         return builder.AddNodeApp(name, projectPath, workingDirectory, args);
     }
+
+    public static IResourceBuilder<ContainerResource> AddDockerFileFromRepository(
+        this IDistributedApplicationBuilder builder,
+        string name,
+        IResourceBuilder<RepositoryResource> repository,
+        string relativeProjectPath,
+        string? dockerFilePath = null,
+        string? stage = null)
+    {
+        string projectPath = repository.Resource.Resolve(relativeProjectPath);
+
+        return builder.AddDockerfile(name, projectPath, dockerFilePath, stage);
+    }
 }

@@ -44,6 +44,11 @@ IResourceBuilder<NodeAppResource> nodeProject = builder
     .WithReference(apiService)
     .WithHttpEndpoint(54622);
 
+IResourceBuilder<ContainerResource> dockerFile = builder
+    .AddDockerFileFromRepository("dockerProject", repository, "src/Dutchskull.Aspire.PolyRepo.Node")
+    .WithEndpoint(scheme: "http", targetPort: 5555, env: "PORT")
+    .WithBuildArg("GO_VERSION", "1.23rc1");
+
 builder.Services.TryAddEnumerable(ServiceDescriptor
     .Singleton<IDistributedApplicationLifecycleHook, NodeAppAddPortLifecycleHook>());
 
