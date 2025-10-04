@@ -18,10 +18,6 @@ jobs:
 
       - name: Setup .NET SDKs
         uses: actions/setup-dotnet@v3
-        with:
-          dotnet-version: |
-            9.0.x
-            8.0.x
 
       - name: Install GitVersion
         uses: gittools/actions/gitversion/setup@v2.0.1
@@ -38,7 +34,7 @@ jobs:
         run: dotnet build src/Dutchskull.Aspire.PolyRepo/Dutchskull.Aspire.PolyRepo.csproj --configuration Release --no-restore
 
       - name: Pack
-        run: dotnet pack src/Dutchskull.Aspire.PolyRepo/Dutchskull.Aspire.PolyRepo.csproj --configuration Release --no-restore --output ./nupkg /p:Version=${{ steps.gitversion.outputs.semVer }}
+        run: dotnet pack src/Dutchskull.Aspire.PolyRepo/Dutchskull.Aspire.PolyRepo.csproj --configuration Release --no-restore --output ./nupkg /p:Version=${{ env.semVer }}
 
       - name: Publish to NuGet
         run: dotnet nuget push ./nupkg/*.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
