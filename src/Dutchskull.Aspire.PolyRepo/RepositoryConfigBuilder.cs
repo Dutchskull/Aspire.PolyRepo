@@ -11,6 +11,7 @@ public class RepositoryConfigBuilder
     private bool _keepUpToDate;
     private IProcessCommandExecutor? _processCommandsExecutor;
     private string _targetPath = ".";
+    private string? _tag = null;
 
     public RepositoryConfig Build()
     {
@@ -24,6 +25,7 @@ public class RepositoryConfigBuilder
 
         GitConfigBuilder gitConfigBuilder = new();
         gitConfigBuilder.WithUrl(_gitUrl);
+        gitConfigBuilder.WithTag(_tag);
         _gitConfigBuilder?.Invoke(gitConfigBuilder);
 
         return new RepositoryConfig
@@ -41,6 +43,14 @@ public class RepositoryConfigBuilder
     public RepositoryConfigBuilder WithTargetPath(string targetPath)
     {
         _targetPath = targetPath;
+
+        return this;
+    }
+
+
+    public RepositoryConfigBuilder WithTag(string tag)
+    {
+        _tag = tag;
 
         return this;
     }
