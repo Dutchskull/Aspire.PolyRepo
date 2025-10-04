@@ -1,21 +1,21 @@
 mode: ContinuousDeployment
 next-version: 9.0.0
+
 branches:
   main:
     regex: ^main$
-    tag: ''
+    label: ''                      
     increment: Minor
-    prevent-increment-of-merged-branch-version: true
+
   develop:
     regex: ^develop$
-    tag: alpha
+    label: alpha
     increment: Minor
-    is-mainline: false
+
   feature:
-    regex: ^features?[/-]
-    tag: useBranchName
+    regex: ^features?[/-](?<BranchName>.+)$
+    label: '{BranchName}'      
     increment: Patch
-    source-branches: ['develop', 'main']
-ignore:
-  sha: []
-merge-message-strategy: MergeMessage
+    source-branches:
+      - develop
+      - main
