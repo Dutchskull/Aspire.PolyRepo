@@ -1,0 +1,21 @@
+mode: ContinuousDeployment
+next-version: 9.0.0
+
+branches:
+  main:
+    regex: ^main$
+    label: ''                      
+    increment: Minor
+
+  develop:
+    regex: ^develop$
+    label: alpha
+    increment: Minor
+
+  feature:
+    regex: ^features?[/-](?<BranchName>.+)$
+    label: '{BranchName}'      
+    increment: Patch
+    source-branches:
+      - develop
+      - main
