@@ -14,7 +14,8 @@ public class GitRepositoryConfigExtensionsTests
     private readonly RepositoryConfigBuilder _builder = new RepositoryConfigBuilder()
         .WithGitUrl(GitUrl)
         .WithFileSystem(Substitute.For<IFileSystem>())
-        .WithProcessCommandExecutor(Substitute.For<IProcessCommandExecutor>());
+        .WithProcessCommandExecutor(Substitute.For<IProcessCommandExecutor>())
+        .WithGitService(Substitute.For<IGitService>());
 
     [Theory]
     [InlineData(true, 0)]
@@ -34,7 +35,7 @@ public class GitRepositoryConfigExtensionsTests
         gitRepositoryConfig.CloneRepository();
 
         // Assert
-        gitRepositoryConfig.ProcessCommandsExecutor
+        gitRepositoryConfig.GitService
             .Received(callAmount)
             .CloneGitRepository(gitRepositoryConfig.GitConfig, gitRepositoryConfig.RepositoryPath,
                 gitRepositoryConfig.Branch);
@@ -48,13 +49,13 @@ public class GitRepositoryConfigExtensionsTests
         string expectedPath =
             Path.GetFullPath(Path.Combine(Path.Combine(Path.GetFullPath(CloneTargetPath), "repo"), ProjectPath));
         fileSystem.FileOrDirectoryExists(Arg.Is(expectedPath)).Returns(true);
-        IProcessCommandExecutor processCommandsExecutor = Substitute.For<IProcessCommandExecutor>();
+        IGitService gitService = Substitute.For<IGitService>();
 
         Action<RepositoryConfigBuilder> configureGitRepository = builder => builder
             .WithTargetPath(CloneTargetPath)
             .WithDefaultBranch(Branch)
             .WithFileSystem(fileSystem)
-            .WithProcessCommandExecutor(processCommandsExecutor);
+            .WithGitService(gitService);
 
         // Act
         RepositoryConfig config = configureGitRepository.InitializeRepository(GitUrl);
@@ -63,7 +64,7 @@ public class GitRepositoryConfigExtensionsTests
         config.RepositoryUrl.Should().Be(GitUrl);
         config.Branch.Should().Be(Branch);
         config.RepositoryPath.Should().Be(Path.Combine(Path.GetFullPath(CloneTargetPath), "repo"));
-        config.ProcessCommandsExecutor.Should().Be(processCommandsExecutor);
+        config.GitService.Should().Be(gitService);
         config.FileSystem.Should().Be(fileSystem);
     }
 }

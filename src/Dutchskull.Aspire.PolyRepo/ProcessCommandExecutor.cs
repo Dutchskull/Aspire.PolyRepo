@@ -1,5 +1,9 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
+using CliWrap;
+using CliWrap.Buffered;
 using Dutchskull.Aspire.PolyRepo.Interfaces;
 using LibGit2Sharp;
 
@@ -9,119 +13,59 @@ public class ProcessCommandExecutor : IProcessCommandExecutor
 {
     public int BuildDotNetProject(string resolvedProjectPath, string[]? args = null)
     {
-        string arguments = $"build {resolvedProjectPath}";
-
+        StringBuilder arguments = new("build ");
+        arguments.Append(resolvedProjectPath);
         if (args != null && args.Length > 0)
         {
-            arguments = $"{arguments} {string.Join(" ", args)}";
+            arguments.Append(' ');
+            arguments.Append(string.Join(' ', args));
         }
 
-        return RunProcess("dotnet", arguments);
-    }
-
-    public void CloneGitRepository(GitConfig gitConfig, string resolvedRepositoryPath, string? branch = null)
-    {
-        CloneOptions cloneOptions = new()
+        BufferedCommandResult result = RunBuffered("dotnet", arguments.ToString()).GetAwaiter().GetResult();
+        Console.WriteLine(result.StandardOutput);
+        if (result.ExitCode != 0)
         {
-            BranchName = branch,
-            FetchOptions =
-            {
-                CredentialsProvider = (_url, _user, _cred) => new UsernamePasswordCredentials
-                {
-                    Username = gitConfig.Username,
-                    Password = gitConfig.Password
-
-                },
-                CustomHeaders = gitConfig.CustomHeaders
-            }
-        };
-
-        Repository.Clone(gitConfig.Url, resolvedRepositoryPath, cloneOptions);
-    }
-
-    public int NpmInstall(string resolvedRepositoryPath) =>
-        RunProcess("cmd.exe", $"/C cd {resolvedRepositoryPath} && npm i");
-
-    public void PullAndResetRepository(GitConfig gitConfig, string repositoryConfigRepositoryPath)
-    {
-        using Repository repository = new(repositoryConfigRepositoryPath);
-
-        string? branchName = repository.Head.TrackedBranch.FriendlyName;
-        Remote? remote = repository.Network.Remotes.FirstOrDefault();
-
-        ArgumentNullException.ThrowIfNull(remote);
-        ArgumentNullException.ThrowIfNull(branchName);
-
-        FetchOptions fetchOptions = new()
-        {
-            CredentialsProvider = (_url, _user, _cred) => new UsernamePasswordCredentials
-            {
-                Username = gitConfig.Username,
-                Password = gitConfig.Password
-            },
-            CustomHeaders = gitConfig.CustomHeaders
-        };
-
-        IEnumerable<string> references = remote.FetchRefSpecs.Select(x => x.Specification);
-        Commands.Fetch(repository, remote.Name, references, fetchOptions, null);
-
-        Branch? remoteBranch = repository.Branches[branchName];
-        Commit? latestCommit = remoteBranch.Tip;
-
-        repository.Reset(ResetMode.Hard, latestCommit);
-    }
-
-    private static int RunProcess(string fileName, string arguments)
-    {
-        Process process = new()
-        {
-            StartInfo = new ProcessStartInfo
-            {
-                FileName = fileName,
-                Arguments = arguments,
-                RedirectStandardOutput = true,
-                RedirectStandardError = true,
-                UseShellExecute = false,
-                CreateNoWindow = true
-            }
-        };
-
-        StringBuilder output = new();
-        StringBuilder error = new();
-
-        process.OutputDataReceived += LogData(output, "OUTPUT");
-
-        process.ErrorDataReceived += LogData(error, "ERROR");
-
-        process.Start();
-        process.BeginOutputReadLine();
-        process.BeginErrorReadLine();
-        process.WaitForExit();
-
-        if (process.ExitCode == 0)
-        {
-            Console.WriteLine($"Process {fileName} {arguments} finished successfully.");
-
-            return process.ExitCode;
+            string err = result.StandardError;
+            Console.WriteLine(err);
+            throw new Exception($"Process dotnet {arguments} failed with exit code {result.ExitCode}: {err}");
         }
 
-        string errorMessage = $"Process {fileName} {arguments} failed with exit code {process.ExitCode}: {error}";
-        Console.WriteLine(errorMessage);
-
-        throw new Exception(errorMessage);
+        Console.WriteLine($"Process dotnet {arguments} finished successfully.");
+        return result.ExitCode;
     }
 
-    private static DataReceivedEventHandler LogData(StringBuilder output, string type)
+    public int NpmInstall(string resolvedRepositoryPath)
     {
-        return (sender, e) =>
+        string arguments = $"/C cd \"{resolvedRepositoryPath}\" && npm i";
+        BufferedCommandResult result = RunBuffered("cmd.exe", arguments).GetAwaiter().GetResult();
+        Console.WriteLine(result.StandardOutput);
+        if (result.ExitCode != 0)
         {
-            if (string.IsNullOrEmpty(e.Data))
-            {
-                return;
-            }
+            Console.WriteLine(result.StandardError);
+            throw new Exception($"Process cmd.exe {arguments} failed with exit code {result.ExitCode}: {result.StandardError}");
+        }
 
-            output.AppendLine(e.Data);
-            Console.WriteLine($"[{type}]: {e.Data}");
-        };
+        Console.WriteLine($"Process cmd.exe {arguments} finished successfully.");
+        return result.ExitCode;
+    }
+
+
+    private static async Task<BufferedCommandResult> RunBuffered(string fileName, string arguments)
+    {
+        StringBuilder stdOutBuilder = new();
+        StringBuilder stdErrBuilder = new();
+
+        Command cmd = Cli
+            .Wrap(fileName)
+            .WithArguments(arguments)
+            .WithValidation(CommandResultValidation.None)
+            .WithStandardOutputPipe(PipeTarget.Merge(
+                PipeTarget.ToStringBuilder(stdOutBuilder),
+                PipeTarget.ToStream(Console.OpenStandardOutput())))
+            .WithStandardErrorPipe(PipeTarget.Merge(
+                PipeTarget.ToStringBuilder(stdErrBuilder),
+                PipeTarget.ToStream(Console.OpenStandardError())));
+
+        return await cmd.ExecuteBufferedAsync();
     }
 }

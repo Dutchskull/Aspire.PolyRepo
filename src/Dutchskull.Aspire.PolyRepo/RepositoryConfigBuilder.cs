@@ -10,6 +10,7 @@ public class RepositoryConfigBuilder
     private string _gitUrl = string.Empty;
     private bool _keepUpToDate;
     private IProcessCommandExecutor? _processCommandsExecutor;
+    private IGitService? _gitService;
     private string _targetPath = ".";
 
     public RepositoryConfig Build()
@@ -34,6 +35,7 @@ public class RepositoryConfigBuilder
             Branch = _branch,
             KeepUpToDate = _keepUpToDate,
             ProcessCommandsExecutor = _processCommandsExecutor ?? new ProcessCommandExecutor(),
+            GitService = _gitService ?? new GitService(),
             FileSystem = _fileSystem ?? new FileSystem()
         };
     }
@@ -83,6 +85,13 @@ public class RepositoryConfigBuilder
     internal RepositoryConfigBuilder WithProcessCommandExecutor(IProcessCommandExecutor? processCommandsExecutor)
     {
         _processCommandsExecutor = processCommandsExecutor;
+
+        return this;
+    }
+
+    internal RepositoryConfigBuilder WithGitService(IGitService? gitService)
+    {
+        _gitService = gitService;
 
         return this;
     }

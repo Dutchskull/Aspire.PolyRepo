@@ -37,6 +37,7 @@
 	<ItemGroup>
 		<PackageReference Include="Aspire.Hosting" />
 		<PackageReference Include="Aspire.Hosting.NodeJs" />
+		<PackageReference Include="CliWrap" />
 		<PackageReference Include="LibGit2Sharp" />
 	</ItemGroup>
 

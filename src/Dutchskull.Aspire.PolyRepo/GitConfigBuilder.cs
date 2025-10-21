@@ -22,6 +22,13 @@ public class GitConfigBuilder
         return this;
     }
 
+    public GitConfigBuilder WithAuthenticationToken(string token)
+    {
+        _password = token;
+
+        return this;
+    }
+
     public GitConfigBuilder WithCustomHeaders(params string[] headers)
     {
         _customHeaders = headers;
@@ -44,7 +51,7 @@ public class GitConfigBuilder
 
         return new GitConfig
         {
-            Url = _url,
+            Url = _url ?? throw new Exception("Git url should never be empty"),
             Username = _username,
             Password = _password,
             CustomHeaders = _customHeaders

@@ -18,6 +18,8 @@ public record RepositoryConfig
 
     public required IProcessCommandExecutor ProcessCommandsExecutor { get; init; }
 
+    public required IGitService GitService { get; init; }
+
     public required bool KeepUpToDate { get; init; }
 
     public required string RepositoryUrl { get; init; }

@@ -10,6 +10,7 @@
     <PackageVersion Include="Aspire.Hosting.Redis" Version="9.5.1" />
     <PackageVersion Include="Aspire.Hosting.Testing" Version="9.5.1" />
     <PackageVersion Include="Aspire.StackExchange.Redis.OutputCaching" Version="9.5.1" />
+    <PackageVersion Include="CliWrap" Version="3.9.0" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="FluentAssertions" Version="[7.2.0]" />
     <PackageVersion Include="FluentAssertions.Analyzers" Version="0.34.1" />
