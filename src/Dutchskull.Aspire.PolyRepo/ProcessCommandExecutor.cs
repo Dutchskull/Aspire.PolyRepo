@@ -39,9 +39,6 @@ public class ProcessCommandExecutor : IProcessCommandExecutor
         Repository.Clone(gitConfig.Url, resolvedRepositoryPath, cloneOptions);
     }
 
-    public int NpmInstall(string resolvedRepositoryPath) =>
-        RunProcess("cmd.exe", $"/C cd {resolvedRepositoryPath} && npm i");
-
     public void PullAndResetRepository(GitConfig gitConfig, string repositoryConfigRepositoryPath)
     {
         using Repository repository = new(repositoryConfigRepositoryPath);

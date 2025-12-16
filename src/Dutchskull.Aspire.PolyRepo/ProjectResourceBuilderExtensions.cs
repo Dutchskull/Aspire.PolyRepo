@@ -60,11 +60,10 @@ public static class ProjectResourceBuilderExtensions
         string name,
         IResourceBuilder<RepositoryResource> repository,
         string relativeProjectPath,
-        string? workingDirectory = null)
+        string workingDirectory = "app.js")
     {
         string projectPath = repository.Resource.Resolve(relativeProjectPath);
-
-        return builder.AddNodeApp(name, projectPath, workingDirectory ?? "app.js");
+        return builder.AddNodeApp(name, projectPath, workingDirectory);
     }
 
     public static IResourceBuilder<ContainerResource> AddDockerFileFromRepository(
@@ -76,7 +75,6 @@ public static class ProjectResourceBuilderExtensions
         string? stage = null)
     {
         string projectPath = repository.Resource.Resolve(relativeProjectPath);
-
         return builder.AddDockerfile(name, projectPath, dockerFilePath, stage);
     }
 }
