@@ -13,11 +13,9 @@ internal class NodeAppAddPortEventSubscriber : IDistributedApplicationEventingSu
         eventing.Subscribe<BeforeStartEvent>((@event, cancellationToken) =>
         {
             DistributedApplicationModel model = @event.Model;
+            var javascriptApps = model.Resources.OfType<JavaScriptAppResource>();
 
-            IEnumerable<NodeAppResource> nodeApps =
-                model.Resources.OfType<NodeAppResource>();
-
-            foreach (NodeAppResource app in nodeApps)
+            foreach (var app in javascriptApps)
             {
                 if (!app.TryGetEndpoints(out IEnumerable<EndpointAnnotation>? bindings))
                 {
@@ -50,6 +48,7 @@ internal class NodeAppAddPortEventSubscriber : IDistributedApplicationEventingSu
 
                 app.Annotations.Add(envAnnotation);
             }
+
             return Task.CompletedTask;
         });
 
