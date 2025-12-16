@@ -9,7 +9,7 @@
     <PackageVersion Include="Aspire.Hosting.JavaScript" Version="13.0.2" />
     <PackageVersion Include="Aspire.Hosting.NodeJs" Version="9.5.2" />
     <PackageVersion Include="Aspire.Hosting.Redis" Version="13.0.2" />
-    <PackageVersion Include="Aspire.Hosting.Testing" Version="9.5.1" />
+    <PackageVersion Include="Aspire.Hosting.Testing" Version="13.0.2" />
     <PackageVersion Include="Aspire.StackExchange.Redis.OutputCaching" Version="9.5.1" />
     <PackageVersion Include="coverlet.collector" Version="6.0.4" />
     <PackageVersion Include="FluentAssertions" Version="[7.2.0]" />
