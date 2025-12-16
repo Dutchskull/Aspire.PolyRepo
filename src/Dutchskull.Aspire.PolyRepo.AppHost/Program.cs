@@ -1,3 +1,4 @@
+using Aspire.Hosting;
 using Aspire.Hosting.JavaScript;
 using Aspire.Hosting.Lifecycle;
 using Dutchskull.Aspire.PolyRepo;
@@ -39,6 +40,12 @@ IResourceBuilder<JavaScriptAppResource> reactProject = builder
     .WithReference(apiService)
     .WithHttpEndpoint(3000);
 
+IResourceBuilder<ViteAppResource> viteProject = builder
+    .AddViteAppFromRepository("viteProject", repository, "src/Dutchskull.Aspire.PolyRepo.Vite")
+    .WithReference(cache)
+    .WithReference(apiService)
+    .WithHttpEndpoint(3001, name: "vite");
+
 IResourceBuilder<NodeAppResource> nodeProject = builder
     .AddNodeAppFromRepository("nodeProject", repository, "src/Dutchskull.Aspire.PolyRepo.Node")
     .WithReference(cache)
@@ -57,6 +64,7 @@ if (builder.Environment.IsDevelopment() &&
     builder.Configuration["DOTNET_LAUNCH_PROFILE"] == "https")
 {
     reactProject.WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");
+    viteProject.WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");
     nodeProject.WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");
 }
 
