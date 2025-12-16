@@ -54,6 +54,7 @@ IResourceBuilder<NodeAppResource> nodeProject = builder
 
 IResourceBuilder<ContainerResource> dockerFile = builder
     .AddDockerFileFromRepository("dockerProject", repository, "src/Dutchskull.Aspire.PolyRepo.Node")
+    .WithReference(cache)
     .WithEndpoint(scheme: "http", targetPort: 5555, env: "PORT")
     .WithBuildArg("GO_VERSION", "1.23rc1");
 
