@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
 	<PropertyGroup>
 		<TargetFrameworks>net9.0</TargetFrameworks>
@@ -36,7 +36,7 @@
 
 	<ItemGroup>
 		<PackageReference Include="Aspire.Hosting" />
-		<PackageReference Include="Aspire.Hosting.NodeJs" />
+		<PackageReference Include="Aspire.Hosting.JavaScript" />
 		<PackageReference Include="LibGit2Sharp" />
 	</ItemGroup>
 

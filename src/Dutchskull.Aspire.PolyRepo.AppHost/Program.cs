@@ -1,3 +1,4 @@
+using Aspire.Hosting.JavaScript;
 using Aspire.Hosting.Lifecycle;
 using Dutchskull.Aspire.PolyRepo;
 using Dutchskull.Aspire.PolyRepo.AppHost;
@@ -32,7 +33,7 @@ IResourceBuilder<ProjectResource> dotnetProject = builder
     .WithReference(cache)
     .WithReference(apiService);
 
-IResourceBuilder<NodeAppResource> reactProject = builder
+IResourceBuilder<JavaScriptAppResource> reactProject = builder
     .AddNpmAppFromRepository("reactProject", repository, "src/Dutchskull.Aspire.PolyRepo.React")
     .WithReference(cache)
     .WithReference(apiService)
@@ -50,7 +51,7 @@ IResourceBuilder<ContainerResource> dockerFile = builder
     .WithBuildArg("GO_VERSION", "1.23rc1");
 
 builder.Services.TryAddEnumerable(ServiceDescriptor
-    .Singleton<IDistributedApplicationLifecycleHook, NodeAppAddPortLifecycleHook>());
+    .Singleton<IDistributedApplicationEventingSubscriber, NodeAppAddPortEventSubscriber>());
 
 if (builder.Environment.IsDevelopment() &&
     builder.Configuration["DOTNET_LAUNCH_PROFILE"] == "https")

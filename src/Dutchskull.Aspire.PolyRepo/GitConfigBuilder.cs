@@ -42,6 +42,7 @@ public class GitConfigBuilder
 
         _customHeaders ??= [];
 
+#pragma warning disable CS8601 // Possible null reference assignment.
         return new GitConfig
         {
             Url = _url,
@@ -49,5 +50,6 @@ public class GitConfigBuilder
             Password = _password,
             CustomHeaders = _customHeaders
         };
+#pragma warning restore CS8601 // Possible null reference assignment.
     }
 }
