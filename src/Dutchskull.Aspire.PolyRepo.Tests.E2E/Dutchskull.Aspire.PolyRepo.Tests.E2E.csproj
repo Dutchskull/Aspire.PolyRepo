@@ -1,39 +1,37 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-	<PropertyGroup>
-		<TargetFramework>net9.0</TargetFramework>
-		<ImplicitUsings>enable</ImplicitUsings>
-		<Nullable>enable</Nullable>
-		<IsPackable>false</IsPackable>
-		<IsTestProject>true</IsTestProject>
-	</PropertyGroup>
+    <PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
+        <IsPackable>false</IsPackable>
+        <IsTestProject>true</IsTestProject>
+    </PropertyGroup>
 
-	<ItemGroup>
-		<PackageReference Include="Aspire.Hosting.Testing" />
-		<PackageReference Include="coverlet.collector">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="FluentAssertions" />
-		<PackageReference Include="FluentAssertions.Analyzers">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-		<PackageReference Include="Microsoft.NET.Test.Sdk" />
-		<PackageReference Include="xunit" />
-		<PackageReference Include="xunit.runner.visualstudio">
-			<PrivateAssets>all</PrivateAssets>
-			<IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
-		</PackageReference>
-	</ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Aspire.Hosting.Testing"/>
+        <PackageReference Include="coverlet.collector">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="FluentAssertions"/>
+        <PackageReference Include="FluentAssertions.Analyzers">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+        <PackageReference Include="Microsoft.NET.Test.Sdk"/>
+        <PackageReference Include="xunit"/>
+        <PackageReference Include="xunit.runner.visualstudio">
+            <PrivateAssets>all</PrivateAssets>
+            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
+    </ItemGroup>
 
-	<ItemGroup>
-		<ProjectReference Include="..\Dutchskull.Aspire.PolyRepo.AppHost\Dutchskull.Aspire.PolyRepo.AppHost.csproj" />
-	</ItemGroup>
+    <ItemGroup>
+        <ProjectReference Include="..\Dutchskull.Aspire.PolyRepo.AppHost\Dutchskull.Aspire.PolyRepo.AppHost.csproj"/>
+    </ItemGroup>
 
-	<ItemGroup>
-		<Using Include="Aspire.Hosting.Testing" />
-		<Using Include="Xunit" />
-	</ItemGroup>
+    <ItemGroup>
+        <Using Include="Aspire.Hosting.Testing"/>
+        <Using Include="Xunit"/>
+    </ItemGroup>
 
 </Project>
