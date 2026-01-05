@@ -6,6 +6,7 @@ public class GitConfigBuilder
     private string? _url;
     private string? _username;
     private string[]? _customHeaders;
+    private string? _tag;
 
     internal GitConfigBuilder WithUrl(string url)
     {
@@ -40,6 +41,12 @@ public class GitConfigBuilder
             _password = string.Empty;
         }
 
+
+        if (string.IsNullOrEmpty(_url))
+        {
+            throw new Exception("No git url was provided.");
+        }
+
         _customHeaders ??= [];
 
         return new GitConfig
@@ -47,7 +54,14 @@ public class GitConfigBuilder
             Url = _url,
             Username = _username,
             Password = _password,
-            CustomHeaders = _customHeaders
+            CustomHeaders = _customHeaders,
+            Tag = _tag
         };
+    }
+
+    public GitConfigBuilder WithTag(string? tag)
+    {
+        _tag = tag;
+        return this;
     }
 }
