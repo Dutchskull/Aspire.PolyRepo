@@ -1,5 +1,5 @@
 mode: ContinuousDeployment
-next-version: 9.0.0
+next-version: 10.0.0
 
 branches:
   main:

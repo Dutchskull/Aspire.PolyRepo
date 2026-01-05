@@ -15,13 +15,14 @@ IResourceBuilder<RedisResource> cache = builder
 IResourceBuilder<ProjectResource> apiService = builder
     .AddProject<Dutchskull_Aspire_PolyRepo_ApiService>("apiservice")
     .WithReference(cache)
+    .WaitFor(cache)
     .WithExternalHttpEndpoints();
 
 IResourceBuilder<RepositoryResource> repository = builder.AddRepository(
     "repository",
     "https://github.com/Dutchskull/Aspire-Git.git",
     c => c
-        .WithDefaultBranch("develop")
+        .WithDefaultBranch("feature/112-e2e-tests-are-not-working")
         .KeepUpToDate()
         .WithGitConfig(builder => builder.WithAuthentication("", ""))
         .WithTargetPath("../../repos"));
@@ -30,22 +31,28 @@ IResourceBuilder<ProjectResource> dotnetProject = builder
     .AddProjectFromRepository("dotnetProject", repository,
         "src/Dutchskull.Aspire.PolyRepo.Web/Dutchskull.Aspire.PolyRepo.Web.csproj")
     .WithReference(cache)
+    .WaitFor(cache)
     .WithReference(apiService);
 
 IResourceBuilder<NodeAppResource> reactProject = builder
     .AddNpmAppFromRepository("reactProject", repository, "src/Dutchskull.Aspire.PolyRepo.React")
     .WithReference(cache)
+    .WaitFor(cache)
     .WithReference(apiService)
     .WithHttpEndpoint(3000);
 
 IResourceBuilder<NodeAppResource> nodeProject = builder
     .AddNodeAppFromRepository("nodeProject", repository, "src/Dutchskull.Aspire.PolyRepo.Node")
     .WithReference(cache)
+    .WaitFor(cache)
     .WithReference(apiService)
     .WithHttpEndpoint(54622);
 
 IResourceBuilder<ContainerResource> dockerFile = builder
     .AddDockerFileFromRepository("dockerProject", repository, "src/Dutchskull.Aspire.PolyRepo.Node")
+    .WithReference(cache)
+    .WaitFor(cache)
+    .WithReference(apiService)
     .WithEndpoint(scheme: "http", targetPort: 5555, env: "PORT")
     .WithBuildArg("GO_VERSION", "1.23rc1");
 

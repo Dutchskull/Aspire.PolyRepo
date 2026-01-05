@@ -18,18 +18,19 @@ public class ServiceDiscoveryTests : IAsyncLifetime
     private DistributedApplication _distributedApplication = default!;
 
     [Theory]
-    [InlineData("reactProject", "/", HttpStatusCode.NotModified)]
+    [InlineData("reactProject", "/", HttpStatusCode.OK)]
     [InlineData("nodeProject", "/", HttpStatusCode.OK)]
     [InlineData("dotnetProject", "/", HttpStatusCode.OK)]
     [InlineData("apiservice", "/weatherforecast", HttpStatusCode.OK)]
+    [InlineData("dockerProject", "/", HttpStatusCode.OK)]
     public async Task AppHost_WhenStarted_ExpectServiceToExist(string project, string path, HttpStatusCode code)
     {
         // Act
         HttpClient httpClient = _distributedApplication.CreateHttpClient(project);
 
-        await _distributedApplication.ResourceNotifications.WaitForResourceHealthyAsync(
-             project)
-             .WaitAsync(DefaultTimeout);
+        await _distributedApplication.ResourceNotifications
+            .WaitForResourceAsync(project, targetState: "Running")
+            .WaitAsync(DefaultTimeout);
 
         HttpResponseMessage response = await httpClient.GetAsync(path);
 
