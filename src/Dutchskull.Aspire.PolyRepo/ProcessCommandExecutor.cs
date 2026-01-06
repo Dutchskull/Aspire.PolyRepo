@@ -121,4 +121,7 @@ public class ProcessCommandExecutor : IProcessCommandExecutor
             Console.WriteLine($"[{type}]: {e.Data}");
         };
     }
+
+    [Obsolete("Already present in Aspire.Hosting.Javascript .WithNpm() extension method, please use it instead.")]
+    public int NpmInstall(string resolvedRepositoryPath) => RunProcess("cmd.exe", $"/C cd {resolvedRepositoryPath} && npm i");
 }
