@@ -9,6 +9,9 @@ public class GitConfigBuilder
 
     internal GitConfigBuilder WithUrl(string url)
     {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(url);
+        ArgumentNullException.ThrowIfNullOrEmpty(nameof(url));
+
         _url = url;
 
         return this;
@@ -30,6 +33,11 @@ public class GitConfigBuilder
 
     public GitConfig Build()
     {
+        if (string.IsNullOrEmpty(_url) || string.IsNullOrWhiteSpace(_url))
+        {
+            throw new InvalidOperationException(nameof(_url));
+        }
+
         if (string.IsNullOrEmpty(_username))
         {
             _username = string.Empty;
@@ -42,7 +50,6 @@ public class GitConfigBuilder
 
         _customHeaders ??= [];
 
-#pragma warning disable CS8601 // Possible null reference assignment.
         return new GitConfig
         {
             Url = _url,
@@ -50,6 +57,5 @@ public class GitConfigBuilder
             Password = _password,
             CustomHeaders = _customHeaders
         };
-#pragma warning restore CS8601 // Possible null reference assignment.
     }
 }
