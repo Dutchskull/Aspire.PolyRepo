@@ -38,18 +38,21 @@ IResourceBuilder<JavaScriptAppResource> reactProject = builder
     .AddNpmAppFromRepository("reactProject", repository, "src/Dutchskull.Aspire.PolyRepo.React")
     .WithReference(cache)
     .WithReference(apiService)
+    .WithNpm()
     .WithHttpEndpoint(3000);
 
 IResourceBuilder<ViteAppResource> viteProject = builder
     .AddViteAppFromRepository("viteProject", repository, "src/Dutchskull.Aspire.PolyRepo.Vite")
     .WithReference(cache)
     .WithReference(apiService)
+    .WithNpm()
     .WithHttpEndpoint(3001, name: "vite");
 
 IResourceBuilder<NodeAppResource> nodeProject = builder
     .AddNodeAppFromRepository("nodeProject", repository, "src/Dutchskull.Aspire.PolyRepo.Node")
     .WithReference(cache)
     .WithReference(apiService)
+    .WithNpm()
     .WithHttpEndpoint(54622);
 
 IResourceBuilder<ContainerResource> dockerFile = builder
@@ -59,13 +62,14 @@ IResourceBuilder<ContainerResource> dockerFile = builder
     .WithBuildArg("GO_VERSION", "1.23rc1");
 
 builder.Services.TryAddEnumerable(ServiceDescriptor
-    .Singleton<IDistributedApplicationEventingSubscriber, NodeAppAddPortEventSubscriber>());
+    .Singleton<IDistributedApplicationEventingSubscriber, JavascriptAppAddPortEventSubscriber>());
 
 if (builder.Environment.IsDevelopment() &&
     builder.Configuration["DOTNET_LAUNCH_PROFILE"] == "https")
 {
     reactProject.WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");
     viteProject.WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");
+    viteProject.WithEnvironment("VITE_ENVIRONMENT_MODE", "Development");
     nodeProject.WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");
 }
 
