@@ -13,7 +13,7 @@ type Forecast = {
 function App() {
   const [forecasts, setForecasts] = useState<Forecast[]>([]);
 
-  const weatherApi = import.meta.env.VITE_WEATHER_API;
+  const weatherApi = `${import.meta.env.VITE_WEATHER_API}/weatherforecast`;
 
   console.log(weatherApi);
 
