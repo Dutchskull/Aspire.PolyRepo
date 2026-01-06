@@ -6,7 +6,7 @@ using Aspire.Hosting.Lifecycle;
 
 namespace Dutchskull.Aspire.PolyRepo.AppHost;
 
-internal class NodeAppAddPortEventSubscriber : IDistributedApplicationEventingSubscriber
+internal class JavascriptAppAddPortEventSubscriber : IDistributedApplicationEventingSubscriber
 {
     public Task SubscribeAsync(IDistributedApplicationEventing eventing, DistributedApplicationExecutionContext executionContext, CancellationToken cancellationToken)
     {
