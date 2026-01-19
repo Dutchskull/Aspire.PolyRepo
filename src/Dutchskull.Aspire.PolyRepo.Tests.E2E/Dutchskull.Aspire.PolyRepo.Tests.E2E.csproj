@@ -32,6 +32,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+  	<PackageReference Include="Microsoft.Extensions.Http.Resilience" />
 		<Using Include="Aspire.Hosting.Testing" />
 		<Using Include="Xunit" />
 	</ItemGroup>
