@@ -14,6 +14,7 @@ public class ServiceDiscoveryTests : IAsyncLifetime
     private ResourceNotificationService? _resourceNotificationService;
 
     [Theory]
+    [InlineData("viteProject", "/", HttpStatusCode.NotModified)]
     [InlineData("reactProject", "/", HttpStatusCode.NotModified)]
     [InlineData("nodeProject", "/", HttpStatusCode.OK)]
     [InlineData("dotnetProject", "/", HttpStatusCode.OK)]

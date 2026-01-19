@@ -30,11 +30,11 @@
         </None>
     </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Aspire.Hosting"/>
-		<PackageReference Include="Aspire.Hosting.NodeJs" />
-        <PackageReference Include="LibGit2Sharp"/>
-    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Aspire.Hosting" />
+		<PackageReference Include="Aspire.Hosting.JavaScript" />
+		<PackageReference Include="LibGit2Sharp" />
+	</ItemGroup>
 
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">

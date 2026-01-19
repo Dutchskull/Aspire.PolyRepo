@@ -5,8 +5,8 @@
         <PackageReference Include="Swashbuckle.AspNetCore"/>
     </ItemGroup>
 
-    <ItemGroup>
-        <ProjectReference Include="..\Dutchskull.Aspire.PolyRepo.ServiceDefaults\Dutchskull.Aspire.PolyRepo.ServiceDefaults.csproj"/>
-    </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\Dutchskull.Aspire.PolyRepo.ServiceDefaults\Dutchskull.Aspire.PolyRepo.ServiceDefaults.csproj" />
+	</ItemGroup>
 
 </Project>
