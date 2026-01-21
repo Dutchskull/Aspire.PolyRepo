@@ -24,10 +24,14 @@ public static class ProjectResourceBuilderExtensions
         string name,
         IResourceBuilder<RepositoryResource> repository,
         string relativeProjectPath,
-        string[]? buildArgs = null)
+        string[]? buildArgs = null,
+        bool skipBuild = false)
     {
         string projectPath = repository.Resource.Resolve(relativeProjectPath);
-        repository.Resource.RepositoryConfig?.ProcessCommandsExecutor.BuildDotNetProject(projectPath, buildArgs);
+        if (!skipBuild)
+        {
+            repository.Resource.RepositoryConfig?.ProcessCommandsExecutor.BuildDotNetProject(projectPath, buildArgs);
+        }
 
         return builder.AddProject(name, projectPath);
     }
