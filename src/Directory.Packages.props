@@ -12,7 +12,7 @@
 		<PackageVersion Include="Aspire.Hosting.Testing" Version="13.1.0" />
 		<PackageVersion Include="Aspire.StackExchange.Redis.OutputCaching" Version="13.1.0" />
 		<PackageVersion Include="coverlet.collector" Version="6.0.4" />
-		<PackageVersion Include="FluentAssertions" Version="[7.2.0]" />
+		<PackageVersion Include="FluentAssertions" Version="[7.2.1]" />
 		<PackageVersion Include="FluentAssertions.Analyzers" Version="0.34.1" />
 		<PackageVersion Include="LibGit2Sharp" Version="0.31.0" />
 		<PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="10.2.0" />
@@ -25,7 +25,7 @@
 		<PackageVersion Include="OpenTelemetry.Instrumentation.GrpcNetClient" Version="1.8.0-beta.1" />
 		<PackageVersion Include="OpenTelemetry.Instrumentation.Http" Version="1.15.0" />
 		<PackageVersion Include="OpenTelemetry.Instrumentation.Runtime" Version="1.15.0" />
-		<PackageVersion Include="Swashbuckle.AspNetCore" Version="10.1.0" />
+		<PackageVersion Include="Swashbuckle.AspNetCore" Version="10.1.2" />
 		<PackageVersion Include="xunit" Version="2.9.3" />
 		<PackageVersion Include="xunit.runner.visualstudio" Version="3.1.5" />
 
