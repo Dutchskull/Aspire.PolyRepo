@@ -10,6 +10,6 @@ internal static partial class GitUrlUtilities
     internal static bool IsValidGitUrl(string url) =>
         !string.IsNullOrEmpty(url) && GitUrlRegex().IsMatch(url);
 
-    [GeneratedRegex(@"^(?:git|https?|git@[\w\.]+):\/\/[\w\.@\:\/\-~]+\.git(?:\/)?$")]
+    [GeneratedRegex(@"^(?:(?:git|https?):\/\/[^\s]+\.git(?:\/)?|https:\/\/(?:[\w.-]+@)?dev\.azure\.com\/[^\/\s]+\/[^\/\s]+\/_git\/[^\/\s]+(?:\/)?|git@ssh\.dev\.azure\.com:v3\/[^\/\s]+\/[^\/\s]+\/[^\/\s]+(?:\/)?)$")]
     private static partial Regex GitUrlRegex();
 }

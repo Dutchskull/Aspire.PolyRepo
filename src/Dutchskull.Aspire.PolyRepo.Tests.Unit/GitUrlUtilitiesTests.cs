@@ -10,6 +10,8 @@ public class GitUrlUtilitiesTests
     [Theory]
     [InlineData("https://github.com/example/repo.git", true)]
     [InlineData("https://github.com/example/repo", false)]
+    [InlineData("https://example@dev.azure.com/example/example%20web%20site/_git/example%20web%20site", true)]
+    [InlineData("git@ssh.dev.azure.com:v3/example/example%20web%20site/example%20web%20site", true)]
     [InlineData("git@github.com:example/repo", false)]
     [InlineData("git://github.com/example/repo", false)]
     [InlineData("https://example.com", false)]
