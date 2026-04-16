@@ -65,6 +65,7 @@ public class GitUrlUtilitiesTests
     [Theory]
     [InlineData(AzureDevOpsGitUrl)]
     [InlineData("https://dev.azure.com/example/example%20web%20site/_git/example%20web%20site/")]
+    [InlineData("git@ssh.dev.azure.com:v3/example/example%20web%20site/example%20web%20site")]
     public void GetProjectNameFromGitUrl_ShouldDecodePercentEncodedRepositoryNames(string gitUrl)
     {
         // Act

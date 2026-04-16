@@ -6,9 +6,24 @@ internal static partial class GitUrlUtilities
 {
     internal static string GetProjectNameFromGitUrl(string gitUrl)
     {
-        string normalizedGitUrl = gitUrl.TrimEnd('/').RemovePostfix(".git");
-        string encodedProjectName = normalizedGitUrl[(normalizedGitUrl.LastIndexOf('/') + 1)..];
-        string projectName = Uri.UnescapeDataString(encodedProjectName);
+        ReadOnlySpan<char> gitUrlSpan = gitUrl.AsSpan().TrimEnd('/');
+        int projectNameStart = gitUrlSpan.LastIndexOf('/');
+
+        if (projectNameStart < 0 || projectNameStart == gitUrlSpan.Length - 1)
+        {
+            throw new ArgumentException("Git URL could not be parsed.", nameof(gitUrl));
+        }
+
+        ReadOnlySpan<char> encodedProjectName = gitUrlSpan[(projectNameStart + 1)..];
+
+        if (encodedProjectName.EndsWith(".git", StringComparison.Ordinal))
+        {
+            encodedProjectName = encodedProjectName[..^4];
+        }
+
+        string projectName = encodedProjectName.Contains('%')
+            ? Uri.UnescapeDataString(encodedProjectName.ToString())
+            : encodedProjectName.ToString();
 
         if (string.IsNullOrWhiteSpace(projectName) ||
             projectName is "." or ".." ||
