@@ -66,6 +66,22 @@ public class GitRepositoryConfigBuilderTests
     }
 
     [Fact]
+    public void BuildConfig_ShouldUseDecodedRepositoryName_ForAzureDevOpsUrls()
+    {
+        // Arrange
+        const string gitUrl = "https://dev.azure.com/example/example%20web%20site/_git/example%20web%20site";
+
+        RepositoryConfigBuilder builder = new RepositoryConfigBuilder()
+            .WithGitUrl(gitUrl);
+
+        // Act
+        RepositoryConfig config = builder.Build();
+
+        // Assert
+        config.RepositoryPath.Should().Be(Path.Combine(Path.GetFullPath("."), "example web site"));
+    }
+
+    [Fact]
     public void WithCloneTargetPath_ShouldSetCloneTargetPath()
     {
         // Arrange
