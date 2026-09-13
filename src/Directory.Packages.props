@@ -15,9 +15,9 @@
 		<PackageVersion Include="FluentAssertions" Version="[7.2.2]" />
 		<PackageVersion Include="FluentAssertions.Analyzers" Version="0.34.1" />
 		<PackageVersion Include="LibGit2Sharp" Version="0.32.0" />
-		<PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="10.9.0" />
-		<PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="10.9.0" />
-		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.9.0" />
+		<PackageVersion Include="Microsoft.Extensions.Http.Resilience" Version="10.10.0" />
+		<PackageVersion Include="Microsoft.Extensions.ServiceDiscovery" Version="10.10.0" />
+		<PackageVersion Include="Microsoft.NET.Test.Sdk" Version="18.10.0" />
 		<PackageVersion Include="NSubstitute" Version="6.2.0" />
 		<PackageVersion Include="OpenTelemetry.Exporter.OpenTelemetryProtocol" Version="1.18.0" />
 		<PackageVersion Include="OpenTelemetry.Extensions.Hosting" Version="1.18.0" />
