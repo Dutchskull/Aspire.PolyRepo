@@ -1,5 +1,6 @@
 ﻿using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
+using Aspire.Hosting.JavaScript;
 
 namespace Dutchskull.Aspire.PolyRepo;
 
@@ -23,26 +24,39 @@ public static class ProjectResourceBuilderExtensions
         string name,
         IResourceBuilder<RepositoryResource> repository,
         string relativeProjectPath,
-        string[]? buildArgs = null)
+        string[]? buildArgs = null,
+        bool skipBuild = false)
     {
         string projectPath = repository.Resource.Resolve(relativeProjectPath);
-        repository.Resource.RepositoryConfig?.ProcessCommandsExecutor.BuildDotNetProject(projectPath, buildArgs);
+        if (!skipBuild)
+        {
+            repository.Resource.RepositoryConfig?.ProcessCommandsExecutor.BuildDotNetProject(projectPath, buildArgs);
+        }
 
         return builder.AddProject(name, projectPath);
     }
 
-    public static IResourceBuilder<NodeAppResource> AddNpmAppFromRepository(
+    public static IResourceBuilder<JavaScriptAppResource> AddNpmAppFromRepository(
         this IDistributedApplicationBuilder builder,
         string name,
         IResourceBuilder<RepositoryResource> repository,
         string relativeProjectPath,
-        string scriptName = "start",
-        string[]? args = null)
+        string scriptName = "start")
     {
         string projectPath = repository.Resource.Resolve(relativeProjectPath);
-        repository.Resource.RepositoryConfig?.ProcessCommandsExecutor.NpmInstall(projectPath);
+        return builder.AddJavaScriptApp(name, projectPath, scriptName);
+    }
 
-        return builder.AddNpmApp(name, projectPath, scriptName, args);
+    public static IResourceBuilder<ViteAppResource> AddViteAppFromRepository(
+        this IDistributedApplicationBuilder builder,
+        string name,
+        IResourceBuilder<RepositoryResource> repository,
+        string relativeProjectPath,
+        string scriptName = "dev"
+        )
+    {
+        string projectPath = repository.Resource.Resolve(relativeProjectPath);
+        return builder.AddViteApp(name, projectPath, scriptName);
     }
 
     public static IResourceBuilder<NodeAppResource> AddNodeAppFromRepository(
@@ -50,12 +64,21 @@ public static class ProjectResourceBuilderExtensions
         string name,
         IResourceBuilder<RepositoryResource> repository,
         string relativeProjectPath,
-        string? workingDirectory = null,
-        string[]? args = null)
+        string workingDirectory = "app.js")
     {
         string projectPath = repository.Resource.Resolve(relativeProjectPath);
-        repository.Resource.RepositoryConfig?.ProcessCommandsExecutor.NpmInstall(projectPath);
+        return builder.AddNodeApp(name, projectPath, workingDirectory);
+    }
 
-        return builder.AddNodeApp(name, projectPath, workingDirectory, args);
+    public static IResourceBuilder<ContainerResource> AddDockerFileFromRepository(
+        this IDistributedApplicationBuilder builder,
+        string name,
+        IResourceBuilder<RepositoryResource> repository,
+        string relativeProjectPath,
+        string? dockerFilePath = null,
+        string? stage = null)
+    {
+        string projectPath = repository.Resource.Resolve(relativeProjectPath);
+        return builder.AddDockerfile(name, projectPath, dockerFilePath, stage);
     }
 }

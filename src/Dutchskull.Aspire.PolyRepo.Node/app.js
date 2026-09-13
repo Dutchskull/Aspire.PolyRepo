@@ -28,7 +28,7 @@ if (cachePasswordIndex > 0) {
 console.log(`cacheAddress: ${cacheAddress}`);
 console.log(`apiServer: ${apiServer}`);
 
-const cache = createClient(cacheConfig);
+const cache = createClient(cacheConfig.url);
 cache.on('error', err => console.log('Redis Client Error', err));
 await cache.connect();
 
