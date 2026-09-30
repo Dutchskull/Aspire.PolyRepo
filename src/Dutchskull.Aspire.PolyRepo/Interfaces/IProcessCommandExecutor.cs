@@ -9,5 +9,5 @@ public interface IProcessCommandExecutor
     [Obsolete("Already present in Aspire.Hosting.Javascript .WithNpm() extension method, please use it instead.")]
     int NpmInstall(string resolvedRepositoryPath);
 
-    void PullAndResetRepository(GitConfig gitConfig, string repositoryConfigRepositoryPath);
+    void PullAndResetRepository(GitConfig gitConfig, string repositoryConfigRepositoryPath, string? branch = null);
 }

@@ -35,7 +35,10 @@ internal static class RepositoryConfigExtensions
         if (repositoryConfig.KeepUpToDate)
         {
             repositoryConfig.ProcessCommandsExecutor
-                .PullAndResetRepository(repositoryConfig.GitConfig, repositoryConfig.RepositoryPath);
+                .PullAndResetRepository(
+                    repositoryConfig.GitConfig,
+                    repositoryConfig.RepositoryPath,
+                    repositoryConfig.Branch);
         }
 
         return repositoryConfig;
