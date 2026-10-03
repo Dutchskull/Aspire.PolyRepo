@@ -39,15 +39,13 @@ public class ProcessCommandExecutor : IProcessCommandExecutor
         Repository.Clone(gitConfig.Url, resolvedRepositoryPath, cloneOptions);
     }
 
-    public void PullAndResetRepository(GitConfig gitConfig, string repositoryConfigRepositoryPath)
+    public void PullAndResetRepository(GitConfig gitConfig, string repositoryConfigRepositoryPath, string? branch = null)
     {
         using Repository repository = new(repositoryConfigRepositoryPath);
 
-        string? branchName = repository.Head.TrackedBranch.FriendlyName;
         Remote? remote = repository.Network.Remotes.FirstOrDefault();
 
         ArgumentNullException.ThrowIfNull(remote);
-        ArgumentNullException.ThrowIfNull(branchName);
 
         FetchOptions fetchOptions = new()
         {
@@ -62,10 +60,57 @@ public class ProcessCommandExecutor : IProcessCommandExecutor
         IEnumerable<string> references = remote.FetchRefSpecs.Select(x => x.Specification);
         Commands.Fetch(repository, remote.Name, references, fetchOptions, null);
 
+        if (!string.IsNullOrWhiteSpace(branch) && repository.Head.FriendlyName != branch)
+        {
+            TryCheckoutBranch(repository, remote, branch);
+        }
+
+        string? branchName = repository.Head.TrackedBranch?.FriendlyName;
+
+        ArgumentNullException.ThrowIfNull(branchName);
+
         Branch? remoteBranch = repository.Branches[branchName];
         Commit? latestCommit = remoteBranch.Tip;
 
         repository.Reset(ResetMode.Hard, latestCommit);
+    }
+
+    private static void TryCheckoutBranch(Repository repository, Remote remote, string branch)
+    {
+        string currentBranch = repository.Head.FriendlyName;
+        string repositoryPath = repository.Info.WorkingDirectory;
+
+        if (repository.RetrieveStatus(new StatusOptions { IncludeUntracked = false }).IsDirty)
+        {
+            Console.WriteLine($"Could not switch repository {repositoryPath} from {currentBranch} to {branch}: uncommitted changes found. Staying on {currentBranch}.");
+
+            return;
+        }
+
+        Branch? remoteBranch = repository.Branches[$"{remote.Name}/{branch}"];
+
+        if (remoteBranch == null)
+        {
+            Console.WriteLine($"Could not switch repository {repositoryPath} from {currentBranch} to {branch}: branch not found on remote {remote.Name}. Staying on {currentBranch}.");
+
+            return;
+        }
+
+        Branch localBranch = repository.Branches[branch] ?? repository.CreateBranch(branch, remoteBranch.Tip);
+        repository.Branches.Update(localBranch, x => x.TrackedBranch = remoteBranch.CanonicalName);
+
+        try
+        {
+            Commands.Checkout(repository, localBranch);
+        }
+        catch (CheckoutConflictException exception)
+        {
+            Console.WriteLine($"Could not switch repository {repositoryPath} from {currentBranch} to {branch}: {exception.Message} Staying on {currentBranch}.");
+
+            return;
+        }
+
+        Console.WriteLine($"Switched repository {repositoryPath} from {currentBranch} to {branch} successfully.");
     }
 
     private static int RunProcess(string fileName, string arguments)

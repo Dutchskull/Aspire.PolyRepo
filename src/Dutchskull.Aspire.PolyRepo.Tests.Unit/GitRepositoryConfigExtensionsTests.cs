@@ -41,6 +41,29 @@ public class GitRepositoryConfigExtensionsTests
     }
 
     [Fact]
+    public void Should_pass_configured_branch_when_keeping_existing_repository_up_to_date()
+    {
+        // Arrange
+        RepositoryConfig gitRepositoryConfig = _builder
+            .WithTargetPath(CloneTargetPath)
+            .WithDefaultBranch(Branch)
+            .KeepUpToDate()
+            .Build();
+
+        gitRepositoryConfig.FileSystem
+            .DirectoryExists(gitRepositoryConfig.RepositoryPath)
+            .Returns(true);
+
+        // Act
+        gitRepositoryConfig.CloneRepository();
+
+        // Assert
+        gitRepositoryConfig.ProcessCommandsExecutor
+            .Received(1)
+            .PullAndResetRepository(gitRepositoryConfig.GitConfig, gitRepositoryConfig.RepositoryPath, Branch);
+    }
+
+    [Fact]
     public void InitializeGitRepository_ShouldReturnInitializedConfig()
     {
         // Arrange
