@@ -1,6 +1,8 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+        <TargetFrameworks>net8.0;net9.0;net10.0</TargetFrameworks>
+        
         <PackageId>Dutchskull.Aspire.PolyRepo</PackageId>
         <Version>0.3.3</Version>
         <Authors>Dutchskull</Authors>
@@ -30,11 +32,11 @@
         </None>
     </ItemGroup>
 
-    <ItemGroup>
-        <PackageReference Include="Aspire.Hosting"/>
-		<PackageReference Include="Aspire.Hosting.NodeJs" />
-        <PackageReference Include="LibGit2Sharp"/>
-    </ItemGroup>
+	<ItemGroup>
+		<PackageReference Include="Aspire.Hosting" />
+		<PackageReference Include="Aspire.Hosting.JavaScript" />
+		<PackageReference Include="LibGit2Sharp" />
+	</ItemGroup>
 
     <ItemGroup>
         <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">

@@ -2,13 +2,42 @@
 
 public class GitConfigBuilder
 {
-    private string[]? _customHeaders;
     private string? _password;
-    private string _url = string.Empty;
+    private string? _url;
     private string? _username;
+    private string[]? _customHeaders;
+
+    internal GitConfigBuilder WithUrl(string url)
+    {
+        ArgumentNullException.ThrowIfNullOrWhiteSpace(url);
+        ArgumentNullException.ThrowIfNullOrEmpty(nameof(url));
+
+        _url = url;
+
+        return this;
+    }
+
+    public GitConfigBuilder WithAuthentication(string username, string password)
+    {
+        _username = username;
+        _password = password;
+
+        return this;
+    }
+
+    public GitConfigBuilder WithCustomHeaders(params string[] headers)
+    {
+        _customHeaders = headers;
+        return this;
+    }
 
     public GitConfig Build()
     {
+        if (string.IsNullOrEmpty(_url) || string.IsNullOrWhiteSpace(_url))
+        {
+            throw new InvalidOperationException(nameof(_url));
+        }
+
         if (string.IsNullOrEmpty(_username))
         {
             _username = string.Empty;
@@ -28,30 +57,5 @@ public class GitConfigBuilder
             Password = _password,
             CustomHeaders = _customHeaders
         };
-    }
-
-    public GitConfigBuilder WithAuthentication(string username, string password)
-    {
-        _username = username;
-        _password = password;
-
-        return this;
-    }
-
-    public GitConfigBuilder WithCustomHeaders(params string[] headers)
-    {
-        _customHeaders = headers;
-        return this;
-    }
-
-    internal GitConfigBuilder WithUrl(string url)
-    {
-        if (string.IsNullOrWhiteSpace(url))
-        {
-            throw new ArgumentNullException(nameof(url), "URL must not be null, expected a valid git url.");
-        }
-
-        _url = url;
-        return this;
     }
 }

@@ -1,10 +1,10 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
-
-	<Sdk Name="Aspire.AppHost.Sdk" Version="13.1.0" />
+﻿<Project Sdk="Aspire.AppHost.Sdk/13.6.0">
 
 	<PropertyGroup>
+        <TargetFramework>net10.0</TargetFramework>
 		<OutputType>Exe</OutputType>
 		<IsAspireHost>true</IsAspireHost>
+        <AspireUseCliBundle>true</AspireUseCliBundle>
 	</PropertyGroup>
 
 	<ItemGroup>
@@ -13,9 +13,8 @@
 	</ItemGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Aspire.Hosting.AppHost" />
 		<PackageReference Include="Aspire.Hosting.Redis" />
-		<PackageReference Include="Aspire.Hosting.NodeJs" />
+		<PackageReference Include="Aspire.Hosting.Javascript" />
 	</ItemGroup>
 
 </Project>

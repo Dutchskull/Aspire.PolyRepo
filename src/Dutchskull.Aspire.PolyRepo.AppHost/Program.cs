@@ -1,3 +1,4 @@
+using Aspire.Hosting.JavaScript;
 using Aspire.Hosting.Lifecycle;
 using Dutchskull.Aspire.PolyRepo;
 using Dutchskull.Aspire.PolyRepo.AppHost;
@@ -15,54 +16,59 @@ IResourceBuilder<RedisResource> cache = builder
 IResourceBuilder<ProjectResource> apiService = builder
     .AddProject<Dutchskull_Aspire_PolyRepo_ApiService>("apiservice")
     .WithReference(cache)
-    .WaitFor(cache)
     .WithExternalHttpEndpoints();
 
 IResourceBuilder<RepositoryResource> repository = builder.AddRepository(
     "repository",
     "https://github.com/Dutchskull/Aspire-Git.git",
     c => c
-        .WithDefaultBranch("feature/112-e2e-tests-are-not-working")
+        .WithDefaultBranch("develop")
         .KeepUpToDate()
-        .WithGitConfig(builder => builder.WithAuthentication("", ""))
+        .WithGitConfig(gitConfigBuilder => gitConfigBuilder.WithAuthentication("", ""))
         .WithTargetPath("../../repos"));
 
 IResourceBuilder<ProjectResource> dotnetProject = builder
     .AddProjectFromRepository("dotnetProject", repository,
         "src/Dutchskull.Aspire.PolyRepo.Web/Dutchskull.Aspire.PolyRepo.Web.csproj")
     .WithReference(cache)
-    .WaitFor(cache)
     .WithReference(apiService);
 
-IResourceBuilder<NodeAppResource> reactProject = builder
+IResourceBuilder<JavaScriptAppResource> reactProject = builder
     .AddNpmAppFromRepository("reactProject", repository, "src/Dutchskull.Aspire.PolyRepo.React")
     .WithReference(cache)
-    .WaitFor(cache)
     .WithReference(apiService)
+    .WithNpm()
     .WithHttpEndpoint(3000);
+
+IResourceBuilder<ViteAppResource> viteProject = builder
+    .AddViteAppFromRepository("viteProject", repository, "src/Dutchskull.Aspire.PolyRepo.Vite")
+    .WithReference(cache)
+    .WithReference(apiService)
+    .WithNpm()
+    .WithHttpEndpoint(3001, name: "vite");
 
 IResourceBuilder<NodeAppResource> nodeProject = builder
     .AddNodeAppFromRepository("nodeProject", repository, "src/Dutchskull.Aspire.PolyRepo.Node")
     .WithReference(cache)
-    .WaitFor(cache)
     .WithReference(apiService)
+    .WithNpm()
     .WithHttpEndpoint(54622);
 
 IResourceBuilder<ContainerResource> dockerFile = builder
     .AddDockerFileFromRepository("dockerProject", repository, "src/Dutchskull.Aspire.PolyRepo.Node")
     .WithReference(cache)
-    .WaitFor(cache)
-    .WithReference(apiService)
     .WithEndpoint(scheme: "http", targetPort: 5555, env: "PORT")
     .WithBuildArg("GO_VERSION", "1.23rc1");
 
 builder.Services.TryAddEnumerable(ServiceDescriptor
-    .Singleton<IDistributedApplicationLifecycleHook, NodeAppAddPortLifecycleHook>());
+    .Singleton<IDistributedApplicationEventingSubscriber, JavascriptAppAddPortEventSubscriber>());
 
 if (builder.Environment.IsDevelopment() &&
     builder.Configuration["DOTNET_LAUNCH_PROFILE"] == "https")
 {
     reactProject.WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");
+    viteProject.WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");
+    viteProject.WithEnvironment("VITE_ENVIRONMENT_MODE", "Development");
     nodeProject.WithEnvironment("NODE_TLS_REJECT_UNAUTHORIZED", "0");
 }
 
