@@ -1,34 +1,36 @@
-using System.Net;
 using Aspire.Hosting;
 using Aspire.Hosting.ApplicationModel;
 using FluentAssertions;
+using Google.Protobuf.WellKnownTypes;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Projects;
+using System.Net;
+using System.Threading;
 using Xunit.Abstractions;
 
 namespace Dutchskull.Aspire.PolyRepo.Tests.E2E;
 
 public class ServiceDiscoveryTests : IAsyncLifetime
 {
+    private static readonly TimeSpan DefaultTimeout = TimeSpan.FromSeconds(30);
+
     private DistributedApplication _distributedApplication = default!;
-    private ResourceNotificationService? _resourceNotificationService;
 
     [Theory]
-    [InlineData("viteProject", "/", HttpStatusCode.NotModified)]
-    [InlineData("reactProject", "/", HttpStatusCode.NotModified)]
+    [InlineData("reactProject", "/", HttpStatusCode.OK)]
     [InlineData("nodeProject", "/", HttpStatusCode.OK)]
     [InlineData("dotnetProject", "/", HttpStatusCode.OK)]
     [InlineData("apiservice", "/weatherforecast", HttpStatusCode.OK)]
+    [InlineData("dockerProject", "/", HttpStatusCode.OK)]
     public async Task AppHost_WhenStarted_ExpectServiceToExist(string project, string path, HttpStatusCode code)
     {
         // Act
         HttpClient httpClient = _distributedApplication.CreateHttpClient(project);
 
-        await (_resourceNotificationService?.WaitForResourceAsync(
-                project,
-                KnownResourceStates.Running
-            )
-            .WaitAsync(TimeSpan.FromSeconds(30)) ?? Task.CompletedTask);
+        await _distributedApplication.ResourceNotifications
+            .WaitForResourceAsync(project, targetState: "Running")
+            .WaitAsync(DefaultTimeout);
 
         HttpResponseMessage response = await httpClient.GetAsync(path);
 
@@ -44,19 +46,24 @@ public class ServiceDiscoveryTests : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
-        IDistributedApplicationTestingBuilder appHost = await DistributedApplicationTestingBuilder
-            .CreateAsync<Dutchskull_Aspire_PolyRepo_AppHost>();
+        CancellationToken cancellationToken = CancellationToken.None;
+
+        IDistributedApplicationTestingBuilder appHost = await DistributedApplicationTestingBuilder.CreateAsync<Dutchskull_Aspire_PolyRepo_AppHost>(cancellationToken);
+
+        appHost.Services.AddLogging(logging =>
+        {
+            logging.SetMinimumLevel(LogLevel.Debug);
+            logging.AddFilter(appHost.Environment.ApplicationName, LogLevel.Debug);
+            logging.AddFilter("Aspire.", LogLevel.Debug);
+        });
 
         appHost.Services.ConfigureHttpClientDefaults(clientBuilder =>
         {
             clientBuilder.AddStandardResilienceHandler();
         });
 
-        _distributedApplication = await appHost.BuildAsync();
+        _distributedApplication = await appHost.BuildAsync(cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
 
-        _resourceNotificationService = _distributedApplication.Services
-            .GetRequiredService<ResourceNotificationService>();
-
-        await _distributedApplication.StartAsync();
+        await _distributedApplication.StartAsync(cancellationToken).WaitAsync(DefaultTimeout, cancellationToken);
     }
 }
