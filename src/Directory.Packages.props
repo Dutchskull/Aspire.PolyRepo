@@ -8,9 +8,9 @@
 		<PackageVersion Include="Aspire.Hosting" Version="13.6.0" />
         <PackageVersion Include="Aspire.Hosting.JavaScript" Version="13.6.0" />
         <PackageVersion Include="Aspire.Hosting.Redis" Version="13.6.0" />
-		<PackageVersion Include="Aspire.Hosting.Testing" Version="13.5.4" />
-		<PackageVersion Include="Aspire.StackExchange.Redis.OutputCaching" Version="13.5.4" />
-		<PackageVersion Include="coverlet.collector" Version="10.0.1" />
+		<PackageVersion Include="Aspire.Hosting.Testing" Version="13.6.0" />
+		<PackageVersion Include="Aspire.StackExchange.Redis.OutputCaching" Version="13.6.0" />
+		<PackageVersion Include="coverlet.collector" Version="10.1.0" />
 		<PackageVersion Include="FluentAssertions" Version="[7.2.2]" />
 		<PackageVersion Include="FluentAssertions.Analyzers" Version="0.34.1" />
 		<PackageVersion Include="LibGit2Sharp" Version="0.32.0" />
